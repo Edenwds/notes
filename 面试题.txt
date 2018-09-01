@@ -1,0 +1,113 @@
+
+
+本次面试的问题：
+  1. 多用户同时往一张表写数据，处理办法
+ 
+  2. String StringBuffer
+  
+  3. 常量 final   
+
+  4. jsp的内置对象  jsp中代码的使用  页面的跳转 
+
+  5. equals 和 == 
+
+  6. sql语句 多表的联合查询
+
+  7. 解释MVC架构
+
+  8. 写过存储过程吗
+
+  9. ajax 的常用参数
+
+  10. 正则表达式
+
+  11. 三个数abc 从小到大输出
+
+  12. 递归 实现9*9乘法表
+
+  13. 斐波那契数列
+
+  14. 手写java代码 基本功的考察
+
+  15. 泛型 使用list实现栈的功能
+  
+  16. 单例模式 实现单例的方法  线程安全    为啥用单例 
+  
+  17. final abstract
+  
+  18. 构造函数可以重载吗
+
+  19. 前端知识
+
+  20. hibernate  
+
+  21. 工厂模式   hibernate的sessionFactory spring的beanFactory 
+
+
+  22. sql  查询某部门员工的工资并排序 给出排名序号
+
+      此题主要思想是复用表进行比较排名，从两张相同的表进行比较分析，精髓在于s1.salary<=s2.salary ，意思是在输出s1.salary的情况下，有多少个s2.salary大于等于s1.salary， 利用count(distinct s2.salary)去重可判断得出比s1.salary大于等于的个数，即为s1.salary的排名，最后进行group by s1.emp_no ,最后以s1.salary desc,s1.emp_no asc 排序得出结果
+
+  23. sql 得到非manager的工资
+      避免使用连接，使用嵌套子查询，判断不是manager ----------> employees.emp_no not in(select emp_no from dept_manager)
+
+
+
+  24. 关于安全问题： 手段有Active X 运行在本地，可以客户端加密 , VPN专线等
+
+      单向加密  MD5
+
+
+  25.log4j  常用四种类型   ：DEBUG INFO ERROR WARNING
+
+
+  26.ajax实现同步  async设置为false
+
+  
+  27.java中JNDI的使用
+
+     外部资源统一访问方式 （访问EJB 数据库连接池 远程中间件 文件系统）
+     
+     new InitialContext("");//初始化
+     Lookup();//查找
+
+
+
+  28.ehcache Hibernate的默认二级缓存
+
+
+  29.反范式：
+
+     附加列，冗余列，横向切割表，纵向切割表
+
+
+  30.XA事务 
+
+     XA协议采用两阶段提交方式来管理分布式事务，XA接口提供资源管理器与事务管理器进行通信的标准接口 
+     主要解决企业内部的分布式事务
+
+  31.微服务： restful架构+HTTP+JSON
+
+
+  32.什么是EJB？
+     企业级javabean，设计目标与核心应用是部署分布式应用程序，有会话Bean(Session Bean),实体Bean(Entity Bean),消息驱动Bean(MessageDriven Bean)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

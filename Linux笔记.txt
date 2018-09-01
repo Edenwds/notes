@@ -1,0 +1,561 @@
+Linux
+
+磁盘命令:
+  ls命令：列出目录内容
+  
+  参数：-a 查询所有文件和文件夹，包含隐藏的
+        -l 查询详细列表  ls -l
+        -h 友好展示信息  ll -h
+       
+        文件  d 代表目录，- 代表普通文件，l 代表链接文件
+
+  展示某个目录下的内容   ls 目录名
+
+  所在位置：/root
+  想要查看:/etc目录下的内容
+  命令：ll -h /etc
+
+
+目录的相关操作
+  . 代表此层目录
+
+  .. 代表上一层目录
+
+  -  代表前一个工作目录
+
+  ~  代表“目前用户身份” 所在的主文件夹
+
+  ~  account 代表account这个用户的主文件夹
+
+
+  常见处理目录的命令：
+  
+  cd: 切换目录
+ 
+  pwd: 显示当前目录
+
+  mkdir: 创建一个新的目录
+ 
+  mdir: 删除一个空的目录
+
+  
+ cd(change directory)功能 ： 切换目录
+   cd          回到自己的主文件夹
+
+   cd ..       向上一层目录
+
+   cd /         切换到Linux的根目录
+
+   cd /目录名   在任意目录中，切换到指定目录中    /目录名 Linux的绝对零
+
+   cd ~         切换到当前用户家目录，root用户家目录/root  （回家）
+  
+   cd -         切换到上一次访问的目录，只能两个目录相互切换
+
+  Linux的绝对路径： cd /etc/x1  先切换到/目录，然后在/目录中找到子目录etc,在etc中找到子目录x1,在任意目录都可以随意切换
+
+  Linux相对路径: cd x1/x2  在当前目录中找子目录x1,在x1中寻找子目录x2
+                 必须确定当前目录下有子目录x1
+
+
+
+  pwd（print working directory） : 显示当前的所在目录，返回绝对路径
+
+
+  mkdir(make directory) ： 创建目录
+
+  mkdir -p 文件夹名称
+
+  -p 父目录不存在情况下先生成父目录(parents)
+
+  需要在/root/t1目录中创建一个t2目录
+  位置：/root
+  命令：相对：mkdir t1/t2
+        绝对：mkdir /root/t1/t2
+  
+  需要在/root/t3目录下创建一个t4目录
+  位置：/root
+  条件：t3和t4都不存在
+  命令：mkdir -p t3/t4
+
+
+  rmdir（remove directory） : 删除空目录  不常用   常用rm命令
+
+  
+
+  文件与目录管理
+
+  查看文件与目录 ：ls
+
+  -a : 全部的文件，连同隐藏文件（开头为.的文件） 一起列出来
+
+  -d : 仅列出目录本身，而不是列出目录内的文件数据
+
+  -h : 将文件容量以人类较易读的方式（例如GB,KB等）列出来
+
+  -l : 列出长数据串，包含文件的属性与权限等数据  （ll 为ls -l）
+
+
+
+
+
+  文件浏览命令： 
+
+  日志文件、XML、properties文件
+
+  touch 文件名  创建一个空文件
+  
+   -a: 仅修改访问时间
+
+   -c: 仅修改文件的时间，若该文件不存在则不创建新文件
+
+  常用功能：1）创建一个空的文件  2）将某个文件日期修改为当前日期
+
+
+
+  cat [-n 打印出行号，连同空白行也会有行号]文件名  
+
+      快捷查看文件中的内容  由第一行开始显示文件内容
+      适合查看少量信息的文件
+
+  tac ：从最后一行开始显示，可以看出tac是cat的倒写形式
+
+   nl : 显示的时候，顺便输出行号
+
+  more 文件名 功能：分页显示文件内容，适合查看大文件
+
+      操作：
+           Enter   向下n行，需要定义，默认为1行
+           空格键  向下滚动一屏 或Ctrl+F
+           B       返回上一屏 或 Ctrl+B
+           q       退出more   
+           /字符串 代表在这个显示的内容当中，向下查询“字符串” 这个关键字
+
+  
+  less -mN 文件名   分页显示文件内容，标注每行和行号  适用于大量数据的查看（常用）
+      操作：
+           Enter   向下n行，需要定义，默认为1行
+           空格键  向下滚动一屏 或Ctrl+F
+           B       返回上一屏 或 Ctrl+B
+           q       退出less      
+           /字符串 向下查询“字符串”的功能
+           ?字符串 向上查询“字符串”的功能
+
+
+  
+
+  head 只看头几行   
+  
+  tail -数字 文件名    可以快速查看文件后x行的内容
+  例如：tail -10 文件名  查看文件的后10行内容
+
+
+
+  od 以二进制的方式读取文件内容
+
+
+
+  文件操作命令
+
+    cp命令  复制文件或者复制目录
+    cp 需要复制的文件 复制的位置
+
+    需求： 把/root/Demo1.java文件复制到 /root/t1目录中
+    位置： /root
+    命令：cp Demo1.java t1
+          cp /root/Demo1.java /root/t1
+
+
+    需求： 把/root/Demo1.java文件 复制到 /root/t1目录中，改名为ddd.java
+    位置： /root
+    命令： cp Demo1.java t1/ddd.java
+
+ 
+    复制目录
+    cp -r 需要复制的文件 复制的位置
+    需求：把/root/t5目录 复制到/root/t1目录中
+    位置：/root
+    命令：cp -r t5 t1
+          cp -r /root/t5 /root/t1
+
+    
+    文件移动
+    mv(move) 功能： 移动或更名现有的文件或目录
+
+    mv 需要移动的文件  移动的位置
+    需求：把/root/t5 目录移动到 /root/t3目录中
+    位置：/root
+    命令：mv t5 t3
+  
+    需求：把/root/t5目录移动到/root/t3目录中  不询问，直接覆盖
+    位置：/root
+    已知：/root/t3目录中 已经有一个t5目录
+    命令：mv -f t5 t3   
+
+  
+   文件或目录更名操作
+
+    需求：把/root/Demo1.java 改名为 hehe.java
+    位置：/root
+    命令：mv Demo1.java hehe.java
+  
+
+  文件删除
+   rm(remove) 功能：删除文件或目录
+   
+   删除文件：rm（-f） 文件名   加参数-f 强制删除
+   
+   删除目录：rm -rf 目录名  参数-r 递归操作
+
+   需求：删除/root/t5目录
+   位置：/root
+   已知：t5目录下有子目录或者文件
+   命令: rm -rf t5
+
+   注意：rm -rf * 删除当前目录下所有内容
+
+         rm -rf /* 删除Linux系统根目录下的所有内容
+
+
+
+  查看文件类型： file
+  
+
+  文件名的查找
+
+  通常find不很常用，因为速度慢，通常都是先使用whereis或locate来检查，如果找不到，才用find查找
+
+  whereis与locate是利用数据库来查找数据，所以快速，并没有实际查询磁盘
+
+  
+  whereis [-bmsu] 文件或目录名
+
+   -b: 只找二进制格式的文件
+
+   -m: 只找在说明文件manual路径下的文件
+
+   -s: 只找source源文件
+ 
+   -u: 查找不在上述三个选项当中的其他特殊文件
+
+
+
+  locate [-ir] keyword
+
+   -i: 忽略大小写的差异
+
+   -r: 后面可接正则表达式的显示方式
+
+  locate直接在后面输入“文件的部分名称”后就能得到结果
+  
+  locate寻找的数据是由已创建的数据库/var/lib/mlocate/里面的数据所查找到的
+
+   
+  find命令
+    功能：查找文件或目录
+
+    find [PATH] [option] [action]
+
+    参数：
+    1.与时间相关 -atime -ctime -mtime 
+
+      -mtime n : n为数字，意为在n天之前的“一天之内”被更改过的文件
+
+      -mtime +n : 列出在n天之前（不含n天本身）被更改过的文件
+
+      -mtime -n : 列出在n天之内（含n天本身）被更改过的文件
+
+      -newer file ： file为一个存在的文件，列出比file还要新的文件名
+   
+  
+    2.与用户或用户组名相关的参数
+
+      -uid \ -gid \ -user name  \ -group name \ -nouser \ -nogroup 
+
+
+    3.与文件权限及名称有关的参数
+
+     -name filename
+     
+     -size [+-]SIZE  规格：c : 代表byte  k : 代表1024bytes
+
+     -type TYPE ： 查找文件的类型为TYPE的， 类型主要有： 一般正规文件(f) 设备文件（b,c）目录（d）连接文件（l）socket（s）及FIFO（p）
+
+     -perm mode : 查找文件权限刚好等于mode的文件
+
+     -perm -mode : 查找文件权限“必须要全部包括mode的权限”的文件
+
+     -perm +mode : 查找文件权限“包含任一mode的权限”的文件
+
+      find 目录名 -name ‘需要查找的字符串（*）’ *表示0~多个任意字符
+
+      需求：查找/root目录下，所有以ins开头的文件或者目录    
+      位置: /root
+      命令：find /root -name 'ins*'
+
+    
+
+      find的特殊功能就是能够进行额外的动作（action） 
+
+       
+
+
+
+  文档编辑命令
+    vim命令
+    vim 文件名  
+    三种模式：
+     一般模式：可以浏览文件内容，可以进行文本快捷操作  单行复制、多行复制、单行删除、多行删除
+
+     插入模式：可以编辑文件内容 按ESC可以切回一般模式
+   
+     底行模式：可以进行强制退出不保存操作 q!
+               可以进行保存并退出操作 wq
+
+
+  管道命令
+    可以连接多个Linux命令 标识符 |
+
+    grep正则表达式 : 字符串搜索工作
+
+    格式: grep -i 需要搜索的字符串 搜索的文件
+
+    参数：-i 忽略大小写查找数据 
+    符合规则，就会返回符合规则的行
+
+
+  压缩、解压命令
+
+  linux压缩包： *.tar  打包，大小不会压缩
+                *.tar.gz 打包并压缩文件大小
+				
+				war包的压缩解压   将tar该为jar
+
+  打包：tar -cvf 文件名 目录 ：将制定的目录打包成一个指定的文件
+ 
+  压缩：(参数顺序不能变）
+
+      tar -zcvf 压缩包的名字.tar.gz 需要压缩的内容
+
+  例如： tar -zcvf hh.tar.gz * 将当前目录下所有内容进行打包压缩，文件名 hh.tar.gz
+
+  解压：（参数顺序不变）
+
+    tar -xvf 文件名：将指定文件解压到当前目录
+    tar -zxvf 需要解压的压缩包名称  （解压到当前目录）
+    tar -zxvf 需要解压的压缩包名称 -C 指定压缩路径  （解压到指定目录中）
+    
+  需求：需要把/root/t5/hh.tar.gz 压缩包解压到指定目录中，指定目录/root/t5/t5
+  位置：/root/t5
+  命令：tar -zxvf hh.tar.gz -C /root/t5/t5
+        tar -zxvf hh.tar.gz -C t5
+
+
+ 系统命令
+   ps命令 
+
+    功能：是Process Status的缩写，提供对进程的一次性查看，及执行ps命令的那个时刻进程信息
+    格式：ps[参数]
+          -e 此参数的效果和指定A参数相同，显示所有程序
+          -f 显示UID,PPIP,C与STIME栏位
+          
+          UID 表示进程是被哪个用户打开的，root用户对几乎所有的进程都有创建杀死的权利
+
+          PID 进程ID 是用来杀死进程的
+      
+          CMD 表明进程对应的程序，程序的位置
+               
+
+    | 管道  grep 查找
+
+    命令1|命令2|命令3
+
+    需求：查询当前目录中，所有带t关键字的行数据
+    位置：/root
+    思考：查询当前根目录内容 ll
+          查询字符串 返回字符串所在行 grep
+    命令：ll | grep t
+
+   
+    
+    查看系统进程 
+      ps -ef
+   
+    需求：查看进程中和vim相关的进程
+    命令：ps -ef | grep -i vim
+
+  
+    强制杀死某个进程：
+      kill -9 pid号
+
+    kill 和 kill -9， kill -2 的区别：
+
+    执行kill命令，会发送一个SIGTERM信号给对应的程序，大部分程序接收到SIGTERM信号后，会先释放自己的资源，然后再停止，但是也有程序可能接受信号后，做一些其他的事情，也就是说SIGTERM多半是会被阻塞的
+
+    执行kill -9命令 发送的信号是SIGKILL，即exit，不会被系统阻塞，程序会被顺利杀掉进程
+
+    执行kill -2命令 功能类似于Ctrl+C 是程序在结束之前，能够保存相关的数据，再退出    
+    
+    需求：查看进程和vim相关的进程有哪些，并将vim进程杀死
+    命令：ps -ef|grep -i vim
+          kill -9 pid号
+
+    查看某个端口的信息
+
+    netstat -an | grep 3306
+
+  
+  查看网络配置 ifconfig命令
+
+  测试连通性  ping命令   ping ip地址  持续不断一直测试  直到ctrl+c
+
+  重启命令：reboot  关机命令 halt(立即执行)
+    
+     
+  linux文件权限
+
+    格式<类型><用户><组><其他用户>  共10位
+    ex: -rwxrw-x--
+     
+    第一部分  第一位：文件类型（d目录 -普通文件 l链接文件）
+    第二部分  所属用户权限 文件属于哪个用户 u
+    第三部分  所属组权限  所属用户所在组别  g
+    第四部分  其他用户权限 文件不属于该用户，不属于该用户所在组 o
+
+    所有用户 a(All)
+
+    r: 读取权限 数字代号 4
+    w: 写入权限 数字代号 2
+    x: 执行或切换权限，数字代号 1
+    -: 不具任何权限，数字代号 0
+
+     
+
+
+
+  权限更改
+ 
+    chgrp:改变文件所属用户组   chgrp [-R]  用户组名（必须在/etc/group文件内存在）文件名   -R:进行递归（recursive）的持续更改，也即连同子目录下的所有文件、目录都更新为这个用户组，常常用在更改某一目录内所有文件情况
+
+    chown:改变文件所有者
+
+    chmod:改变文件的权限
+
+
+    语法 chmod 权限设置 需要更改的文件名
+
+    权限的设置有两种方法，分别可以使用数字或者是符号来进行权限的更改
+
+     chmod u=rwx Demo.java  更改Demo.java所属用户的权限rwx
+     chmod g=rx Demo.java   更改所属组的权限r-x
+     chmod a=r  Demo.java   更所有用户的权限为r--
+    
+  
+
+   更改文件夹权限
+
+     chmod -R 权限设置 需要更改的文件夹名
+     chmod -R u=r t1
+
+   更改文件的所属
+     chown 
+
+  Linux的安装命令
+
+    rpm命令： 相当于Windows的添加\卸载程序
+
+       本地程序安装： rpm -ivh 程序名
+       本地程序查看： rpm -qa
+       本地程序卸载： rpm -e --nodeps 程序名
+    
+
+   yum命令：相当于可以联网的rpm命令  先联网下载程序安装包，程序的更新包自动执行rpm命令
+
+   安装jdk mysql tomcat 的依赖 必须依次联网安装
+    yum install glibc.i686
+
+    yum -y install libaio.so.1 libgcc_s.so.1 libstdc++.so.6  
+
+    yum update libstdc++-4.4.7-4.el6.x86_64
+
+    yum install gcc-c++
+
+
+
+   查看已安装的程序 rpm -qa  
+   
+   跟java有关的 rpm -qa | grep -i java
+  
+   
+   卸载jdk  rpm -e --nodeps 查出的jdk
+
+   Xshell 
+   安装上传下载工具包 yum install -y lrzsz
+
+   实现文件上传的命令 rz     实现文件从linux上下载的命令 sz
+
+    
+   安装jdk  
+
+   创建文件夹  mkdir -r /usr/local/java
+   上传解压版的jdk jdk-7u80-linux-i586.tar.gz
+
+   解压到创建的目录中  tar -zxvf jdk-7u80-linux-i586.tar.gz -C /usr/local/java
+
+   配置环境变量
+   编辑文件 vim /etc/profile
+
+   # set java environment
+   JAVA_HOME=/usr/local/java/jdk1.7.0_80
+   CLASSPATH=.:$JAVA_HOME/lib.tools.jar
+   PATH=$JAVA_HOME/bin:$PATH
+   export JAVA_HOME CLASSPATH PATH
+
+   修改配置文件后有重新启动服务   source /etc/profile
+
+ 
+   安装mysql
+   rpm -ivh 
+
+   设置mysql的密码 /usr/bin/mysqladmin -u root password '密码'
+
+   修改mysql的密码 mysqladmin -u root -p password '新密码' 回车后输入旧密码
+
+   设置开机自动启动mysql服务
+   chkconfig --add mysql
+   chkconfig mysql on
+
+   远程登录mysql
+   赋予root远程登录权限
+
+   grant all privileges on *.* to 'root' @'%' identified by '123456';
+   flush privileges;
+
+   打开linux防火墙  默认拦截3306端口
+   /sbin/iptables -I INPUT -p tcp --dport 3306 -j ACCEPT
+   /etc/rc.d/init.d/iptables save
+
+
+   安装Tomcat
+   创建目录 mkdir -p /usr/local/tomcat
+   将压缩包解压到新创目录
+   tar -zxvf apache-tomcat-7.0.52.tar.gz -C /usr/local/tomcat
+
+   ../上层目录  ./当前目录
+
+   开启Tomcat  进入bin目录  执行./startup.sh
+   开启防火墙  /sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+	/etc/rc.d/init.d/iptables save
+
+   关闭Tomcat ./shutdown.sh
+
+   部署项目时 将项目拷贝到 webapps下
+
+
+   
+
+
+
+
+
+

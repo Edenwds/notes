@@ -1,0 +1,96 @@
+
+登录oracle  
+
+    sqlplus  用户名/密码
+
+三个默认的用户：sys   system  scott、
+
+
+
+
+创建表 用户 授权
+
+create TABLESPACE wnews DATAFILE 'd:/app/209/wnews.dbf' SIZE 30m AUTOEXTEND ON;
+create USER wnew identified by 123 default tablespace wnews;
+grant dba to wnew;
+
+系统权限管理
+
+   创建用户  create user xxx indentified by xxxx;
+  
+   授权  grant....to  xxx;
+   
+   常用权限：
+   系统权限 
+           grant create session to xxx;
+           grant create table to xxx;
+           grant unlimited tablespace to xxx;
+
+           把某权限授予所有用户  用public
+
+           grant create an table to public;
+   
+   撤销权限  revoke....from xxx;
+
+   
+   查看用户的系统权限：select * from user_sys_privs;
+   查看用户的用户权限：select * from user_tab_privs;
+
+   权限分为 ： 系统权限  用户权限 
+
+   用户之间没有访问权限  sys（管理员）有权限可以访问数据库所有表
+
+   语句提交 必须使用commit提交 才会生效（只有插入，更新，删除语句）dml（数据操纵语言）需要
+
+   
+   用户权限：
+   用户授权访问权限给其他用户  grant select on 表名 to 用户名;
+
+   对表的CRUD都可以授权   grant all on 表名 to 用户名; 所有权限     撤销用revoke
+
+   只对某列进行授权  grant update<列名> on 表名 to 用户名;
+                     grant insert<列名> on 表名 to 用户名;
+             
+   注意：查询和删除不能控制到列
+
+    
+   权限传递
+   系统权限传递  在语句后面加上 with admin option  
+   用户权限传递  加上with grant option
+
+   角色管理
+   角色就是权限的集合
+   
+   创建角色  create role myrole;
+
+   为角色授权  grant create table to role;
+   
+   将角色授予用户 grant myrole to zhangsan;
+
+   删除角色 drop myrole;
+
+   注意：有些权限高，只能直接赋予用户，不能赋予角色，  ex: unlimited tablespace
+   
+   create table可以给自己创建表  create any table 可以给任意用户创建表
+   [alter table]不存在    alter any table
+   [drop table] 不存在    drop any table
+
+   表是属于某个用户的，但角色不属于任何用户 公用的  
+
+  
+   普通用户密码的修改  在sys用户下修改  alter 用户名 identified by 新密码;
+
+   数据库的三种验证机制
+     操作系统验证
+     密码文件验证
+     数据库验证   
+
+  
+  创建用户
+ 
+   create user 用户名 identified by 密码  
+   default tablespace 表空间  temporary tablespace 表空间
+    quota 整数 K|M|limited on 表空间
+
+  删除用户
+   drop user 用户名 cascade（表示删除用户所有对象）

@@ -1,0 +1,546 @@
+中间件
+  分类：
+ 
+    基于远程过程调用（Remote Procedure Call,RPC）的中间件，允许一个应用程序中的过程调用远程应用程序中的过程，就像本地调用一样。该中间件实现一个查找远程过程的链接机制并使调用方能够以透明方式使用这些过程。以前，这种类型的中间件处理基于过程的程序，现在，它还包括基于对象的组件
+
+    基于对象请求代理（Object Request Broker,ORB）中间件，使应用程序的对象能够在异类网络中间分布和共享
+
+    面向消息的中间件或基于MOM（Message Oriented Middleware）的中间件，是分布式应用程序可以通过发送和接受消息来进行通信和交换数据
+
+
+  区别：
+  
+    基于RPC和ORB的中间件会创建紧密耦合组件系统，而基于MOM的系统允许组件进行更松散的耦合
+
+    在基于RPC或ORB的系统中，一个过程调用另一个过程时，必须等待调用的过程返回才能执行其他操作，在这些模型中，中间件在一定程度上充当超级链接程序
+
+    基于MOM的系统允许通过异步交换消息来进行通信
+
+    RPC系统通常用于分布和连接客户端与服务器组件（客户端通常是最终用户），在MOM中，客户端通常只是通过消息传送进行交互操作的异构软件组件
+
+
+面向消息的中间件
+
+   使用消息传送提供者来协调消息传送操作，基本元素有客户端、消息和MOM提送者，后者包括API和管理工具
+   
+   MOM提供者使用不同的体系结构路由和传送消息：它可以使用集中式消息服务器，也可以将路由和传送功能分布在每个客户端上，有的MOM产品结合了这两个方法
+
+   优点：
+
+     异步，保证消息安全，防止丢失，创建松散耦合的组件系统，可靠性高
+
+     通过添加管理界面，监视和调整性能
+
+   缺点：
+
+     源于自松散耦合本身，在异步系统中，调用方客户端会继续为接受方装入工作，直到处理装入工作所需的资源耗尽且被调用组件发生故障。而在RPC系统中，只有在被调用函数完成任务后，才能返回调用函数
+
+
+学习消息中间件需要思考注意的问题：
+  
+   1.为什么使用消息队列 （解耦，异步，削峰）
+
+   2.使用消息队列有什么缺点 （系统可用性降低，系统复杂性增加）
+
+   3.消息队列如何选择 （中小型 RabbitMQ  大型 RocketMQ kafka, kafka多作为日志采集）
+
+   4.如何保证消息队列是高可用的 （部署集群）
+   
+   5.如何保证消息不被重复消费   （记录消费）
+
+   6.如何保证消息的可靠性传输   （生产者丢失，消息队列丢失，消费者丢失）
+
+   7.如何保证消息的顺序性  （保证入队有序，出队顺序由消费者保证）
+
+
+对RabbitMQ的配置管理界面：http://localhost:15672/
+
+RabbitMQ
+
+Java Client API Guide
+
+ ConnectionFactory  
+
+ Connection --------
+                    |---核心API
+ Channel  ----------
+
+ Exchanges
+
+ Queues
+
+ 连接RabbitMQ
+ 
+   1.创建ConnectionFactory 设置相关参数
+   
+     ConnectionFactory factory = new ConnectionFactory();
+ 
+     factory.setUsername(userName);
+ 
+     factory.setPassword(password);
+
+     factory.setVirtualHost(virtualHost);
+
+     factory.setHost(hostName);
+
+     factory.set(portNumber);
+
+     factory.setUri("amqp://userName:password@hostName:portName/virtualHost");(一个顶上面所有)
+
+     参数无设置时，采用默认值，
+     
+     userName = "guest"  password = "guest"  virtual host = "/"    hostname = "localhost"  port = "5672" 或者 "5671"（在使用TLS连接时）  
+
+
+   2.创建Connection
+   
+     Connection conn = factory.newConnection();
+	 
+
+
+   3.打开通道Channel  用来发送和接受消息messages
+
+     Channel channel = conn.creatChannel();
+
+   4.Disconnecting from RabbitMQ
+
+     channel.close();
+     
+     conn.close();
+
+     channel的关闭动作并不是严格要求的，在连接关闭时它会自动关闭
+
+     Connection是长时间存活的，不能为每个动作创建一个新的连接，需要进行复用
+
+     Channel也是长时间存活的，但是会因为各种可恢复协议错误而导致关闭，所以channel的生命周期要比它的connection短，每次打开关闭一个新的channel通常是不需要的但是也可以接受，首先应该想到复用channel
+
+	 
+
+   5.使用Exchanges和Queues
+
+     channel.exchangeDeclare(exchangeName,"direct",true);
+  
+     String queueName = channel.queueDeclare().getQueue(); 
+   
+     channel.queueBind(queueName,exchangeName,routingKey);
+
+     以上代码会创建一个持久、不会自动删除的direct类型的exchange和一个不是持久的，排他的，会自动删除的queue，并且返回一个队列名称   这是一个temporary queue
+
+     以上代码是典型的方法声明了一个queue，但这个queue只能被一个客户端使用，它不需要一个公众的名称，如果多个客户端向共享使用一个queue，使用以下代码：
+
+     channel.exchangeDeclare(exchangName,"direct",true);
+  
+     channel.queueDeclare(queueName,true,false,false,null);
+
+     channel.queueBind(queueName,exchangName,routingKey);
+  
+     以上代码会创建一个持久的、不排他的、不会自动删除的有一个众所周知的名称的queue
+
+     channel.queueDeclareNoWait(queueName,true,false,false,null);
+
+     创建一个队列，这是一个“no wait”版本，它更高效但是安全性不高，更依赖于基于心跳检测的失败保障机制。
+
+
+     删除一个队列  channel.queueDelete("queue-name");
+
+     如果为空，删除队列  channel.queueDelete("queue-name",false,true);
+
+     如果不使用（即没有任何消费者），删除队列  channel.queueDelete("queue-name",true,false);
+
+     清空队列  channel.queuePurge("queue-name");
+	 
+	 Exchanges的类型有 direct, topic, headers, fanout, 和 无名的“”
+	 
+
+
+   6.投递消息 publish a message to an exchange
+  
+     byte[] messageBodyBytes = "Hello, world".getBytes();
+
+     channel.basicPublish(exchangeName,routingKey,null,messageBodyBytes);
+
+     channel不能共享，应使用channel池
+	 
+	 当rabbitmq向consumer发送消息时，使用的是轮询机制  Round-robin dispatching   将会将消息平均地发送到每个consumer
+	 
+	 当消息较复杂，处理时间较长，就可能造成消费者  有的任务繁重而有的几乎不处理任何任务，出现这种情况的原因是，RabbitMQ仅仅是将消息dispatch到一个consumer，而不关心这个consumer有多少个未确认的消息，为了避免这种情况的发生使用basicQos方法设置prefetchCount=1，通过使用该方法告诉RabbitMQ一次只给worker一个消息，换句话说就是，不dispatch一个新的message到一个之前消息未确认的worker。  这时，可能出现如果所有的consumer都很忙，队列就会被填充满
+	 
+	 消息的确认机制
+	 
+	 为了防止消息在consumer处理消息丢失，可以使用确认机制  将autoAck = true;设置为false，为true时，当mq向consumer发送完消息后就会自动从mq中删除该消息，当consumer挂掉后 ，就会造成消息的丢失。当设置为false时，需要手动发送确认 channel.baseAck(envelop.getDeliveryTag(),false);  这样可以在消息处理完成后进行确认，防止了消息的丢失。 在设置为false后，忘记确认就会造成消息处理完成后在mq堆积，造成内存浪费。
+	 
+	 消息处了会在consumer处丢失，还可能在mq中丢失。当mq退出或者其他因素挂掉后，将会丢失所有的队列queue和 消息message，为防止这种情况的发生，需要将queue和message设置为durable，可以在队列声明时设置为可持久化的 
+	 boolean durable = true;
+	 channel.queueDeclare(queue-name,durable,false,false,null);
+	 
+	 注意  当队列已经声明创建时，不允许再次修改队列的属性。
+	 
+     将message设置为可持久化的  通过MessageProperties 属性进行设置
+	 
+	 channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+
+   
+   7.通过订阅获得消息
+  
+     通过此方法获取消息，消息到达时将会被自动交付，不需要主动请求
+
+     最简单的方法实现DefaultConsumer设置订阅
+
+     boolean autoAck = "false";
+     
+     channel.basicConsume(queueName,autoAck,"myConsumerTag",new DefaultConsumer(channel){
+                                
+                              public void handleDelivery(String consumerTag,
+                                                       
+                                                         Envelope envelope,
+        
+                                                         AMQP.BasicProperties properties,
+
+                                                         byte[] body) throws IOException{
+
+                                   String routingKey = envelope.getRoutingKey();
+             
+                                   String contentKey = properties.getContentType();
+              
+                                   long deliverTag = envelop.getDeliveryTag();
+
+                                   (process the message components here...)
+
+
+                                    channel.basicAck(deliveryTag, false);
+                             }
+                           });
+
+
+   8.拉取消息 pull api
+
+     boolean autoAck = false;
+   
+     GetResponse response = channel.basicGet(queueName,autoAck);
+
+     if(response == null){
+ 
+     }else{
+
+       AMQP.BasicProperties props = response.getProps();
+
+       byte[] body = response.getBody();
+       
+       long deliveryTag = response.getEnvelope().getDeliveryTag();
+ 
+       channel.basicAck(method.deliveryTag, false);
+
+     }
+
+   
+   9.处理不可发送的消息
+
+     当消息发送使用mandatory标记时，但是没有被发送，它将会被返回到发送客户端，客户端可以通过实现ReturnListener接口和调用Channel.addReturnListener处理，如果没有消息则会被丢弃
+
+     channel.addReturnListener(new ReturnListener(){
+  
+         public void handleReturn(int replyCode, 
+                                  String replyText, 
+                                  String exchange, 
+                                  String routingKey, 
+                                  AMQP.BasicProperties properties, 
+                                  byte[] body) throws IOException{
+               ....
+          }
+      });
+
+  
+   10.消费线程池 Consumer thread pool
+  
+      默认情况下，消费者线程将会被自动分配在一个ExecutorService线程池中
+
+      ExecutorService es = Executors.newFixedThreadPool(20);
+   
+      Connection conn = factory.newConnection(es);
+
+     
+
+   RabbitMQ保证消息的可靠性传输
+   
+    当rabbitmq向consumer发送消息时，使用的是轮询机制  Round-robin dispatching   将会将消息平均地发送到每个consumer
+   
+     AMQP 0-9-1 协议中，很重要的一点是消息在消费者之间被负载平衡，而不是在队列
+	 in AMQP 0-9-1, message are load balance between consumers and not between queues.
+	 
+	 消息的确认机制
+	 
+	 为了防止消息在consumer处理消息丢失，可以使用确认机制  将autoAck = true;设置为false，为true时，当mq向consumer发送完消息后就会自动从mq中删除该消息，当consumer挂掉后 ，就会造成消息的丢失。当设置为false时，需要手动发送确认 channel.baseAck(envelop.getDeliveryTag(),false);  这样可以在消息处理完成后进行确认，防止了消息的丢失。 在设置为false后，忘记确认就会造成消息处理完成后在mq堆积，造成内存浪费。
+	 
+	 消息处了会在consumer处丢失，还可能在mq中丢失。当mq退出或者其他因素挂掉后，将会丢失所有的队列queue和 消息message，为防止这种情况的发生，需要将queue和message设置为durable，可以在队列声明时设置为可持久化的 
+	 boolean durable = true;
+	 channel.queueDeclare(queue-name,durable,false,false,null);
+	 
+	 注意  当队列已经声明创建时，不允许再次修改队列的属性。
+	 
+     将message设置为可持久化的  通过MessageProperties 属性进行设置
+	 
+	 channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+  
+      (1)生产者丢失数据
+  
+       RabbitMQ提供两种方式transaction和confirm模式来保证生产者不丢失数据
+       
+       transaction机制：发送消息前，开启事务（channel.txSelect())，然后发送消息，如果过程中出现异常，事务就会回滚（channel.txRollback()），如果发送成功则提交事务（channel.txCommit()）.
+   
+       此方式的缺点就是造成吞吐量下降
+
+       confirm模式：channel进入confirm模式后，在该信道上发布的消息都将会被指派一个唯一的ID（从1开始），一旦消息被投递到所有匹配的队列之后，RabbitMQ就会发送一个Ack给生产者（包含消息的唯一ID），这就使得生产者知道消息已经正确到达目的队列了，如果RabbitMQ没能处理该消息，则会发送一个Nack消息给客户端，客户端可以进行重试操作
+    
+
+      (2)消息队列丢失数据
+
+       采用开启持久化磁盘的配置，和confirm机制配合使用，在消息持久化磁盘后，再给生产者发送一个ACK信号。这样，如果消息持久化磁盘之前，rabbitMQ阵亡，那么生产者收不到Ack信号，就会自动重发
+
+      (3)消费者丢数据
+        
+       采用手动确认消息模式
+
+
+   11.防止消费者丢失数据
+
+      消费者使用DefaultConsumer 是接口Consumer的实现
+
+      设置手动回复消息确认机制  
+
+      channel.basicQos(1); // 设置一次只接收一个消息
+
+      final Consumer consumer = new DefaultConsumer(channel){
+
+           public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException{
+
+              String message = new String(body,"UTF-8");
+           
+              System.out.println("received" + message );
+       
+              try{
+
+		doWork(message);              	
+              }finally{
+			
+		System.out.println("Done");
+
+		channel.basicAck(envelop.getDeliveryTag(),false);
+              }
+
+           }
+      };
+
+      boolean autoAck = false;
+ 
+      channel.basicConsume(TASK_QUEUE_NAME, autoAck, consumer);
+
+
+   12.消息持久化
+
+      声明持久化队列，防止RabbitMQ丢失队列
+   
+      boolean durable = true;
+  
+      channel.queueDeclare("hello", durabl, false, false, null);
+
+      RabbitMQ不允许重复定义一个重名已经存在的队列，否则将会返回一个error
+
+ 
+      然后标记消息为持久化的，通过设置MessageProperties的值为PERSISTENT_TEXT_PLAIN ,这个类实现了BasicProperties接口
+
+      channel.basicPublish("","task_queue",MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+
+      通常情况下，RabbitMQ将把消息循环平均分发给消费者，这就造成了有的消费者任务过重，有的消费者无事可做，为了避免这种情况，使用basicQos方法设置prefetchCount=1，这样的设置告诉RabbitMQ不能在一个消费者未完成任务确认之前再次分发消息给该消费者，应该分发到另一个不忙的消费者
+     
+      int prefetchCount = 1;
+      
+      channel.basicQos(prefetchCount);
+
+      
+   13.发布订阅  
+
+      RabbitMQ的核心思想是生产者不直接发送消息到队列，生产者只发送消息到exchange,exchange接受生产者的消息，并投递它们到队列中，一个exchange具体连接什么queue，由它的exchange type指定
+
+      exchange types:
+
+         direct 
+	     topic   
+	     headers   
+	     fanout   投递消息到所有queue
+         无名的exchange 使用""进行确定身份    default exchange  这是一个direct类型的exchange  被broker以无名的形式提前声明  每个队列被创建时都会自动绑定它 并且routing key默认与队列同名
+		 
+		 
+     
+      channel.basicPublish("", "hello", null, message.getBytes());
+      第一个参数就是exchange,空字符串表示默认或者匿名的交换：消息将会路由到routingKey指定的queue
+
+      指定exchange
+
+      channel.basicPublish("logs","",null,message.getBytes());
+
+
+      临时队列 Temporary queues
+   
+      一个非持久的，排他的，自动删除的队列，由服务器返回的一个随机名称的队列
+
+      String queueName = channel.queueDeclare().getQueue();
+
+      绑定 Bindings
+
+      告诉exchange投递消息到queue，这需要将exchange和queue绑定起来
+
+      channel.queueBind(queueName, "logs", "");
+
+      
+      向exchange发送消息  发送端
+
+        ConnectionFactory factory = new ConnectionFactory();
+        
+        factory.setHost("localhost");
+
+        Connection connection = factory.newConnection();
+  
+        Channel channel = connection.createChannel();
+
+        channel.exchangeDeclare(EXCHANGE_NAME,"fanout");
+
+        String message = getMessage(args);
+
+        channel.basicPublish(EXCHANGE_NAME,"", null, messgae.getBytes());
+
+        channel.close();
+   
+        connection.close();
+
+    
+        接收端
+
+        ConnectionFactory factory = new ConnectionFactory();
+        
+        factory.setHost("localhost");
+
+        Connection connection = factory.newConnection();
+  
+        Channel channel = connection.createChannel();
+
+        channel.exchangeDeclare(EXCHANGE_NAME,"fanout");
+ 
+        String queueName = channel.queueDeclare().getQueue();
+
+        channel.queueBind(queueName, EXCHANGE_NAME, "");
+
+        Consumer consumer = new DefaultConsumer(channel){
+      
+           public void handleDelivery(String consumerTag,Envelope envelope,
+                                      AMQP.BasicProperties properties, byte[] body) throws 		IOException{
+
+                    String message = new String(body,"UTF-8");
+
+                    DO SOMETHING
+                }
+
+        }
+   
+        channel.basicConsume(queueName, true, consumer);
+
+
+   14.路由 Routing
+
+      订阅消息的子集  exchange只投递queue想要的信息，queue只获取部分消息
+
+      使用routingkey, direct exchange
+
+      消息将被路由到由routingkey指定的queue中
+
+      channel.exchangeDeclare(EXCHANGE_NAME,"direct");
+  
+      channel.basicPublish(EXCHANGE_NAME,severity, null, message.getBytes());
+
+      Subscribing
+
+      String queueName = channel.queueDeclare().getQueue();
+
+      for(String severity : argv){
+
+          channel.queueBind(queueName, EXCHANGE_NAME, severity);
+ 
+      }
+
+   15.主题 topics
+
+      消息被发送到topic exchange不能使用任意的routing key 它必须是一系列的单词，用 . 分割，单词可以是任意的，但是通常情况下被指定为与消息有关，它的长度被限制在255bytes
+  
+       binding key 必须要有相同的形式
+ 
+       * 可以替代一个单词   
+
+       # 可以替代零个或多个单词
+     
+
+     Topic exchange 是十分强大的，可以像其他类型exchanges
+ 
+     当一个queue通过#绑定，它将接受所有的消息，忽略routing key 像 fanout exchange
+
+     当不使用*和#用来绑定时，像direct exchange工作
+        
+
+  16.远程过程调用 RPC
+
+     Callback queue 回调队列
+
+     在RabbitMQ做RPC是容易的：一个客户端发送一个请求消息，一个服务器应答一个响应消息，为了接收到一个响应我们需要在请求中发送一个回调队列的地址
+
+     callbackQueueName = channel.queueDeclare().getQueue();
+
+     BasicProperties props = new BasicProperties.Builder().replyTo(callbackQueueName).build();
+     channel.basicPublish("","rpc_queue",props,message.getBytes());
+
+     
+     消息属性  Message properties
+  
+     AMQP共定义了14个属性，大部分都很少使用，除了以下四个：
+
+        deliveryMode : 此属性代表了消息的可持久性  当值为2时为可持久化，1为不可以
+
+        contentType : 用来描述编码的mime类型  通常json 编码为 application/json
+   
+        replyTo : 通常被用来命名回调队列
+
+        correlationId : 将RPC响应和请求关联起来
+
+        当返回一个未知的correlationId时，我们可以安全地丢弃这个消息
+
+        为什么要忽视这个消息在回调队列，而不是用一个错误失败，这是因为RPC在发送了回答后在发送请求的确认信息前宕机是不太可能发生的，即使发生了，在重启后也会重新发送该请求。在理想的状态下RPC应该是幂等的
+
+
+     RPC的工作流程：
+   
+       1. 客户端启动时，创建一个匿名的独占回调队列
+
+       2. 进行RPC请求，客户端发送一个消息携带两个参数，replyTo 用来设置回调队列，correlationId 为每个请求设置一个唯一的值
+
+       3. 请求设置一个rpc_queue队列
+  
+       4. RPC服务器在队列上等待请求信息，当请求信息出现时，它处理后将结果使用replyTo指定的队列发送给客户端，
+   
+       5. 客户端等待回调队列的数据，当消息出现时，检查correlationId属性的值是否与请求相对应，是则返回响应给应用
+
+
+     
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

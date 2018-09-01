@@ -1,0 +1,356 @@
+
+ nosql数据库：
+    key-value存储数据库：
+       Redis,Voldemort
+
+    列存储数据库：
+      相关产品： HBase，Riak
+      典型应用：分布式的文件系统
+      数据模型：以列簇式存储，将同一列数据存在一起
+      优势：查找速度快，可扩展性强，更容易进行分布式扩展
+      劣势：功能相对局限，使用极大的内存才可调配，且系统处理算法时将有数秒甚至更长时间的不可用，导致大量处理超时
+
+    
+
+
+
+
+
+1.什么是redis
+    redis是一个nosql(not only sql不仅仅只有sql）数据库，翻译成中文叫做非关系型数据库
+    关系型数据库：以二维表形式存储数据
+    非关系型数据库：以键值对形式存储数据（key,value形式）
+    是一家意大利的创业公司出的，由VMware资助，redis底层用c语句编写
+ 
+    redis是将数据存放到内存中，由于内容存取速度快，所以redis被广泛应用在互联网项目中
+    redis优点：存取速度快，官方称读取速度会达到30万次每秒，写速度在10万次每秒，具体限制于硬件
+
+         缺点：对持久化支持不够良好
+         所以redis一般不作为数据的主数据库存储，一般配合传统的关系型数据库使用
+
+    使用环境：任务队列  大量数据运算  数据排行
+
+2.redis应用领域
+   分布式缓存
+   分布式session  
+   保存博客或者论坛的留言回复等
+   总之使用在数据量大，并发量高的情况下
+
+3.怎么用
+  redis 主要就是使用命令来进行操作，java端在代码中可以使用jedis来操作redis服务器
+
+  数据类型
+
+  key-value
+
+  key为字符串  value为5种数据类型
+ 
+   1）字符串 String  在redis中是二进制安全的 只在客户端进行编解码，没有频繁的编解码执行效率高
+      不会出现乱码
+
+      二进制安全和数据安全是没有关系的  mysql数据库是二进制不安全  需要进行频繁的编解码 会出现乱码，客户端，服务器  都进行编解码
+   
+      使用环境：主要用于保存json格式的字符串
+
+      赋值 set key value 相同key 会覆盖
+           get key
+
+      删除 del key
+
+
+     扩展：获取key并赋值  getset key value
+
+           incr key:将指定的key的value原子性的递增1，如果key不存在，其初始值为0，在incr之后其值为1，如果value的值不能转成整型，如hello，该操作将执行失败并返回相应的错误信息
+
+           decr key  递减
+
+           incrby key increment  增加指定数值
+           
+
+           append key value: 拼接字符串，如果key存在
+   2）列表 list  商品列表，博客评论等  使用的是双向链表来实现list，在redis中更像栈
+
+      使用环境：1）做大数据集合的增删 2）任务队列
+
+      左（头部）-----右（尾部）
+         
+      添加：
+
+      lpush key values... 在该list的头部插入元素
+
+      rpust key values... 在该list的尾部添加元素
+
+
+      取值：
+      lrange key start end 从左侧开始取值 从0开始计数，也可负数 -1 表示链表尾部的元素
+ 
+      lrange key 0 -1 返回所有元素
+
+      删除：
+
+      lpop key:返回并弹出指定key链表的第一个元素 不存在返回nil
+
+      rpop key: 从尾部弹出元素
+
+      扩展：
+      llen key: 返回指定的key链表中元素的数量
+
+      lrem key count value:产出count个值为value的元素，如果count大于0，从头向尾遍历并删除count个值为value的元素，如果count小于0，则从尾向头遍历并删除。如果count等于0，则删除链表中所有等于value的元素（效率比较低）
+
+      lset key index value：设置链表中index的脚标的元素值，0代表链表的头元素，-1代表链表的尾元素，操作链表的脚标不存在则抛出异常
+
+      linser key before|after pivot value  在pivot元素前或者后插入value元素
+
+      rpoplpush resource destination:将链表中的尾部元素弹出并添加到头部  从list1尾部到list2头部
+      rpoplpush 同一个链表 循环队列 
+   3）哈希 Hash  存储对象
+       
+      hset key field value 为指定的key设定field/value对
+   
+      hmset key [field value]... 设置多个key-value字段
+
+
+      hget key field  获取单个字段的值
+      
+      hmget key field1 field2 ....
+
+      hgetall key 获取key中的所有键值对
+
+      删除
+      hdel key field  
+      
+      del key 删除整个hash
+
+      扩展
+      hkeys key:获取所有的字段
+      hvals key:获取所有的值
+
+
+
+   4）集合 Set   数据是无序的并且不允许重复
+
+      Redis操作中，涉及到大量数据的交集，并集，差集运算
+
+      添加：sadd key values...
+   
+      删除：srem key members
+
+      取值：smembers key 获取set中所有成员
+
+            sismember key memeber 判断set集合中是否存在member元素
+
+      集合运算：
+
+          sdiff key1 key2 : 返回key1与key2中相差的成员，求差集  key的顺序是有要求的  此时是属于1不属于2的元素 
+
+          sinter key1 key2 key3 返回交集运算  
+
+          sunion key1 key2 key3 返回并集运算 不会出现重复元素
+
+
+      扩展命令：
+        
+          scard key 返回set中所有的数量
+
+          srandmember 随机返回set中的一个元素
+
+          sdiffsotre destination key1 key2  将key1和key2的差集存到destination中
+          其他集合运算同样如此
+          
+   5）有序集合 zset  redis会根据分数自动排序  商品销售排行  默认升序
+
+      赋值：zadd key value
+     
+            zincre key score value
+
+      查看：zscore key member 获取某个成员的分数 
+   
+            zrange key start end [withscores]
+
+            zrevrange key start end [withscores] 分数由大到小排序
+
+            zrangebyscore key min max 按照分数范围查看
+
+      删除：zrem key member
+
+            zremrangebyrank key start stop : 按照排名范围删除元素
+
+            zremrangebyscore key min max:按照分数范围删除元素
+
+      范围查询：zrange key start end[withscores]
+
+
+   
+
+     通用命令：
+      keys pattern : 获取所有与patter匹配的key
+      通配符： * 表示任意0个或多个任意字符       
+               ? 表示任意一个字符
+
+      exists key: 判断该key是否存在
+
+      type key：获取key的类型  
+
+      设置key的有效期：expire key :设置key的生存时间 单位 秒
+                  过期后，会删除
+
+      ttl key : 获取该key所剩的超时时间，如果没有设置超时 返回-1 如果返回-2 表示超时不存在
+
+     
+   消息订阅与发布：
+
+      subscribe channel: 订阅频道
+
+      psubscrible channel* : 批量订阅频道
+
+      publish channel content:在指定的频道中发布消息
+
+
+
+   清空数据库数据库数据 flushdb
+ 
+   清空redis中的数据 flushall
+
+   dbsize 返回当前数据库的key的个数
+
+   redis的批量操作：
+      multi：开启事务用于标记事务的开始，其后执行地命令都被存入命令队列，直到执行EXEC时，这些命令才会被原子执行，类似于关系数据库中的 begin transaction
+
+      exec: 提交事务，类似于关系型数据库中：commit 执行批量化
+
+      discard: 事务回滚  类似于关系型数据库中的 rollback 不执行批量化操作
+
+4.redis持久化方案
+   rdb：可以设置间隔多长时间保存一次（reids不用任何配置默认的持久化方案）
+        优点：快照保存数据速度快，还原数据速度快
+
+              适用于灾难备份
+
+        缺点: RDB机制符合要求就会照快照  （随时随地地启动）会占用一部分系统资源（突然的），很可能内存不足直接宕机（宕机后，服务器会关闭，非正常关闭，数据会消失）
+
+              小内存机器不适合使用
+
+              服务器断电时会丢失部分数据（数据的完整性得不到保证）
+
+        相当于照快照 保存的是一种状态
+        20G数据---几KB快照
+ 
+      RDB:适用于内存充裕的计算机
+
+     服务器关闭或key满足一定条件就会照快照
+
+     
+
+   AOF：使用日志功能保存数据操作（默认是关闭的）适用于内存比较小的计算机
+   
+        配置方式：
+
+           每秒同步：每秒进行一次AOF保存数据
+
+           每修改同步（默认机制）：只要有key变化语句，就进行AOF保存数据，比较安全，极为浪费效率
+
+           不同步：不进行任何持久化操作
+
+        AOF操作：只会保存导致key变化的语句
+ 
+        可以设置实时保存
+        优点：
+              持续性占用极少量的内存资源
+              持久化良好，能包装数据的完整性
+        缺点：
+              日志文件会特别大
+              大大降低了redis系统的存取速度
+
+5.主从复制
+
+   使用了心跳检测机制，主从复制必须使用rdb持久化方式
+   从服务器一般是只读的，保证主服务器和从服务器的数据一致性
+
+
+
+  redis不区分命令大小写
+
+
+
+
+
+  在Linux下安装reids
+
+  安装依赖 yum install gcc-c++
+
+  压缩包redis-3.2.11.tar.gz
+
+  1）直接解压 tar -zxvf redis-3.2.11.tar.gz  得到安装包redis-3.2.11
+  
+  2）进入安装包执行make命令，进行编译
+  
+  3）编译完成后，执行make PREFIX=/usr/local/redis install 进行安装
+
+  4）进入安装包redis-3.2.11，复制redis.conf    cp redis.conf /usr/local/redis
+
+     redis启动需要一个配置文件，可以修改端口等信息，如果没有复制，redis也可以启动，不过启用默认配置，不方便修改端口号等信息
+
+  redis启动方法
+
+  前端启动：
+  进入redis目录中 执行 ./bin/redis-server  
+
+  默认端口：6379
+
+
+  在另一个窗口 连接redis  运行客户端（默认连接本机的6379端口）： ./bin/redis-cli
+   
+  redis-cli -h ip地址 -p 端口
+
+
+  前端启动的缺点：无法部署集群
+
+
+  后端启动：
+
+   修改配置文件 vim redis.conf  daemonize 设置为yes
+
+   启动时 ./bin/redis-server ./redis.conf  需要加载配置文件
+   
+   查看相关进程 ps -ef | grep redis
+   
+   通过修改端口，可以启动集群
+
+
+  关闭redis
+  1）查询pid kill -9 pid 非正常关闭 断电 容易造成数据丢失
+
+  2）正常关闭 数据保存  ./bin/redis-cli shutdown 关闭服务器的命令由客户端发出
+
+
+
+
+  java操作redis  --------  Jedis
+
+  需要开放6379端口的防火墙
+   
+  /sbin/iptables -I INPUT -p tcp --dport 6379 -j ACCEPT
+  /etc/rc.d/init.d/iptables save
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,515 @@
+1.什么是springmvc
+ 
+  springmvc是spring框架的一个模块，springmvc和spring无需通过中间整合层进行整合，是一个基于mvc的web框架。
+
+2.springmvc的处理请求的步骤：
+  1）发起请求到前端控制器（DispatcherServlet)
+
+     DispatcherServlet类继承了HttpServlet,在Servlet的init方法调用时DispatcherServlet执行springMVC的初始化工作
+
+     调用initStrategeies方法中进行初始化，初始化8个组件
+
+
+  2）前端控制器请求HandlerMapping查找Handler  可以根据xml配置，注解进行查找
+	
+     HandlerMapping的初始化工作完成的两个最重要的工作就是讲URL与Handler的对应关系保存在handlerMap集合中，并将所有的interceptors对象保存在adaptedInterceptors数组中，
+
+     等请求到来时执行所有的adaptedInterceptors数组中的interceptor对象。
+
+
+  3）处理器映射器HandlerMapping向前端控制器返回Handler
+
+  4）前端控制器调用处理器适配器去执行Handler
+
+  5) 处理器适配器去执行Handler
+
+  6) Handler执行完成适配器返回ModelAndView
+
+  7）处理器适配器向前端控制器返回ModelAndView   ModelAndView是springmvc框架的一个底层对象，包括Model和view
+
+     ModelAndView对象是连接业务逻辑与view展现层的桥梁，
+
+  8）前端控制器请求视图解析器去进行视图解析，根据逻辑视图名解析成真正的视图（jsp)
+
+	View模块由两个组件支持，分别是RequestToViewNameTranslator和ViewResolver
+		
+  9）视图解析器向前端控制器返回View
+
+     
+
+ 10）前端控制器进行视图渲染  视图渲染将模型数据（在ModelAndView对象中）填充到request域
+
+ 11）前端控制器向用户响应结果
+
+
+3.组件
+ 1）前端控制器DispatcherServlet（不需要程序员开发）
+    作用：接收请求，响应结果，相当于转发器，中央处理器
+    减少了其它组件之间的耦合度
+
+ 2）处理器映射 HandlerMapping（不需要程序员开发）
+    作用：根据请求的url查找Handler
+
+ 3) 处理器适配器HandlerAdapter
+    作用：按照特定规则（HandlerAdapter要求的规则）去执行Handler
+
+ 4) 处理器Handler(需要程序员开发）
+    编写Handler时按照HandlerAdapter的要求去做，这样适配器才可以去正确执行Handler
+
+ 5) 视图解析器 View resolver（不需要程序员开发）
+    作用：进行视图解析，根据逻辑视图名解析成真正的视图(view)
+
+ 6) 视图View （需要程序员开发）
+    View是一个接口，实现类支持不同的View类型（jsp freemarker pdf...)
+
+  
+  有3各组件是用户必须要定义和扩展的，定义URL映射规则、实现业务逻辑的Handler实例对象、渲染模板资源。连接Handler实例对象和模板渲染的纽带就是model模型
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.在web.xml文件中进行前端控制器配置
+
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:springmvc.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+
+   load-on-startup: 表示servlet随服务启动
+   url-pattern: *.action的请求交给DispatcherServlet处理
+   contextConfigLocation:指定springmvc配置的加载位置，如果不指定则默认加载WEB-INF/[DispatcherServlet的Servlet名字]-servlet.xml
+
+
+5.Servlet拦截方式
+  1）拦截固定后缀的url，比如设置为*.do *.action  例如：/user/add.action 此方法最简单，不会导致静态资源（jsp,js,css)被拦截
+  
+  2）拦截所有，设置为/, 例如：/user/add/user/add.action
+     此方法可以实现REST风格的url，很多互联网类型的应用使用这种方式，但是此方法会导致静态文件(jsp,js,css)被拦截不能正常显示，需要特殊处理
+ 
+  3）拦截所有，设置为/*,此设置方法错误，因为请求到Action，当action转到jsp时再次被拦截，提示不能根据jsp路径mapping成功
+
+
+6.HandlerAdapter 处理器适配器
+  
+  HandlerAdapter会根据适配器接口对后端控制器进行包装（适配），包装后 即可对处理器进行执行，通过扩展处理器适配器可以执行多种类型的处理器，这里使用了适配器设计模式
+
+  SimpleControllerHandlerAdapter 适配器
+  org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter
+
+  SimpleControllerHandlerAdapter:即简单控制器处理适配器，所有实现了org.springframework.web.servlet.mvc.Controller接口的bean作为Springmvc的后端控制器
+  处理器开发时，必须实现Controller接口 返回modelandview
+
+
+
+  HttpRequestHandlerAdapter 适配器
+  org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter  
+  
+  http请求适配器，实现了org.springframework.web.HttpRequestHandler 接口的Bean通过此适配器进行适配，执行
+  此适配器的handleRequest方法没有返回ModelAndView,可通过response修改定义响应内容
+
+
+
+7. 处理器映射器
+
+  1）根据bean的name进行查找的Handler，将action的url配置在bean的name中
+
+     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+
+     BeanNameUrlHandlerMapping:表示将定义的Bean名字作为请求的url，需要将编写的controller在spring容器中进行配置，且指定bean的name为请求的url，且必须以.action结尾
+
+
+  2）简单的url映射
+     org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping
+     根据bean的id进行映射
+     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+         <property name="mappings">
+            <props>
+               <prop key="查找的url">bean的id</prop>
+            </props>
+         </property>
+     </bean>
+
+
+
+8.配置视图解析器
+
+  org.springframework.web.servlet.view.InternalResourceViewResolver  支持JSP视图解析
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name="prefix" value="/WEB-INF/jsp/"/>
+      <property name="suffix" value=".jsp"/>
+  </bean>
+
+  配置视图的前缀和后缀  简化了代码的开发  /WEB-INF/jsp/items/itemsList.jsp 可以写成items/itemsList
+
+
+9.使用注解
+  
+  注解映射器  
+  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+  对标记@Controller类中标识有@RequestMapping的方法进行映射，在@RequestMapping里面定义映射的url
+  使用注解的映射器不用在xml中配置url和 Handler的映射关系
+
+
+  注解适配器
+  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
+
+  注解适配器和注解映射器是配对使用的，不能和非注解的混用
+
+
+  可以使用注解驱动代替注解适配器和注解映射器的配置  在实际开发中常用
+  <mvc:annotation-driven></mvc:annotation-driven>
+  配置时出现的问题
+  SpringMVC配置文件出现 The prefix "mvc" for element "mvc:annotation-driven" is not bound 
+  解决方法：
+  在约束中加入：
+  在xml的beans中添加 
+   xmlns:mvc="http://www.springframework.org/schema/mvc" 
+   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"
+  
+
+10.SpringMVC执行过程的源码分析
+
+  通过前端控制器源码分析springmvc的执行过程：
+  1）前端控制器接收请求
+
+     调用 doDispatch
+ 
+  2）前端控制器调用处理器映射器查找Handler
+
+  3）调用处理器适配器执行Handler，得到执行结果ModelAndView
+
+  4) 视图渲染，将model数据填充到request域
+    
+
+11. spring和mybatis整合
+   spring和mybatis的系统架构：
+     表现层 ：springmvc  ----> 业务层：service接口 --->持久层：mybatis--->mysql
+  
+     spring将各层进行整合，通过spring管理持久层的mapper（相当于dao接口），通过spring管理业务层service，service中可以调用mapper接口，spring进行事务控制。
+      
+     通过spring管理表现层Handler，Handler中可以调用servcie接口
+     mapper service Handler 都是javabean
+
+   第一步：整合dao层
+         mybatis和spring整合，通过spring管理mapper接口，使用mapper的扫描器自动扫描mapper接口在spring中进行注册
+
+   第二步：整合service层
+         通过spring管理service接口，使用配置方式将servcie接口配置在spring配置文件中，实现事务控制
+  
+   第三步：整合springmvc
+         由于springmvc是spring的模块，不需要整合
+
+
+  整合dao层  mybatis和springmvc整合
+  1）mybatis配置文件 sqlMapConfig.xml  配置别名 全局配置
+  2）applicationContext-dao.xml 配置： 数据源 sqlSessionFactory mapper扫描器
+
+
+  整合servcie 让spring管理service接口
+
+  1）定义service接口 创建实现接口的类  
+  2）在spring容器配置service 创建applicationContext-service.xml
+
+  事务控制 创建applicationContext-transaction.xml
+  事务管理器，对mybatis操作数据库事务控制，spring使用jdbc的事务控制   配置通知 传播行为  配置切点
+
+  整合springmvc
+  创建springmvc.xml文件，配置处理器映射器，适配器，视图解析器（使用mvc:annotation-driven代替）
+
+  配置前端控制器
+
+  加载spring容器  使用通配符加载配置文件
+  在web.xml文件中，加载spring容器监听器，加载spring容器
+
+
+商品修改功能开发
+  需求
+   操作流程：1）进入商品查询列表页面
+             2）点击修改，进入商品修改页面，页面中显示了要修改的商品（从数据库查询）根据主键id查询
+             3）在商品修改页面，修改商品信息，修改后，点击提交
+
+
+   开发mapper（mybatis dao层）
+   mapper：根据id查询商品信息  根据id更新items表的数据  
+
+   开发service （service层）
+   接口功能： 根据id查询商品信息  修改商品信息
+
+   开发controller （相当于 struts2 的action 处理请求 发出响应）
+   方法：商品信息修改页面显示   商品信息修改提交
+
+12.@RequestMapping
+
+  1)url映射
+    定义controller方法对应的url，进行处理器映射使用
+
+  2）窄化请求映射
+     可以对url进行分类管理
+  
+  3）限制http请求方法
+     出于安全考虑，对http的链接进行方法限制，如果限制为post方法，进行get请求，会报错
+
+13.Controller方法的返回值
+
+  1）返回ModelAndView
+    需要方法结束时，定义ModelAndView，将model和view分别进行设置
+
+  2）返回string
+    
+     ！表示返回逻辑视图名
+     真正视图（jsp路径）=前缀+逻辑视图名+后缀
+     
+     ！！ redirect重定向
+     商品修改提交后，从定向到商品查询列表
+     redirect重定向特点：浏览器地址栏中的url会变化。提交修改的request数据无法传到重定向的地址，request无法共享
+
+     ！！！ forward页面转发
+     通过forward进行页面转发，浏览器地址栏url不变，request可以共享
+
+
+  3）返回void
+    
+    在controller方法形参上可以定义request和response，使用个request和response指定响应结果：
+    1、使用request转向页面，如下：
+       request.getRequestDispatcher("页面路径").forward(request, response);
+
+    2、也可以通过response页面重定向：
+       response.sendRedirect("url")
+
+    3、也可以通过response指定响应结果，例如响应json数据如下：
+       response.setCharacterEncoding("utf-8");
+       response.setContentType("application/json;charset=utf-8");
+       response.getWriter().write("json串");
+
+
+14.参数绑定
+   绑定过程：从客户端请求key/value数据，经过参数绑定，将key/value数据绑定到controller方法的形参上，springmvc中，接收页面提交的数据是通过方法形参来接受，而不是在controller类定义成员变量接收
+
+   处理器适配器调用springmvc提供的参数绑定组件将key/value数据转成controller方法的形参
+   参数绑定组件：在springmvc早期版本使用PropertyEditor（只能将字符串转成java对象）后期使用converter(进行任意类型的转换）
+
+   springmvc提供了很多converter（转换器） 在特殊情况下需要自定义converter 对日期数据绑定需要自定义converter
+
+   默认支持的类型 HttpServletRequest  HttpServletResponse  HttpSession 
+
+   Model/ModelMap  :model是一个接口，modelMap是一个接口实现，作用：将model数据填充到request域
+
+
+   简单类型
+   通过@RequestParam对简单类型的参数进行绑定
+   如果不使用@RequestParam，要求request传入参数名称和controller方法的形参名称一致，方可绑定成功
+   使用，不用限制request传入参数名称和controller方法的形参名称一致
+   通过required属性指定参数是否必须传入，如果设置为true，没有参数，会报错
+   通过defaultValue可以设置默认值，如果参数没有传入，将默认值和形参绑定
+
+
+
+15.自定义参数绑定实现日期类型绑定
+
+   对于controller形参中pojo对象，如果属性中有日期类型，需要自定义参数绑定，将请求日期数据串转成日期类型，要转换的日期类型和pojo中日期属性的类型保持一致
+
+   需要向处理器适配器中注入自定义的参数绑定组件
+
+   创建转换类 实现Converter<String,Date>接口  在创建SimpleDateFormat 对象时指定转换格式
+
+   在springmvc.xml文件中的映射器适配器配置驱动中配置，添加 conversion-service="conversionService" 属性
+   创建id 为conversionService 的bean，类型为org.springframework.format.support.FormattingConversionServiceFactoryBean
+
+   定义参数 property 
+   <!-- 自定义参数绑定 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	    <!-- 转换器 -->
+	    <property name="converters">
+	         <list>
+	             <!-- 日期转换类型 -->
+	             <bean class="cn.wds.ssm.controller.converter.CustomDateConverter"></bean>
+	         </list>
+	    </property>
+	</bean>
+
+
+16.springmvc 和 struts2的区别
+
+   1）springmvc基于方法开发的，struts2基于类开发的
+      springmvc系那个url和controller方法映射，映射成功后springmvc生成一个Handler对象，对象中只包括了一个method。方法执行结束，形参数据销毁
+ 
+      springmvc的controller开发类似service开发
+
+   2）springmvc可以进行单例开发，并且建议使用单例开发，struts2通过类的成员变量接收参数，无法使用单例，只能使用多例
+
+   3）经过实际测试，struts2速度慢，在于使用struts标签，如果使用struts建议使用jstl
+
+
+17.包装类型pojo参数绑定
+   需求：商品查询controller方法中实现商品查询条件传入
+   实现方法：
+   1）在形参中添加HttpServletRequest request参数，通过request接收查询条件参数
+   2）在形参中让包装类的pojo接收查询条件参数
+   分析：页面传参数的特点：复杂，多样性，条件包括：用户账号，商品编号，订单信息。。。如果将用户账号，商品编号，订单信息等放在简单pojo中，pojo类属性比较多，比较乱，建议使用包装类型的pojo，pojo中属性是pojo
+
+
+
+18.页面参数和controller方法形参定义
+  页面传入参数的name属性中和pojo中的属性一致即可
+
+19.集合类型绑定
+   数组绑定
+   需求：商品批量删除，用户在页面选择多个商品，批量删除
+   表现层的实现：将页面选择（多选）的商品id，传到controller方法的形参，方法形参使用数组接收页面请求的多个商品的id
+   即将 页面传入id的name属性值和形参中数组的名称一致
+
+   List绑定
+   需求：通常在需要批量提交数据时，将提交的数据绑定到list<pojo>中，比如：成绩录入（录入多门课成绩，批量提交）
+   表现层实现：
+   controller方法定义：
+   1）进入批量商品修改页面（页面样式参考商品列表实现）
+   2）批量修改商品提交
+   使用List接收页面提交的批量数据，通过包装pojo接收，在包装pojo中定义list<pojo>属性
+   在jsp页面中使用：itemsList[${status.index}].name 接收参数
+
+   map绑定
+   也通过在包装pojo中定义map 类型属性
+   在包装类中定义Map对象，并添加get/set方法，action使用包装对象接收
+
+
+20.springmvc校验
+   校验理解：
+    项目中，通常使用较多的是前端的校验，比如页面的js校验，对于安全要求较高点建议在服务端进行校验、
+   服务端校验：
+      控制层controller：校验页面请求的参数的合法性，在服务端控制层controller校验，不区分客户端类型（浏览器，手机客户端，远程调用）
+   业务层service（使用较多）：主要校验关键业务参数，仅限于service接口中使用的参数
+   持久层dao：一般不校验
+
+   springmvc校验需求：
+   springmvc使用hibernate的校验框架validation（和hibernate没有任何关系）
+   校验思路：页面提交请求的参数，请求到controller方法中，使用validation进行校验，如果校验出错，将错误信息展示到页面。
+
+   具体需求：商品修改，添加校验（校验商品名称长度，生产日期的非空校验），如果校验出错，在商品页面显示错误信息
+
+   具体步骤：
+   1）导入校验框架所需的jar包
+   2）配置校验器，校验错误信息配置文件
+   3）校验器注入到处理器适配器中
+   4）在pojo中添加校验规则
+      在pojo的属性中使用@Size注解（长度校验） 使用@NotNull（非空校验）
+   5）配置文件编写CustomValidationMessages.properties
+   6) 捕获检验错误信息
+      在controller方法中在需要校验的pojo前面添加@Validated，在需要校验的pojo后面添加BingingResult 接收校验出错的信息
+       注意：@Validated和BindingResult 是配对出现，并且形参顺序是固定的（一前一后）
+   7）在页面显示校验错误信息
+      在controller中将错误信息传到页面即可 使用Model.addAttribute();
+
+
+   分组校验：
+   需求:在pojo中定义校验规则，而pojo是被多个controller所共用，当不同的controller方法对同一个pojo进行校验，但是每个controller方法需要不同的校验
+   解决方法：定义多个校验分组（其实是一个java接口），分组中定义有哪些规则 ，每个controller方法使用不同的校验分组
+   ex：在校验规则中添加分组 @Size(group={ValidGroup1.class)
+
+21.pojo数据回显方法
+   1）springmvc默认对pojo数据进行回显
+      pojo数据传入controller方法后，springmvc自动将pojo数据放到request域，key等于pojo类型（首字母小写）
+      使用@ModelAttribute指定pojo回显到页面在request中的key
+   2）@ModelAtrribute可以将方法的返回值传到页面
+      在商品查询列表页面，通过商品类型查询商品信息，在controller中定义商品类型查询方法，最终将商品类型传到页面
+
+      使用最简单方法使用model，可以不用@ModelAtrribute
+    
+   3）简单类型数据回显，使用model
+
+
+22.异常处理
+
+   处理思路：系统中异常包括两类：预期异常和运行时异常RuntimeException，前者通过捕获异常从而获取异常信息，后者主要通过规范代码开发，测试通过手段减少运行时异常的放生
+
+   springmvc提供全局异常处理器（一个系统只有一个异常处理器）进行统一异常处理
+
+
+   自定义异常类
+     对不同的异常类型定义异常类，继承Exception
+   
+   全局异常处理器
+   思路：系统遇到异常，在程序中手动抛出，dao抛给service，service给controller，controller抛给前端控制器，前端控制器调用全局异常处理器
+   全局异常处理器处理思路：
+      解析出异常类型，如果改异常类型是系统自定义类型，直接取出异常信息，在错误页面显示，如果该异常类型不是系统自定义的异常，构造一个自定的异常类型（信息为“未知错误”）
+
+   springmvc提供一个 HandlerExceptionResolver接口
+   在springmvc.xml配置全局异常处理器
+
+   如果与业务功能相关的异常，建议在service中抛出异常，与业务功能没有相关的异常，建议在controller中抛出
+
+
+23.上传图片
+   需求：在修改商品页面，添加上传商品图片的功能
+
+   springmvc中对多部件类解析
+   在页面form中提交enctype="multipart/form-data"的数据时，需要springmvc对multipart类型的数据进行解析，在springmvc.xml中配置multipart类型解析器
+
+   导入上传图片的jar包，在虚拟机中创建虚拟目录存储图片
+   注意：在图片虚拟目录中，一定将图片目录分级创建（提高i/o性能），一般采用按日期（年、月、日）进行分级创建
+
+
+24.springmvc进行json交互
+   1）请求json，输出json，要求请求的是json串，所以在前端页面中需要将请求的内容转成json
+   2）请求key/value，输出json，比较常用
+  
+   环境准备：导入json转的jar包
+  
+   报错：org.springframework.web.HttpMediaTypeNotSupportedException:?Content?type?'application/xwww-forurlencoded;charset=UTF-
+   解决方法：使用jackson 2.0以上版本的jar包
+
+   配置json转换器  如果使用<mvc:annotation-driven/>  则不用单独定义
+   前端页面使用jquery的ajax进行请求
+
+25.RESTful支持 REST表述性状态传递
+   Representational State Transfer的缩写，其实是一个开发理念，是对http的很好诠释
+   1）对url进行规范，写RESTful格式的url   
+      非REST的url：http://...../queryItems.action?id=001&type=T01
+      REST的url风格：http://..../items/001
+      特点：url简洁，将参数通过url传到服务端
+
+   需求：查询商品信息，返回json数据
+   定义方法，进行url映射使用REST风格的url，将查询商品信息的id传入controller，输出json使用@ResponseBody将java对象输出json
+
+   @RequestMapping("/itemsView/{id}")
+   public @ResponseBody ItemsCustom itemsView(@PathVariable("id") Integer id)throws Exception{
+      
+           ItemsCustom itemsCustom =itemsService.findItmesById(id);
+           return itemsCustom;
+   }
+
+  @RequestMapping(value="/ itemsView/{id}")：{×××}占位符，请求的URL可以是“/viewItems/1”或“/viewItems/2”，通过在方法中  使用@PathVariable获取{×××}中的×××变量。
+  @PathVariable用于将请求URL中的模板变量映射到功能处理方法的参数上。
+  如果RequestMapping中表示为"/ itemsView /{id}"，id和形参名称一致，@PathVariable不用指定名称。
+
+26.拦截器
+   定义拦截器，实现HandlerfInterceptor接口，接口提供三个方法
+
+   拦截器配置
+    springmvc配置类似全局的拦截器，springmvc框架将配置的类似全局的拦截器注入到每个HandlerMapping中
+    多个拦截器，顺序执行
+
+   对拦截器的应用：
+     统一日志处理拦截器：需要该拦截器的preHandler方法一定放行，且将它放在拦截器链接中第一个位置
+     登录拦截器，放在拦截器链接中第一个位置，权限校验拦截器，放在登录认证拦截器之后
+
+  

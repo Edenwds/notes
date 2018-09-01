@@ -1,0 +1,256 @@
+MongoDB是一个跨平台，面向文档的数据库，提供高性能，高可用性和易于扩展。MongoDB是工作在集合和文档上一种概念
+
+数据库：一个单一的MongoDB服务器通常有多个数据库
+
+集合：集合是一组MongoDB的文件，与表等效，一个集合存在于数据库中，集合中的文档可以有不同的字段。
+
+文档：是一组键值对，具有动态模式。指的是在同一个集合的文件不必具有相同一组集合的文档字段或结果，并且相同的字段可以保持不同类型的数据
+
+命令：
+
+  开启服务器： 
+
+    使用命令行，进入bin目录下  执行 mongodb --dbpath "指定数据存储的路径 \data\db"
+
+    ex:
+   
+    D:\MongoDB\Server\3.6\bin> mongod --dbpath d:\MongoDB\Server\3.6\data\db
+
+  创建数据库： 
+ 
+    use DATABASE_NAME    EX: use mydb
+
+  检查当前使用的数据库：
+
+    db
+
+  查询数据库列表：
+
+    show dbs
+
+  新创建的数据库不会显示在数据列表中，需要插入文档才能显示
+
+  MongoDB的默认数据库是test
+
+  删除数据库：
+  
+    db.dropDatabase()  如果没有选择任何数据库，将会删除默认的“test”数据库
+
+    ex:  use mydb   db.dropDatabase()  选择删除mydb数据库
+
+  创建集合：
+
+    db.createCollection(name,optios)
+   
+    name:创建集合的名称   options: 是一个文档，用于指定集合的配置
+
+  检查创建的集合：
+
+    show collections
+
+  在MongoDB中并不需要创建集合，当插入一些文档时会自动创建集合
+
+  
+  删除集合：
+  
+    db.COLLECTION_NAME.drop()
+
+    ex: db.mycollectionl.drop()
+
+  
+  插入文档：
+  
+    db.COLLECTION_NAME.insert(document)
+
+    文档是一个json格式的数据，在编写数据时，如果不指定_id参数，则MongoDB将会为文档自动分配一个唯一的Objcectid
+
+    _id是12个字节十六进制数在一个集合的每一个文档中是唯一的
+
+    批量插入可以以json数据的方式[{},{}....]
+
+  
+  查询文档：
+
+    db.COLLECTION_NAME.find()
+
+    find()方法将在非结构化的方式显示所有的文件， 结构化显示使用pretty()方法
+
+    db.COLLECTION_NAME.find.pretty()
+
+    findOne()方法，仅返回一个文档
+
+ 
+    条件查询：
+
+    等于   db.COLLECTION_NAME.find({<key>:<value>})
+
+    小于   db.COLLECTION_NAME.find({<key>:{$lt:<value>}})
+
+    小于等于   db.COLLECTION_NAME.find({<key>:{$lte:<value>}})
+
+    大于   db.COLLECTION_NAME.find({<key>:{$gt:<value>}})
+
+    大于等于   db.COLLECTION_NAME.find({<key>:{$gte:<value>}})
+
+    不等于 db.COLLECTION_NAME.find({<key>:{$ne:<value>}})
+
+    多个条件AND 使用“,”分隔  ex: db.COLLECTION_NAME.find({key1:value1,key2:value2})
+
+    OR   db.COLLECTION_NAME.find({$or:[{key1:value1},{key2:value2}]})
+
+
+    Limit() 限制记录，显示的文档数量
+
+    db.COLLECTION_NAME.find().limit(num)
+
+    Skip() 跳过文件数 不显示
+
+    db.COLLECTION_NAME.find().skip(num)
+
+  投影
+
+    显示某字段 则设置为1  隐藏 设置为0
+
+    db.COLLECTION_NAME.find({},{key:1})
+
+ 
+  更新文档
+  
+    update()和save()方法用于更新文档到一个集合，update()方法将现有的文档的值更新，save()方法使用传递到save()方法的文档替换现有的文档
+
+    db.COLLECTION_NAME.update(SELECTION_CRITERIA,UPDATE_DATA)
+  
+    ex: db.mydb.update({x:1},{$set:{x:3}}   使用$set: 保留文档中其他的值
+
+    默认情况下，只会更新一个文件，如果需要更新多个，设置参数“multi”为true
+  
+    ex: db.mydb.update({x:1},{$set:{x:3},{multi:true}}
+
+    
+    db.COLLECTION_NAME.save({}) 此方法将直接取代原来文档
+
+  
+
+  删除文档
+
+    db.COLLECTION_NAME.remove()  有可选两个参数 deletion crietria: 符合条件的所有文档将被删除； justOne: 设置为true或1，只删除一个文档
+
+    ex：db.mydb.remove({x:1}) 删除所有x=1的文件
+
+        db.mydb.remove({x:1},1) 只删除第一条x=1的文件
+
+
+    不设置参数时，将把集合中的所有文档都删除，相当于SQL的truncate命令
+
+   
+  排序文档
+
+    db.COLLECTION_NAME.find().sort({key:1})  要使用1和-1指定排序顺序，1用于升序，-1用于降序
+
+  
+  MongoDB索引
+   
+    创建索引
+
+    db.COLLECTION_NAME.ensureIndex({key:1})  key是要创建索引字段，1是按名称升序排序，-1是降序
+
+    
+
+  MongoDB聚合
+
+    db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION)
+
+    EX: db.mydb.aggregate([{$group:{_id:"$by_user",num_tutorial:{$sum:1}}}])
+
+    以某个字段进行聚合   例子： 以by_user字段为组查询个数 并且升序排序
+
+    相当于 select by_user,count(*) as num_tutorial from table_name group by by_user;
+    
+
+
+  MongoDB数据转储
+
+    将服务器的所有的数据转储的备份目录 
+
+    命令：    mongodump -h dbhost -d dbname -o dbdirectory    默认将存储在/bin/dump/.
+
+    数据恢复
+
+    命令：    mongorestoredb
+     
+
+  MongoDB复制
+
+    复制是跨多个服务器同步数据的过程，复制提供冗余，并通过不同数据库服务器上的多个数据副本增加数据可用性。
+
+    原理：通过使用副本集来实现复制。副本集是通过相同数据集的一组mongodb实例，在一个副本中，一个结点是接受所有写操作的主节点，所有其他节点都应用主节点的操作，以便它们具有相同的数据集
+
+    主节点记录在其上的所有操作oplog,从节点定期轮询主节点获取这些操作，然后对自己的数据副本执行这些操作，从而保证从节点的数据与主节点一致
+
+
+    副本集的功能：
+
+       N个节点的集群
+
+       任何一节点都可以是主节点
+
+       所有写入操作都转到主节点操作
+
+       自动故障切换
+   
+       自动回复
+  
+       共识一般选举
+
+    MongoDB中只能通过主节点将MongoDB服务添加到副本集中，判断当前运行的Mongo服务是否为主节点可以使用命令db.isMaster()
+
+    MongoDB的副本集与我们常见的主从有所不同，主从在主机宕机后所有服务将停止，而副本集在主机宕机后，副本会接管主节点成为主节点，不会出现宕机的情况
+
+  MongoDB分片
+
+    分片是在多台机器之间存储数据记录的过程，MongoDB是满足数据增长需求的方法。
+
+    分片解决了水平缩放的问题，使用分片，可以添加更多的机器来支持数据增长和读写操作的需求
+
+    分片主要的三个组件：
+
+       碎片（shards）：用于存储数据，提供高可用性和数据一致性，在生产环境中，每个分片是一个单独的副本集
+
+       配置服务器（Config Servers）配置服务器存储集群的元数据。该数据包含集群的数据集与分片的映射。查询路由器使用此元数据将操作定位到特定的分片。
+
+       查询路由器（Query Routers）: 基本上是mongo实例，在客户端应用程序和分片集群之间提供接口，查询路由器处理并将操作定向到碎片，然后将结果返回给客户端。分片集群可以包含多个查询路由器来分割客户端请求负载。客户端向一个查询路由器发送请求，分片集群有许多查询路由器
+
+
+  MongoDB监控
+   
+    mongodbstat自带的状态检测工具，间隔固定时间获取mongodb的当前运行状态，并返回数据库操作的计数器，包括插入，查询，更新，删除和游标
+
+    mongodbtop 内置工具，用来跟踪一个MongoDB的实例，查看哪些大量时间花费在读取和写入数据。可以提供每个集合的水平的统计数据。默认情况下，会在每秒钟内返回信息
+	
+
+  MongoDB中存时间问题
+    在mongo中存入时间会减少8小时，这是因为中国时区为GMT+8  mongo使用的标准时间GMT     GMT=UTC
+	
+  查看Mongo的ip和端口号
+    db.getMongo();
+
+邮件规则匹配思路：
+进行匹配时，根据发送类型得到内容匹配规则和其他匹配规则，若匹配成功则在规则下的sp列表选择一个sp进行发送，若匹配失败则在该类型的默认sp列表选一个sp进行发送
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
