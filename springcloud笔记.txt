@@ -1,310 +1,412 @@
-����������Spring Cloud Eureka
+服务治理：Spring Cloud Eureka
 
-   ����������΢����ܹ�������ĺͻ�����ģ�飬��Ҫ����ʵ�ָ���΢����ʵ�����Զ���ע���뷢��
-
-   
-   ����ע�᣺ �ڷ�����������У�ͨ���ṹ��һ��ע�����ģ�ÿ������Ԫ��ע�����ĵǼ��Լ��ṩ�ķ���ע�����İ�������������֯�����嵥��ע�����Ļ���Ҫ�������ķ�ʽȥ����嵥�еķ����Ƿ���ã�����������Ҫ�ӷ����嵥���޳����ﵽ�ų����Ϸ����Ч��
+   服务治理是微服务架构中最核心和基础的模块，主要用来实现各个微服务实例的自动化注册与发现
 
    
-   �����֣�����������ͨ��������������������ʵ�֣������÷��ڵ��÷����ṩ���ӿڵ�ʱ�򣬲���֪������ķ���ʵ��λ�ã�������Ҫ�����ע��������ѯ���񣬲���ȡ���з����ʵ���嵥����ʵ�ֶԾ������ʵ���ķ���
-
-   Eureka�ͻ��ˣ���Ҫ���������ע���뷢�֣��ͻ��˷���ͨ��ע��Ͳ������õķ�ʽ��Ƕ���ڿͻ���Ӧ�ó���Ĵ����У���Ӧ�ó�������ʱ����ע������ע�������ṩ�ķ��������Եط����������������ķ�����Լ��ͬʱ��Ҳ�ܴӷ���˲�ѯ��ǰע��ķ�����Ϣ�������ǻ��浽���ز������Ե�ˢ�·���״̬
+   服务注册： 在服务治理框架中，通常会构建一个注册中心，每个服务单元向注册中心登记自己提供的服务，注册中心按服务名分类组织服务清单；注册中心还需要以心跳的方式去监测清单中的服务是否可用，若不可用需要从服务清单中剔除，达到排除故障服务的效果
 
    
-   �����ע������ʱ��ʹ��@EnableEurekaServer
+   服务发现：服务间的条用通过向服务名发起请求调用实现，但调用方在调用服务提供方接口的时候，并不知道具体的服务实例位置，所以需要向服务注册中心咨询服务，并获取所有服务的实例清单，以实现对具体服务实例的访问
 
-   ע������ṩ�ߣ�ʹ��@EnableDiscoveryClient  ע��DiscoveryClient  �������ļ���˵������ע�����ĵ�ַ��eureka.client.serviceUrl.defaultZone
+   Eureka客户端，主要处理服务的注册与发现，客户端服务通过注解和参数配置的方式，嵌入在客户端应用程序的代码中，在应用程序运行时，向注册中心注册自身提供的服务并周期性地发送心跳来更新它的服务租约，同时，也能从服务端查询当前注册的服务信息并把它们缓存到本地并周期性地刷新服务状态
+
+   
+   搭建服务注册中心时，使用@EnableEurekaServer
+
+   注册服务提供者：使用@EnableDiscoveryClient  注入DiscoveryClient  在配置文件中说明服务注册中心地址：eureka.client.serviceUrl.defaultZone
 
 
 
-   �߿��õ�ע�����ģ�Ҫ��ֿ��ǵ��������ϵ��������ʱע�����Ľ��Լ���Ϊ��������������ע������ע���Լ����γ�һ�黥��ע��ķ���ע�����ģ���ʵ�ַ����嵥�Ļ���ͬ�����ﵽ�߿��õ�Ч����
+   高可用的注册中心，要充分考虑到发生故障的情况，此时注册中心将自己作为服务向其他服务注册中心注册自己，形成一组互相注册的服务注册中心，以实现服务清单的互相同步，达到高可用的效果。
  
-   �����ø߿��õ�ע�����ģ�ע�ⵥ����eureka-server������  Ҫ���ý�ֹ�Լ�ע���Լ�
+   在配置高可用的注册中心，注意单个的eureka-server的配置  要配置禁止自己注册自己
 
-   eureka.client.register-with-eureka=false   ��������ע������ע���Լ�
+   eureka.client.register-with-eureka=false   代表不向注册中心注册自己
 
-   eureka.client.fetch-registry=false         ����Ҫ��������
+   eureka.client.fetch-registry=false         不需要检索服务
 
 
-   �����ṩ������߿���ע������ע�����ʱ��Ҫ�ƶ�����ע�����ĵĵ�ַ��
+   服务提供者在向高可用注册中心注册服务时需要制定所以注册中心的地址：
 
    eureka.client.serviceUrl.defaultZone=http://peer1:1001/eureka/,http://peer2:2002/eureka/
 
 
 
-   ����������  ��Ҫ�������Ŀ�꣺���ַ�������ѷ���
+   服务消费者  主要完成两个目标：发现服务和消费服务
 
-   �����ֵ�������Eureka�Ŀͻ�����ɣ��������ѵ�������Ribbon���
+   服务发现的任务有Eureka的客户端完成，服务消费的任务由Ribbon完成
 
-   Ribbon��һ������HTTP��TCP�Ŀͻ��˸��ؾ���������ͨ���ͻ��������õ�ribbonServerList������б�ȥ��ѯ�����Դﵽ���ؾ��������
+   Spring Cloud Ribbon
+   Ribbon是一个基于HTTP和TCP的客户端负载均衡器，在通过客户端中配置的ribbonServerList服务端列表去轮询访问以达到负载均衡的作用
 
-   Ribbon��Eureka�����ֵĻ����ϣ�ʵ����һ�׶Է���ʵ����ѡ����ԣ��Ӷ�ʵ�ֶԷ��������
+   Ribbon在Eureka服务发现的基础上，实现了一套对服务实例的选择策略，从而实现对服务的消费
+   
+   Spring Cloud Netflix 为Ribbon提供了默认的bean  实现Ribbon的功能
+   
+   IClinentConfig (Bean Type)    ribbonClientConfig (Bean Name)   DefaultClientConfigImpl (Class Name)
+   IRule                                           ribbonRule                                          zoneAvoidanceRule
+   IPing                                           ribbonPing                                          DummyPing
+   ServerList<Server>                 ribbonServerList                                ConfigurationBasedServerList
+   ServerListFilter<Server>        ribbonServerListFilter                       ZonePreferenceServerListFilter
+   ILoadBalancer                           ribbonLoadBalancer                          ZoneAwareLoadBalancer
+   ServerListUpater                      ribbonServerListUpdater                 PollingServerListUpdater
+   
+   当Ribbon和Eureka联合使用时，ribbonServerList 被 DiscoveryEnableNIWSServerList 替代   IPing 被 NIWSDiscoveryPing 替代  
+   ServerList 被默认安装使用DomainExtractingServerList,目的是提供可用的metadata给load balancer 当没有使用	AWS AMI metadata时。
+   
+   Ribbon的负载均衡的实现是通过RoundRobinRule的choose方法，通过线性轮询 从LoadBalancer得到的所有服务列表中得到一个可用的服务   轮询次数为10次
+   
+   Ribbon中PollingServerListUpdater是动态服务列表更新的默认策略， 通过定时任务的方式进行服务列表的更新，在start()方法中创建了一个线程，其中调用了updateAction.doUpdate(),
+   最后为这个线程启动一个定时任务来执行，initialDelayMs = 1000 代表初始化后延迟1秒开始执行，refreshIntervalMs=30*1000  以30s为周期重复执行
+   
+   采用线性轮训的方式来选择调用的服务实例，该算法没有区域Zone的概念，把所有的是实例视为一个Zone下的节点看待，这样就会周期性的产生跨区域Zone访问的情况，但跨区域会产生更高的延迟，
+   
+   源码阅读理解：
+        LoadBalancerClient是Ribbon中，实现负载均衡的客户端，该接口继承了ServiceInstanceChooser接口，ServiceInstanceChooser接口中choose方法返回一个ServiceInstance
+		
+		LoadBalancerClient接口中有三个抽象方法：
+		    execute  重载   两个方法   用来执行请求
+			
+			reconstructURI  用来重构url
+		
+		RibbonLoadBalanceClient实现了LoadBalancerClient接口  实现choose方法  其中 通过getServer(serviceId)得到服务实例，getServer是通过LoadBalancer的chooseServer()方法得到具体服务实例，  chooseServer()方法key获取服务实例
+		
+		ILoadBalancer接口中有三个抽象方法，addServers(List<Server>)   chooseServer(Object)  markServerDown(Server)
+		AbstractLoadBalancer实现了ILoadBalancer接口   其中有个枚举类 用来表示 server的不同状态  ALL  \STATUS_UP \ STATUS_NOT_UP
+		
+		BaseLoadBalancer继承了AbstractLoadBalancer抽象类  其中
+		   IRule   默认值为 RoundRobinRule   线性轮询
+		   IPingStrategy   默认值 SerialPingStrategy   判断server是否存活  采用循环的方式  ping.isAlive
+		   IClientConfig   客户端配置
+		   当指定clientConfig时，调用initWithConfig()方法，该方法中有三个参数  clientConfig  \ rule \ ping 或者调用initWithNiwsConfig()方法，该方法中只有一个参数ClientConfig, 在方法中通过clientConfig.getProperty()得到 ruleClassName, pingClassName,   由此可见当指定配置时，必须同时指定IRule 和 IPing的配置   ，在该方法的内部最后也调用了initWithConfig()方法
+		  
+		   
+		在IRule接口中，有三个抽象方法，   choose(Object) 得到服务实例，setLoadBalancer(ILoadBalancer) ,  getLoadBalancer()  该接口实现了负载均衡，有多种不同的负载均衡算法，有多种不同的实现类  
+		  
+		    抽象类AbstractLoadBalancerRule实现了IRule和IClientConfigAware  该抽象类没有抽象方法，作为继承类设计实现  有方法setLoadBalancer 和getLoadBalancer
+			其中ClientConfigEnabledRoundRobinRule继承实现了AbstractLoadBalancerRule, 在该类中创建了RoundRobinRule对象，作为负载均衡的规则。该类的直接实现类有BestAvailableRule和PredicateBaseRule
+			
+			BestAvailableRule  选择最小请求数   使用循环判断   
+			RandomRule  随机选择   使用随机数 random
+			RetryRule  根据轮询的方式重试
+			RoundRobinRule  线性轮询
+			WeightedResponseTimeRule  根据响应时间分配一个
+			ZoneAvoidanceRule  根据server的zone区域和可用性来轮询选择
+			
+			PredicateBaseRule是一个抽象策略，是基于Predicate实现的策略，在Predicate中有apply()方法策略，通过该方法过滤服务实例，在PredicateBaseRule中的choose()方法中，重写了ClientConfigEnalbeRoundRobinRule的实现，在该方法中通过AbstractServerPredicate抽象类的chooseRoundRobinAfterFiltering()方法得到一个服务实例，在chooseRoundRobinAfterFiltering()方法中又通过getEligibleServers方法通过Predicate的apply()方法过滤服务实例，得到过滤后的服务实例清单后再通过线性轮询获取一个服务实例。
+			
+			PredicateBaseRule有两个实现 分别是AvailabilityFilteringRule和ZoneAvoidanceRule,这两个规则不同之处在于，AvailabilityFilteringRule的choose()方法先通过线性轮询得到一个服务实例，在通过策略判断该服务实例是否符合要求，会循环十次，若仍为null，则会调用父类的choose()方法。
+			ZoneAvoidanceRule类中使用CompositePredicate组合策略过滤，在该类中有主过滤策略delegate和从过滤策略List<AbstractServerPredicate>fallbacks,先通过主策略过滤后，再通过从策略过滤。在每次过滤后都会判断如果过滤后的实例数>=最小过滤实例数(默认为1），过滤后的实例比例>最小过滤百分比(默认为0)就不再过滤，将当前结果返回进行线性轮询选择。
+			
+			在Ribbon和Eureka联合使用时，默认使用ZoneAvoidanceRule来实现负载均衡器。 该类继承了PredicateBaseRule抽象类，PredicateBaseRule又继承了ClientConfigEnabledRoundRobinRule类
+			
+			PredicateBaseRule  ---- A  rule  which delegates the server filtering logic to an instance  of AbstractServerPredicate . After filtering, a server is returned  from filtered list in a round robin fashion.
+			在该类中，有抽象方法getPredicate() ， 该方法返回AbstarctServerPredicate ----A basic building block for server filtering logic which can be used in rules and server list filters.
+			The input object of the predicate is PredicateKey, which has Server and load balancer key information. Therefore, it is possible to develop logic to filter servers by both server and load balancer key or either one of  them .
+			
+			ZoneAvoidanceRule 实现了getPredicate()方法，返回CompositePredicate--- A predicate that is composed from one or more predicate in "AND" relationship. It also has the functionality of "fallback" to one of more different predicates. If the primary predicate yield too few filtered servers from the getEligibleServers(List,Object) API, it will try the fallback predicates one by one , until the number of filtered servers exceeds certain number threshold or percentage threshold	
+			
+	     DynamicServerListLoadBalancer继承了BaseLoadBalancer,  --- A loadBalancer that has the capabilities to obtain the candidate list of servers using a dynamic source . The list of servers can potentially be changed at Runtime. It also contains facilities wherein the list of servers can be passed through a Filter criteria to filter out servers that do not meet the desired criteria.  该类是对基础负载均衡器的扩展，实现了服务实例清单在运行期间的动态更新能力，同时，还具备了对服务实例清单的过滤功能
+		    
+			 DynamicServerListLoadBalancer具有获取服务实例清单并动态更新的功能，该功能如何实现？
+			    
+				获取服务实例清单
+				 在该类中有ServerList服务列表操作对象，ServerList是个接口，定义了连个抽象方法getInitialListOfServers()和getUpdateListOfServers()，分别获取初始化的服务实例清单和更新的服务实例清单
+				  在Ribbon和Eureka整合时，在配置类EurekaRibbonClientConfiguration类中创建了ServerList的实例，在ribbonServerList方法中创建了ServerList接口的实现类DomainExtractingServerList实例，在该类的构造方法中又传入了DiscoveryEnabledNIWSServerList实例，所以接口方法的实现是由DiscoveryEnabledNIWSServerList实例实现的，在实现的两个抽象方法中都是通过同一个方法obtainServersViaDiscovery方法实现
+				  
+				更新服务实例清单
+				
+				 在该类中有ServerListUpdater，在该接口中定义了接口UpdateAction,其中的doUpdate就是具体的更新操作
+				 ServerListUpdater接口有两个实现类，PollingServerListUpdater 和 EurekaNotificationServerListUpdater 
+				 PollingServerListUpdater  -- A default strategy for the dynamic server list updater to update.该类是动态服务列表的默认策略，同时也是DynamicServerListLoadBalancer的默认实现，在该类中创建了一个定时任务来更新服务列表
+				 
+				 EurekaNotificationServerListUpdater与PSLU不同的是触发机制，它需要利用Eureka的事件监听器来驱动服务列表的更新 
+				 
+				服务实例清单的过滤
+					
+				  当DynamicServerListLoadBalancer通过updateListOfServers更新服务实例清单时，获取到实例清单后，又通过ServerListFilter对服务实例清单进行过滤，当Ribbon和Spring Cloud整合时，使用ZonePreferenceServerListFilter对服务实例清单过滤。该类继承了ZoneAffinityServerListFilter，通过配置或者Euerka实例的元数据的所属区域来过滤出同区域的服务实例
+				  
+				 
+         ZoneAwareLoadBalancer是对DynamicServerListLoadBalancer的扩展，也是Ribbon默认使用的负载均衡器，它重写了setServerListForZone,通过不同Zone区域的负载均衡器来获取服务实例。具体是当当前负载均衡器中维护的实例所属的Zone区域的个数大于1是才会执行chooseServer的选择策略，否则将使用父类的实现，当执行选择策略时，通过一些系列规则，确定了某个Zone后，则会获取对应的负载均衡器，并调用chooseServer来选择具体的服务实例，在chooseServer中将使用IRule接口的choose函数选择具体的服务实例		 
+		 
+		 
+		 
+		 当Ribbon和Eureka联合使用时，主要有三点变化   获取服务实例清单通过DomainExtractingServerList实现 ，将使用物理元数据进行负载均衡， 其中传递了DiscoveryEnabledNIWSServerList实例实现，
+			
+		
+		    
+   
+    
 
 
    Spring Cloud Feign
   
-   ͨ��Feign��ʵ�ַ�������,Feign�ǻ���Netflix Feignʵ�ֵ�����ʽ������ÿͻ���
+   通过Feign来实现服务消费,Feign是基于Netflix Feign实现的声明式服务调用客户端
  
-   ͨ��@FeignClient����Ľӿ���ͳһ��������Ҫ������΢����ӿڣ�����ʹ��ʱ�����ñ��ط����ķ�ʽ���á�Feign�ǻ���Ribbonʵ�ֵģ��Դ��˿ͻ��˸��ؾ��⹦��
+   通过@FeignClient定义的接口来统一的声明需要依赖的微服务接口，具体使用时跟调用本地方法的方式调用。Feign是基于Ribbon实现的，自带了客户端负载均衡功能
 
+   在使用时，通过@EnableDiscoveryClient @EnableFeignClients 开启扫描Spring Cloud Fegin客户端功能
+   
+   创建接口 使用注解@FeignClient("") 指定该接口所有调用的服务名称，通过此方式 定义了一个接口统一地声明需要的依赖的微服务接口。
 
    
    
 
 
-   ����ע�����ģ������ṩ�ߣ����������ߵ�ͨ����Ϊ��
+   服务注册中心，服务提供者，服务消费者的通信行为：
 
-   �����ṩ��
+   服务提供者
    
-   ����ע��
+   服务注册
   
-   �����ṩ���ڷ���ע��ʱ��������������������ʱ��ͨ��REST��������ע�ᵽEureka Server�У�Я��������Ԫ���ݣ�Eureka Server ���ܵ������Ԫ���ݴ洢��һ��˫���map�ṹ�У���һ���keyΪ���������ڶ����key�Ǿ�������ʵ������
+   服务提供者在服务注册时，服务提供者在启动的时候通过REST请求将自身注册到Eureka Server中，携带自身的元数据，Eureka Server 接受到请求后将元数据存储在一个双层的map结构中，第一层的key为服务名，第二层的key是具体服务的实例名。
    
-   ��ע��ʱ��ȷ��eureka.client.register-with-eureka=true
+   在注册时，确保eureka.client.register-with-eureka=true
 
 
-   ����ͬ��
+   服务同步
 
-   ������ע�ᵽ�߿��õ�eureka-server��Ⱥʱ���ж��ע�����ģ���ע������֮���ǻ���ע��Ϊ����ģ����Ե������ṩ�߽�����һ������ע������ʱ�����Զ�������ת������Ⱥ�е�������ע�����ģ��Ӷ�ʵ�ַ���ͬ�������Դ�����һ��ע�����ĵõ�����
-
-
-   ������Լ
+   当服务注册到高可用的eureka-server集群时，有多个注册中心，而注册中心之间是互相注册为服务的，所以当服务提供者将请求到一个服务注册中心时，会自动将请求转发给集群中的其他的注册中心，从而实现服务同步，可以从任意一个注册中心得到服务
 
 
-   �������ṩ����ע������ע����ɺ󣬻�ά��һ������������Eureka Server��Ȼ���ţ���ֹע�����Ľ��÷���ʵ���ӷ����б����ų���ȥ�������￴��ע�����Ļ��Զ��޳����õķ���ʵ��
-
-   ������Լ��ص��������ã�
-
-   eureka.instance.lease-renewal-interval-in-seconds = 30  30sһ������֪ͨ
-
-   eureka.instance.lease-expiration-duration-in-seconds = 90  90s�����ʧЧ
+   服务续约
 
 
-   ����������
+   当服务提供者向注册中心注册完成后，会维护一个心跳来告诉Eureka Server仍然活着，防止注册中心将该服务实例从服务列表中排除出去，从这里看出注册中心会自动剔除无用的服务实例
 
-   ��ȡ����
+   服务续约相关的两个配置：
 
-     ��������������ʱ������REST���󵽷���ע�����ģ���ȡ�����嵥��Eureka Serverά��һ��ֻ�������嵥���ظ��ͻ��ˣ�ͬʱ�����嵥��ÿ��30s����һ��
+   eureka.instance.lease-renewal-interval-in-seconds = 30  30s一次心跳通知
 
-     ����ͨ��eureka.client.registry-fetch-interval-seconds = 30 ���Ļ����嵥�ĸ���ʱ��
+   eureka.instance.lease-expiration-duration-in-seconds = 90  90s后服务失效
 
 
-   �������
+   服务消费者
 
-     ͨ����������þ�������ṩ�ߵ�ʵ���͸�ʵ����Ԫ������Ϣ����Ribbon�в�����ѯ�ķ�ʽ������ʵ�ָ��ؾ���
+   获取服务
 
-     Eureka����Region��Zone�ĸ��һ��Region�������Zone��ÿ������ͻ�����Ҫ��ע�ᵽһ��Zone�У�����ÿ���ͻ��˶�Ӧһ��Region��һ��Zone���ڷ������ʱ�����ȷ���ͬһ��Zone��ŷ�ķ����ṩ��
+     启动服务消费者时，发送REST请求到服务注册中心，获取服务清单，Eureka Server维护一份只读服务清单返回给客户端，同时缓存清单会每隔30s更新一次
 
-   
-   ��������
+     可以通过eureka.client.registry-fetch-interval-seconds = 30 更改缓存清单的更新时间
 
-     �������ṩ�������ر�ʱ������ע�����ķ���REST���󣬸���ע���������ߣ�������ڽ��ܵ�����ʱ�Ὣ�÷����״̬����Ϊ���ߣ����������¼�����
+
+   服务调用
+
+     通过服务名获得具体服务提供者的实例和该实例的元数据信息，在Ribbon中采用轮询的方式调用来实现负载均衡
+
+     Eureka中有Region和Zone的概念，一个Region包含多个Zone，每个服务客户端需要被注册到一个Zone中，所以每个客户端对应一个Region和一个Zone。在服务调用时，优先访问同一个Zone中欧的服务提供方
 
    
-   ����ע������
+   服务下线
+
+     当服务提供者正常关闭时，会向注册中心发送REST请求，告诉注册中心下线，服务端在接受到请求时会将该服务的状态设置为下线，并把下线事件传播
+
+   
+   服务注册中心
   
-   ʧЧ�޳�
+   失效剔除
 
-     �������ṩ�߷������رն�������ʱ������90sû����Լ��Eureka Server������ʱ�ᴴ��һ����ʱ����Ĭ��60s�޳�û����Լ�ķ���
+     当服务提供者非正常关闭而不可用时，超过90s没有续约，Eureka Server在启动时会创建一个定时任务，默认60s剔除没有续约的服务
 
  
 
-   ���ұ���
+   自我保护
 
-     ��ע����������ʱ����ͳ������ʧ�ܵı�����15�������Ƿ����85%��������ֻ������ұ������ƣ�����ǰ��ʵ��ע����Ϣ������������ʵ��������ڣ����ǻ�������⣬�������ڼ�ʵ���������⣬�ͻ����õ�ʧЧ�ķ��񣬴�ʱ�ͻ��˱���Ҫ���ݴ����ƣ����� ʹ���������� ��·���Ȼ���
+     在注册中心运行时，会统计心跳失败的比例在15分钟内是否低于85%，如果出现会有自我保护机制，将当前的实例注册信息保护起来，让实例不会过期，但是会出现问题，若保护期间实例出现问题，客户端拿到失效的服务，此时客户端必须要有容错机制，比如 使用请求重试 断路器等机制
 
-     ������ע������ͨ��eureka.server.enable-self-preservation=false���رձ�������
+     可以在注册中心通过eureka.server.enable-self-preservation=false来关闭保护机制
 
 
 
-   ����
+   配置
 
-   ��Eureka�ķ���������ϵ�У���Ҫ��Ϊ�������ͻ���������ͬ�Ľ�ɫ�������Ϊ����ע�����ģ����ͻ���Ϊ�����ṩ�ӿڵ�΢����Ӧ�á�
+   在Eureka的服务治理体系中，主要分为服务端与客户端两个不同的角色，服务端为服务注册中心，而客户端为各个提供接口的微服务应用。
   
-   Eureka�ͻ��˵����ö������������Eureka����������ϵ�µ�Ӧ��ʵ���У���ʹ��springcloudʱ����Ҫ�����ü������ǶԿͻ��˵����á�
+   Eureka客户端的配置对象存在于所有Eureka服务治理体系下的应用实例中，在使用springcloud时，主要的配置几乎都是对客户端的配置。
 
-   �ͻ��˵�������Ҫ��Ϊ�������棺
+   客户端的配置主要分为两个方面：
 
-      ����ע����ص�������Ϣ����������ע�����ĵĵ�ַ�������ȡ�ļ��ʱ�䣬���������
+      服务注册相关的配置信息，包括服务注册中心的地址，服务获取的间隔时间，可用区域等
 
-      ����ʵ����ص�������Ϣ����������ʵ�������ƣ�IP��ַ���˿ںţ��������·����
+      服务实例相关的配置信息，包括服务实例的名称，IP地址，端口号，健康检查路径等
 
 
 
-   ����ʵ����Ԫ����
+   服务实例的元数据
 
-    ʲô��Ԫ���ݣ�
+    什么是元数据？
 
-      ����Eureka�ͻ��������ע�����ķ���ע������REST����ʱ���������������Ķ��󣬰�����׼�����ݣ���������ơ�ʵ�����ơ�ʵ��IP��ʵ���˿ں�һЩ�Զ����Ԫ������Ϣ
+      它是Eureka客户端向服务注册中心发送注册请求（REST请求）时，用来描述自身的对象，包含标准化数据，如服务名称、实例名称、实例IP、实例端口和一些自定义的元数据信息
 
     
-    ʵ��������
+    实例名配置
 
-      ��InstanceInfo�е�instanceId��������������ͬһ�����в�ͬʵ����Ψһ��ʾ
+      即InstanceInfo中的instanceId参数，它是区分同一服务中不同实例的唯一表示
 
-   ��ƽ̨֧��
+   跨平台支持
 
-    Eureka��ͨ�Ż���ʹ����HTTP��REST�ӿ�ʵ�֣���Ҳ��Eurekaͬ��������ע�Ṥ�ߵ�һ���ؼ���ͬ�㣬����HTTP��ƽ̨�޹��ԣ���ȻEureka Serverͨ��javaʵ�֣����������µ�΢����Ӧ�ò�������ʹ��java���п���
-
-
-   �ͻ��˸��ؾ��⣺Spring Cloud Ribbon
-
-     Ribbon�ǻ���HTTP��TCP�Ŀͻ��˸��ؾ��⹤�ߣ����Խ���������RESTģ�������Զ�ת���ɿͻ��˸��ؾ���ķ������
-
-     ���ؾ������Ӳ�����غ��������أ�������Ӳ���豸��������ģ�鶼��ά��һ���¹ҿ��õķ�����嵥��ͨ������������޳����ϵķ���˽ڵ��Ա�֤�嵥�ж��ǿ����������ʵķ���˽ڵ㣬�����󵽴�ʱ����ĳ���㷨��������ѯ����Ȩ�ظ��أ����������صȣ���ά���Ŀ��õķ�����嵥��ȡ��һ̨����˵ĵ�ַ������ת��
-
-     �ͻ��˸��ؾ���ͷ���˸��ؾ������Ĳ�ͬ�����ڷ����嵥���洢��λ�ã��ڿͻ��˸��ؾ����У���Ҫ���еĿͻ��˽ڵ㶼ά���Լ�Ҫ���ʵķ�����嵥�����嵥��Դ�ڷ���ע�����ġ��ͻ���ͨ�������ע��������ϲ���������ʽȥά�������嵥�Ľ�����
+    Eureka的通信机制使用了HTTP的REST接口实现，这也是Eureka同其他服务注册工具的一个关键不同点，由于HTTP的平台无关性，虽然Eureka Server通过java实现，但是在其下的微服务应用并不限于使用java进行开发
 
 
-     ����Ribbonʵ�ָ��ؾ��⣺
+   客户端负载均衡：Spring Cloud Ribbon
 
-     �����ṩ����Ҫ�����������ʵ����ע�ᵽһ��ע�����Ļ��Ƕ��������ķ���ע������
+     Ribbon是基于HTTP和TCP的客户端负载均衡工具，可以将面向服务的REST模板请求自动转换成客户端负载均衡的服务调用
 
-     ����������ֱ��ͨ�����ñ�@LoadBlancedע�����ι���RestTemplate��ʵ���������Ľӿڵ���
+     负载均衡包括硬件负载和软件负载，不管是硬件设备还是软件模块都会维护一个下挂可用的服务端清单，通过心跳检测来剔除故障的服务端节点以保证清单中都是可以正常访问的服务端节点，当请求到达时采用某种算法（线性轮询，按权重负载，按流量负载等）从维护的可用的服务端清单中取出一台服务端的地址，进行转发
+
+     客户端负载均衡和服务端负载均衡最大的不同点在于服务清单所存储的位置，在客户端负载均衡中，需要所有的客户端节点都维护自己要访问的服务端清单，而清单来源于服务注册中心。客户端通过与服务注册中心配合采用心跳方式去维护服务清单的健康性
+
+
+     采用Ribbon实现负载均衡：
+
+     服务提供者需要启动多个服务实例并注册到一个注册中心或是多个相关联的服务注册中心
+
+     服务消费者直接通过调用被@LoadBlanced注解修饰过的RestTemplate来实现面向服务的接口调用
 
    
-    ʹ��Feign�ϴ��ļ�ʱ����Feign-client�ṩ������handleFileUpload�����Ĳ�����ʹ����@RequestPartע��õ�����MultipartFile, ����������Feign-counsumer�����ӿڵ��÷������ϴ��ļ�ʱ��ʹ����DiskFileItem�࣬���д���createItem����fieldName���ԣ������Ա����뷽��@RequestPart��valueһ�£������޷��ϴ���
-	ͬʱ������Ե�ֵ��Ϊ�ϴ��ļ����ļ���getName��ֵ
+    使用Feign上传文件时，由Feign-client提供服务，在handleFileUpload方法的参数中使用了@RequestPart注解得到参数MultipartFile, 服务消费者Feign-counsumer创建接口调用服务，在上传文件时，使用了DiskFileItem类，其中创建createItem是由fieldName属性，该属性必须与方法@RequestPart的value一致，否则无法上传，
+	同时这个属性的值即为上传文件的文件名getName的值
 	
 	
-	�ֲ�ʽ��������  Spring Cloud Config 
+	分布式配置中心  Spring Cloud Config 
 	
-	      ���ã�����Ϊ�ֲ�ʽϵͳ�еĻ�����ʩ��΢����Ӧ���ṩ���л����ⲿ����֧��
+	      作用：用来为分布式系统中的基础设施和微服务应用提供集中化的外部配置支持
 		   
-		  �ṹ����Ϊ����˺Ϳͻ�����������
-		             ���У�����˳�Ϊ�ֲ�ʽ�������ģ���һ��������΢����Ӧ�ã������������òֿⲢΪ�ͻ����ṩ��ȡ������Ϣ������/������Ϣ�ȷ��ʽӿڣ�
-					 �ͻ�������΢����ܹ��еĸ���΢����Ӧ�û������ʩ��ͨ��ָ������������������Ӧ����Դ��ҵ����ص��������ݣ�����������ʱ����������Ļ�ȡ�ͼ���������Ϣ
+		  结构：分为服务端和客户端两个部分
+		             其中，服务端称为分布式配置中心，是一个独立的微服务应用，用来连接配置仓库并为客户端提供获取配置信息、加密/解密信息等访问接口；
+					 客户端则是微服务架构中的各个微服务应用或基础设施，通过指定的配置中心来管理应用资源与业务相关的配置内容，并在启动的时候从配置中心获取和加载配置信息
 					 
-	     ʵ�ַ�ʽ����������Ĭ��ʹ��Git���洢������Ϣ������ʹ��Spring Cloud Config ���������÷���������Ȼ��֧�ֶ�΢����Ӧ��������Ϣ�İ汾����������ͨ��Git�ͻ��˹���������Ĺ����ͷ����������ݡ�
+	     实现方式：配置中心默认使用Git来存储配置信息，所以使用Spring Cloud Config 构建的配置服务器，天然就支持对微服务应用配置信息的版本管理，可以通过Git客户端工具来方便的管理和访问配置内容。
 		  
-		 �ͻ��˴ӷ���˻�ȡ������Ϣʱ������Fetching config from server at: http://localhost:8888
-		 ������������ͻ��˵�application.properties��Ϊbootstrap.properties
+		 客户端从服务端获取配置信息时报错：Fetching config from server at: http://localhost:8888
+		 解决方法：将客户端的application.properties改为bootstrap.properties
 
-		 �ڿͻ��˶�̬ˢ�������ļ�ʱ������Full authentication is required to access this resource. 
-		 ���������management.security.enabled=false  ����client��������Ȩ������
+		 在客户端动态刷新配置文件时，遇到Full authentication is required to access this resource. 
+		 解决方法：management.security.enabled=false  由于client服务开启了权限拦截
 		 
-		 ˢ��ʱ��/refreshû������
-		 �����������Controller�ϼ�@RreshScopeע��
+		 刷新时用/refresh没有作用
+		 解决方法：在Controller上加@RreshScope注解
 		 
-    Hystrix�����ݴ�����
-	    ���񽵼�
-	    ͨ���ڷ�����ע��@HystrixCommand(fallbackMethod="")��ʵ�ַ��񽵼��� �������ѷ����÷�������ʱ�쳣�����������߾�ͨ��HystrixCommandע����ָ���Ľ����߼�����ִ��
+    Hystrix服务容错保护
+	    服务降级
+	    通过在方法的注解@HystrixCommand(fallbackMethod="")来实现服务降级， 服务消费方调用服务，请求超时异常，服务消费者就通过HystrixCommand注解中指定的降级逻辑进行执行
 		
-		��������	Hystrixʹ��"�ձ�ģʽ"ʵ���̳߳صĸ��룬��ÿ��Hystrix�����һ���������̳߳أ���ĳ��Hystrix�����װ�µ�������������ӳٹ��ߵ����ʱ��Ҳֻ�ǶԸ������ĵ��ò���Ӱ�죬������������������
-		�������ķ����ʧЧ�ָ������������̻߳ᱻ���������ܹ����ϻָ������ķ���
-		ÿ��ר�е��̳߳ض��ṩ�����õĲ���ʵ�֣�����������Ϊͬ�����������񹹽��첽�ķ���
-		����ʹ���̳߳��⣬������ʹ���ź��������Ƶ�����������Ĳ����ȣ��ź����Ŀ���Ҫ���̳߳�С�ö࣬���ǲ������ó�ʱ��ʵ���첽���ʣ����ԣ�ֻ���������������㹻�ɿ�������²�ʹ���ź���   
-		����֧���ź�����ʹ�ã� ����ִ��  �����߼�
+		依赖隔离	Hystrix使用"舱壁模式"实现线程池的隔离，会每个Hystrix命令创建一个独立的线程池，在某个Hystrix命令包装下的依赖服务出现延迟过高的情况时，也只是对该依赖的调用产生影响，而不会拖慢其他服务
+		当依赖的服务从失效恢复正常后，它的线程会被清理并且能够马上恢复健康的服务
+		每个专有的线程池都提供了内置的并发实现，可以利用它为同步的依赖服务构建异步的访问
+		除了使用线程池外，还可以使用信号量来控制单个依赖服务的并发度，信号量的开销要比线程池小得多，但是不能设置超时和实现异步访问，所以，只有在依赖服务是足够可靠的情况下才使用信号量   
+		两处支持信号量的使用： 命令执行  降级逻辑
 		
-	    ��������ͷ��񽵼�ͨ��@HystrixCommandһ�廯ʵ��
+	    依赖隔离和服务降级通过@HystrixCommand一体化实现
 	
-	    ��·����
-		������Ҫ�Ĳ�����
-		����ʱ�䴰����·���Ƿ���Ҫ����Ҫͳ��һ��ʱ�������ʹ������ݣ����ʱ�䷶Χ���ǿ���ʱ�䴰��Ĭ��Ϊ���10��
-		�����������ޣ��ڿ���ʱ�䴰�ڣ��������������������߲����ʸ�����۶ϣ�Ĭ��Ϊ20�� ����10���������������������20�Σ���ʹ���е����󶼳�ʱ����ʧ�ܣ���·���������
-		����ٷֱ����ޣ����������ڿ���ʱ�䴰�ڳ������ޣ������쳣������ﵽ�뿪����İٷֱ����ޣ�Ĭ������趨Ϊ50%����ʱ��·���ͻ��
+	    断路器器
+		三个重要的参数：
+		快照时间窗：断路器是否需要打开需要统计一段时间的请求和错误数据，这个时间范围就是快照时间窗，默认为最近10秒
+		请求总数下限：在快照时间窗内，必须满足请求总数下线才有资格根据熔断，默认为20， 如在10秒内如果请求总数不超过20次，即使所有的请求都超时或者失败，断路器都不会打开
+		错误百分比下限：当请求数在快照时间窗内超过下限，出现异常的情况达到离开错误的百分比下限，默认情况设定为50%，这时断路器就会打开
 		
-		����·����ʱ��������ò�����ִ�����߼�������ֱ�ӵ��ý����߼���ͨ����·����ʵ�����Զ��ط��ִ��󲢽������߼��л�Ϊ���߼���������Ӧ�ӳٵ�Ч��
+		当断路器打开时，请求调用不会再执行主逻辑，而是直接调用降级逻辑，通过断路器，实现了自动地发现错误并将降级逻辑切换为主逻辑，减少响应延迟的效果
 		
-		��λָ�ԭ�������߼���
-		hystrixʵ�����Զ��ָ����ܣ�����·���򿪣������߼������۶Ϻ�hystrix������һ������ʱ�䴰�������ʱ�䴰�ڣ������߼���ʱ��Ϊ���߼���������ʱ�䴰���ڶ�·���������򿪵�״̬���ͷ�һ������ԭ�������߼������ܹ��������أ���ô·�����������պϣ����߼��ظ��������·�����������״̬������ʱ�䴰���¼�ʱ
+		如何恢复原来的主逻辑：
+		hystrix实现了自动恢复功能，当断路器打开，对主逻辑进行熔断后，hystrix会启动一个休眠时间窗，在这个时间窗内，降级逻辑临时称为主逻辑，当休眠时间窗到期断路器将进入半打开的状态，释放一次请求到原来的主逻辑，若能够正常返回，那么路断器将继续闭合，主逻辑回复，否则断路器继续进入打开状态，休眠时间窗重新计时
 		
-		ʹ��Hystrix Dashboardʵ�ּ����壬
+		使用Hystrix Dashboard实现监控面板，
 		
-		ʹ��Turbine�����ݾۺ�   �����ַ�ʽ HTTP��ʽ�ۺϺ�mq�ۺ�
+		使用Turbine做数据聚合   有两种方式 HTTP方式聚合和mq聚合
 		
 		
-		ʹ��Zuul����������
-		��ʵ������  
-		    ͨ��zuul.routes.<route>.path��zuul.routes.<route>.url��������
+		使用Zuul做服务网关
+		单实例配置  
+		    通过zuul.routes.<route>.path与zuul.routes.<route>.url进行配置
 			zuul.routes.user-service.path=/user-service/**
 			zuul.routes.user-service.url=http://localhost:8080/
-			������ʵ���˶Է���/user-service/**���������·��ת����http://localhost:8080/��ַ��·�ɹ���
+			该配置实现了对符合/user-service/**规则的请求路径转发到http://localhost:8080/地址的路由规则
 			
-		 ��ʵ������
-		    ͨ��path��serviceId ��<serviceId>.ribbon.listOfServers �������ã���Ҫ��ribbon.eureka.enabled����Ϊfalse
-			�����÷�ʽ�����·�ɵ����÷�ʽһ����������path��serviceId�����Ե�ӳ�䷽ʽ��ֻ��serviceId�����û��ֹ������ķ������ƣ����<serviceId>.ribbon.listOfServers����ʵ�ַ�����ʵ����ά���� ���ڴ��ڶ��ʵ����API������ ����·��ת��ʱ��Ҫʵ�ָ��ؾ�����ԣ���ҪRibbon����ϣ�zuul���Դ��˶�Ribbon����������ribbon.eureka.enabled����Ϊfalse,��ֹû�����Ϸ���������ܶ��Ҳ�����Ӧ��ʵ���嵥
+		 多实例配置
+		    通过path和serviceId 及<serviceId>.ribbon.listOfServers 进行配置，需要将ribbon.eureka.enabled设置为false
+			该配置方式与服务路由的配置方式一样，采用了path和serviceId参数对的映射方式，只是serviceId是由用户手工命名的服务名称，配合<serviceId>.ribbon.listOfServers参数实现服务与实例的维护。 由于存在多个实力，API网关在 进行路由转发时需要实现负载均衡策略，需要Ribbon的配合，zuul中自带了对Ribbon的依赖，将ribbon.eureka.enabled设置为false,防止没有整合服务治理框架而找不到对应的实例清单
 		
-		����·������
-		    ��Zuul��Eureka���ϣ�ʵ�ֶԷ���ʵ�����Զ�ά��������Ҫ��ͳ·�����÷�ʽ����ΪserviceIdȥָ������ķ���ʵ����ַ��ֻ��Ҫͨ��һ��zuul.routes.<route>.path��zuul.routes.<route>.serviceId�����Եķ�ʽ���ü���
+		服务路由配置
+		    将Zuul与Eureka整合，实现对服务实例的自动维护，不需要像传统路由配置方式那样为serviceId去指定具体的服务实例地址，只需要通过一组zuul.routes.<route>.path与zuul.routes.<route>.serviceId参数对的方式配置即可
 			
 			zuul.routes.user-service.path = /user-service/**
 			zuul.routes.user-service.serviceId=user-service
 			
-			����һ�ָ���������ʹ�� zuul.routes.<serviceId>=<path>
+			还有一种更简洁的配置使用 zuul.routes.<serviceId>=<path>
 			zuul.routes.user-service=/user-service/**
-			�����ķ�ʽ�ǽ�API����Ҳ����Eureka���������µ�һ����ͨ��΢�����Ӧ�ã����˽��Լ�ע�ᵽEureka����ע��������֮�⣬Ҳ���ע�����Ļ�ȡ���з���ʵ���嵥��������Eureka�İ����£�API���ط���������ά����ϵͳ������serviceId��ʵ����ַ��ӳ���ϵ��Ȼ��ͨ��ribbon�ĸ��ؾ�����ԣ�����·��ת��
+			这样的方式是将API网关也看做Eureka服务治理下的一个普通的微服务的应用，除了将自己注册到Eureka服务注册中心上之外，也会从注册中心获取所有服务及实例清单，所以在Eureka的帮助下，API网关服务本身就已维护了系统中所有serviceId与实例地址的映射关系，然后通过ribbon的负载均衡策略，进行路由转发
 			
-		zuul�����ع��˹���(������)
-            ��΢����Ӧ�õ�У��Ȩ�޷ŵ�ǰ�����ط�������ɣ�����Ӧ�ýӿڿ������Ӷȣ�����������룬����ά��
+		zuul的拦截过滤功能(过滤器)
+            将微服务应用的校验权限放到前置网关服务中完成，降低应用接口开发复杂度，减少冗余代码，易于维护
   
-			ʵ�ַ�ʽ���̳�ZuulFilter�����ಢʵ����������ĸ�������
+			实现方式：继承ZuulFilter抽象类并实现它定义的四个抽象函数
 			
-			filterType�������������ͣ�������������������ĸ�����������ִ��  pre ������������·��֮ǰִ��
+			filterType：过滤器的类型，决定过滤器在请求的哪个声明周期中执行  pre 代表会在请求路由之前执行
 			
-			filterOrder: ��������ִ��˳�򣬵�������һ���׶��д��ڶ��������ʱ����Ҫ���ݸ÷����ķ���ֵ������ִ��
+			filterOrder: 过滤器的执行顺序，当请求在一个阶段中存在多个过滤器时，需要根据该方法的返回值来依次执行
 			
-			shouldFilter:�жϹ������Ƿ���Ҫ��ִ�У�ʵ����������ʹ�øú�����ָ������������Ч��Χ
+			shouldFilter:判断过滤器是否需要被执行，实际允许用中使用该函数来指定过滤器的有效范围
 			
-			run �� �������ľ����߼���ͨ�� ctx.setSendZuulResponse(false)��zuul���˸����󣬲��������·�ɣ�Ȼ��ͨ��ctx.setResponseStatusCode(401)�������䷵�صĴ����룬����ͨ��ctx.setResponseBody(body)�Է��ص����ݽ��б༭
+			run ： 过滤器的具体逻辑，通过 ctx.setSendZuulResponse(false)令zuul过滤该请求，不对其进行路由，然后通过ctx.setResponseStatusCode(401)设置了其返回的错误码，或者通过ctx.setResponseBody(body)对返回的内容进行编辑
 			
 			RequestContext ctx = RequestContext.getCurrentContext();
 			HttpServletRequest request = ctx.getRequest();
-			ͨ����request����Ĳ�������У��
+			通过对request请求的参数进行校验
 			
 			
-		Zuul����������·�ɺ���������������ܣ�·�ɹ��ܸ����ⲿ����ת���������΢����ʵ���ϣ���ʵ���ⲿ����ͳһ��ڵĻ��������������������������Ĵ������̽��и�Ԥ����ʵ������У�顢����ۺϵȹ��ܵĻ�����
+		Zuul包含了请求路由和请求过滤两个功能，路由功能负责将外部请求转发到具体的微服务实例上，是实现外部访问统一入口的基础，而过滤器功能则负责对请求的处理过程进行干预，是实现请求校验、服务聚合等功能的基础。
 		
-		·�ɹ�����ʵ��ʱ������·��ӳ�������ת�������ɼ�����ͬ�ĵĹ�������ɵģ�����·��ӳ����Ҫͨ��pre���͵Ĺ�������ɣ���������·�������õ�·�ɹ������ƥ�䣬�ҵ���Ҫת����Ŀ���ַ��������ת��������route���͵Ĺ���������ɣ���pre���͹�������õ�·�ɵ�ַ����ת����
+		路由功能在实现时，它的路由映射和请求转发都是由几个不同的的过滤器完成的，其中路由映射主要通过pre类型的过滤器完成，它将请求路径与配置的路由规则进行匹配，找到需要转发的目标地址。而请求转发部分是route类型的过滤器来完成，对pre类型过滤器获得的路由地址进行转发。
 		
-		��������zuulʵ��API���ع��ܵ�����ĵĲ�����ÿ������Zuul��HTTP���󶼾���һϵ�еĹ������������õ�������Ӧ�����ظ��ͻ���
+		过滤器是zuul实现API网关功能的最核心的部件，每个进入Zuul的HTTP请求都经过一系列的过滤器处理链得到请求响应并返回给客户端
 		
-		����������4�������� ��������  ִ��˳��  ִ������  �������  ��Ӧ�ĸ����󷽷�
+		过滤器包含4个特征： 过滤类型  执行顺序  执行条件  具体操作  对应四个抽象方法
 		
-		filterType��������������   
-		    pre ������·��֮ǰ����
-			routing  ��·������ʱ������
-			error  ��������������ʱ����
-			post  ��routing��error������֮�󱻵���
+		filterType：过滤器的类型   
+		    pre 在请求被路由之前调用  可以实现身份验证，在集群中选择请求的微服务，记录调试信息
+			routing  在路由请求时被调用  用于构建发送给微服务的请求，并使用Apache HttpClient或Netfilx Ribbon请求微服务
+			post   也会在error过滤器执行完后执行，在路由到微服务以后执行，用来为响应添加标准的HTTP Header,收集统计信息和指标，将响应从微服务发送给客户端等
+			error  处理请求发生错误时调用  
 			
-		filterOrder: ͨ��intֵ�������������ִ��˳����ֵԽС���ȼ�Խ��
+			
+		filterOrder: 通过int值来定义过滤器的执行顺序，数值越小优先级越高
 		
-		shouldFilter������һ��boolean�������жϹ������Ƿ�Ҫִ�У�ͨ���˷���ָ������������Ч��Χ
+		shouldFilter：返回一个boolean类型来判断过滤器是否要执行，通过此方法指定过滤器的有效范围
 		
-		run���������ľ����߼�  �ڸú�����ʵ���Զ���Ĺ����߼�
+		run：过滤器的具体逻辑  在该函数中实现自定义的过滤逻辑
 		
 		
 	Spring Cloud Stream 
-	    ����Ϊ΢����Ӧ�ù�����Ϣ���������Ŀ�ܣ�ʹ��Spring Integration��������Ϣ�����м����Ʒ�ṩ�˸��Ի����Զ�������ʵ�֣������˷���-���ġ������鼰��Ϣ�����������ĸ���
+	    用来为微服务应用构建消息驱动能力的框架，使用Spring Integration来连接消息代理中间件产品提供了个性化的自动化配置实现，引入了发布-订阅、消费组及消息分区三个核心概念
 		
-		����
-			ͨ�����������Ϊ�м�㣬ʵ����Ӧ�ó�������Ϣ�м��ϸ��֮��ĸ��룬ͨ����Ӧ�ó���¶ͳһ��Channelͨ����ʹ��Ӧ�ó�����Ҫ�ٿ��Ǹ��ֲ�ͬ����Ϣ�м��ʵ�֡�
+		绑定器
+			通过定义绑定器作为中间层，实现了应用程序与消息中间件细节之间的隔离，通过向应用程序暴露统一的Channel通道，使得应用程序不需要再考虑各种不同的消息中间件实现。
 		
-		����-����		
-			����ϢͶ�ݵ���Ϣ�м���󣬻�ͨ��������Topic������й㲥����Ϣ�������ڶ��ĵ��������յ���������������ҵ���߼�������
-			Topic������springcloud stream�е�һ������ĸ��������������������Ϣ�������ߵĵط����ڲ�ͬ����Ϣ�м���У�Topic��Ӧ�Ų�ͬ�ĸ���� ��RabbitMQ�д�����fanout Exchange,����kafka�����Ӧ��kafka�е�Topic
+		发布-订阅		
+			到消息投递到消息中间件后，会通过共享的Topic主体进行广播，消息消费者在订阅的主题中收到它并触发自身的业务逻辑处理。
+			Topic主题是springcloud stream中的一个抽象的概念，用来代表发布共享消息给消费者的地方。在不同的消息中间件中，Topic对应着不同的概念，如 在RabbitMQ中代表了fanout Exchange,而在kafka中则对应了kafka中的Topic
 			
-			��ʱ������Ϣ���͵��м��ʱ�����е������߶����Եõ���Ϣ�ĸ���������ڵ�Ե����ʵ�ֵ�����ͨ����˵��springcloud stream���õķ���-����ģʽ������Ч�Ľ�����Ϣ�����ߺ�������֮�����ϡ�
+			此时，当消息发送到中间件时，所有的消费者都可以得到消息的副本。相对于点对点队列实现的消费通信来说，springcloud stream采用的发布-订阅模式可以有效的降低消息生产者和消费者之间的耦合。
 			
-		������
-		    �ڷ���-���ĵ�ģʽ�У���Ϣ��õ����������ߵ����Ѳ�������ÿ��΢����Ӧ�ò�����ʵ��ʱ���ͻ�����ظ����ѵ������Ϊ�˱������������springcloud stream �ṩ��������ĸ���
+		消费组
+		    在发布-订阅的模式中，消息会得到所有消费者的消费操作，当每个微服务应用部署多个实例时，就会出现重复消费的情况。为了避免这种情况，springcloud stream 提供了消费组的概念
 			
-			ͨ��spring.cloud.stream.bindings.input.group����ΪӦ��ָ��һ���������������Ӧ�õĶ��ʵ���ڽ��ܵ���Ϣ��ʱ��ֻ����һ����Ա�������յ���Ϣ�����д�����
+			通过spring.cloud.stream.bindings.input.group属性为应用指定一个组名，这样这个应用的多个实例在接受到消息的时候，只会有一个成员真正的收到消息并进行处理。
 			
 		
-		��Ϣ����
-			����Ϣ���У�ÿ����Ϣ���ܱ�ֻ֤�б�һ��ʵ���������ѣ������޷�������Ϣ���屻�ĸ�ʵ���������ѡ�����Ϣ�����ĸ�����ǽ�����������⣺�������߽���Ϣ���ݷ������������ʵ����ʱ�򣬱�֤ӵ�й�ͬ����������Ϣ����ʼ������һ��������ʵ�����ܺʹ���
+		消息分区
+			在消息组中，每个消息都能保证只有被一个实例进行消费，但是无法控制消息具体被哪个实例进行消费。而消息分区的概念，就是解决这样的问题：当生产者将消息数据发给多个消费者实例的时候，保证拥有共同的特征的消息数据始终是由一个消费者实例接受和处理
 			
 		
 	Spring Cloud Sleuth
-	     �ֲ�ʽ����׷��   
-		 Trace ID  ��ʶһ��������·
-		 Span ID ��ʾһ�������Ĺ�����Ԫ  ���磺����һ��HTTP����
+	     分布式服务追踪   
+		 Trace ID  标识一条请求链路
+		 Span ID 表示一个基本的工作单元  比如：发送一个HTTP请求
 		 
-		 Ϊʵ������׷�٣��������͵��ֲ�ʽϵͳ����ڶ˵�ʱ��ֻ��Ҫ������ٿ��Ϊ�����󴴽�һ��Ψһ�ĸ��ٱ�ʶ��ͬʱ�ڷֲ�ʽϵͳ�ڲ���ת��ʱ�򣬿��ʼ�ձ��ִ��ݸ�Ψһ��ʾ��ֱ�����ظ�����Ϊֹ�������ʶΪTrace ID
+		 为实现请求追踪，当请求发送到分布式系统的入口端点时，只需要服务跟踪框架为该请求创建一个唯一的跟踪标识，同时在分布式系统内部流转的时候，框架始终保持传递该唯一表示，直到返回给请求方为止。这个标识为Trace ID
 		 
-		Ϊ��ͳ�Ƹ�������Ԫ��ʱ���ӳ٣�������ﵽ�����������ʱ�����Ǵ����߼�����ĳ��״̬ʱ��Ҳͨ��һ��Ψһ�ı�ʶ��������Ŀ�ʼ����������Լ������� �����ʶΪSpan ID , ����ÿ��Span������Ҫ�п�ʼ�ͽ��������ڵ㡣
-		ͨ����¼��ʼspan�ͽ���span��ʱ�����ͳ�Ƴ���Span��ʱ���ӳ٣�����ʱ�����¼�⣬�����԰���һЩ�������ݣ����¼����ƣ�������Ϣ��
+		为了统计各处理单元的时间延迟，当请求达到各个服务组件时，或是处理逻辑到达某个状态时，也通过一个唯一的标识来标记它的开始、具体过程以及结束。 这个标识为Span ID , 对于每个Span，必须要有开始和结束两个节点。
+		通过记录开始span和结束span的时间戳，统计出该Span的时间延迟，除了时间戳记录外，还可以包含一些其他数据，如事件名称，请求信息等
 		
 		
 		 

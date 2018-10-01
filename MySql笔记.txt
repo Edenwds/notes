@@ -50,6 +50,33 @@ mysql主从复制：
 	   查看从机状态  show slave status\G   必须同时看到Slave_IO_Running: Yes  Slave_SQL_Running:Yes 时为成功
 	   关闭 stop salve;
 	   
+	   在连接虚机的mysql无权限问题  
+	   
+	   虚机mysql创建用户进行授权
+	   GRANT ALL PRIVILEGES ON *.* TO 'username' @ '主机ip' IDENTIFIED BY '123';
+	   FLUSH PRIVILEGES;
+	   
+	   创建用户授权后仍无法连接，查看防火墙是否关闭   要求允许3306端口开放
+	   查看 cat  /etc/sysconfig/iptables
+	   
+	   若无，则开放端口
+	   /sbin/iptables  -I INPUT -p tcp --dport 3306 -j ACCEPT
+	   /etc/rc.d/init.d/iptables  save
+	   
+	 
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
 	   
 	   
 	  

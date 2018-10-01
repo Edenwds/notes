@@ -1,0 +1,60 @@
+在本地搭建Apollo
+
+1.从github上clone项目到本地
+
+2.修改apollo-configservice的configservice.properties配置文件
+
+	apollo_profile=github
+	spring.datasource.url=jdbc:mysql://127.0.0.1:3306/ApolloConfigDB?characterEncoding=utf8
+	spring.datasource.username=root
+	spring.datasource.password=123456
+	
+	若要修改端口，在application.yml中修改server.port    
+	
+	同时configservice集成了eureka， configservice就是一个注册中心
+	
+	修改端口后，必须在bootstrap.yml中修改注册中心地址的端口
+	
+	
+3.修改apollo-adminservice的adminservice.properties配置文件
+
+	apollo_profile=github
+	spring.datasource.url=jdbc:mysql://127.0.0.1:3306/ApolloConfigDB?characterEncoding=utf8
+	spring.datasource.username=root
+	spring.datasource.password=123456
+	
+	注意修改注册中心的端口号
+	
+4.修改apollo-portalservice
+
+	在resources目录下新加portal.properties配置文件
+	
+	#该地址就是注册中心 configservice的地址  
+	dev_meta=http://127.0.0.1:8088/ 
+ 
+	apollo_profile=github,auth
+	spring.datasource.url=jdbc:mysql://127.0.0.1:3306/ApolloPortalDB?characterEncoding=utf8
+	spring.datasource.username=root
+	spring.datasource.password=123456
+	
+	在启动类增加配置信息注解
+	@PropertySource(value= {"classpath:portal.properties"})
+	
+5.修改apollo-core
+  
+    修改resources下的apollo-env.properties配置文件
+   
+     添加dev.meta=http://localhost:8088 
+	 
+6.修改mysql中ApolloConfigDB库中的serverconfig表
+
+    修改eureka.service.url 值  改为configservice的地址
+
+7.修改Windows下的文件
+   
+    在C:/opt/settings下新建server.properties文件  配置env=DEV
+
+修改完后依次启动 configservice  adminservice portal 项目	
+      
+
+	
