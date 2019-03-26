@@ -1,77 +1,103 @@
-ÖĞ¼ä¼ş
-  ·ÖÀà£º
+ä¸­é—´ä»¶
+  åˆ†ç±»ï¼š
  
-    »ùÓÚÔ¶³Ì¹ı³Ìµ÷ÓÃ£¨Remote Procedure Call,RPC£©µÄÖĞ¼ä¼ş£¬ÔÊĞíÒ»¸öÓ¦ÓÃ³ÌĞòÖĞµÄ¹ı³Ìµ÷ÓÃÔ¶³ÌÓ¦ÓÃ³ÌĞòÖĞµÄ¹ı³Ì£¬¾ÍÏñ±¾µØµ÷ÓÃÒ»Ñù¡£¸ÃÖĞ¼ä¼şÊµÏÖÒ»¸ö²éÕÒÔ¶³Ì¹ı³ÌµÄÁ´½Ó»úÖÆ²¢Ê¹µ÷ÓÃ·½ÄÜ¹»ÒÔÍ¸Ã÷·½Ê½Ê¹ÓÃÕâĞ©¹ı³Ì¡£ÒÔÇ°£¬ÕâÖÖÀàĞÍµÄÖĞ¼ä¼ş´¦Àí»ùÓÚ¹ı³ÌµÄ³ÌĞò£¬ÏÖÔÚ£¬Ëü»¹°üÀ¨»ùÓÚ¶ÔÏóµÄ×é¼ş
+    åŸºäºè¿œç¨‹è¿‡ç¨‹è°ƒç”¨ï¼ˆRemote Procedure Call,RPCï¼‰çš„ä¸­é—´ä»¶ï¼Œå…è®¸ä¸€ä¸ªåº”ç”¨ç¨‹åºä¸­çš„è¿‡ç¨‹è°ƒç”¨è¿œç¨‹åº”ç”¨ç¨‹åºä¸­çš„è¿‡ç¨‹ï¼Œå°±åƒæœ¬åœ°è°ƒç”¨ä¸€æ ·ã€‚è¯¥ä¸­é—´ä»¶å®ç°ä¸€ä¸ªæŸ¥æ‰¾è¿œç¨‹è¿‡ç¨‹çš„é“¾æ¥æœºåˆ¶å¹¶ä½¿è°ƒç”¨æ–¹èƒ½å¤Ÿä»¥é€æ˜æ–¹å¼ä½¿ç”¨è¿™äº›è¿‡ç¨‹ã€‚ä»¥å‰ï¼Œè¿™ç§ç±»å‹çš„ä¸­é—´ä»¶å¤„ç†åŸºäºè¿‡ç¨‹çš„ç¨‹åºï¼Œç°åœ¨ï¼Œå®ƒè¿˜åŒ…æ‹¬åŸºäºå¯¹è±¡çš„ç»„ä»¶
 
-    »ùÓÚ¶ÔÏóÇëÇó´úÀí£¨Object Request Broker,ORB£©ÖĞ¼ä¼ş£¬Ê¹Ó¦ÓÃ³ÌĞòµÄ¶ÔÏóÄÜ¹»ÔÚÒìÀàÍøÂçÖĞ¼ä·Ö²¼ºÍ¹²Ïí
+    åŸºäºå¯¹è±¡è¯·æ±‚ä»£ç†ï¼ˆObject Request Broker,ORBï¼‰ä¸­é—´ä»¶ï¼Œä½¿åº”ç”¨ç¨‹åºçš„å¯¹è±¡èƒ½å¤Ÿåœ¨å¼‚ç±»ç½‘ç»œä¸­é—´åˆ†å¸ƒå’Œå…±äº«
 
-    ÃæÏòÏûÏ¢µÄÖĞ¼ä¼ş»ò»ùÓÚMOM£¨Message Oriented Middleware£©µÄÖĞ¼ä¼ş£¬ÊÇ·Ö²¼Ê½Ó¦ÓÃ³ÌĞò¿ÉÒÔÍ¨¹ı·¢ËÍºÍ½ÓÊÜÏûÏ¢À´½øĞĞÍ¨ĞÅºÍ½»»»Êı¾İ
+    é¢å‘æ¶ˆæ¯çš„ä¸­é—´ä»¶æˆ–åŸºäºMOMï¼ˆMessage Oriented Middlewareï¼‰çš„ä¸­é—´ä»¶ï¼Œæ˜¯åˆ†å¸ƒå¼åº”ç”¨ç¨‹åºå¯ä»¥é€šè¿‡å‘é€å’Œæ¥å—æ¶ˆæ¯æ¥è¿›è¡Œé€šä¿¡å’Œäº¤æ¢æ•°æ®
 
 
-  Çø±ğ£º
+  åŒºåˆ«ï¼š
   
-    »ùÓÚRPCºÍORBµÄÖĞ¼ä¼ş»á´´½¨½ôÃÜñîºÏ×é¼şÏµÍ³£¬¶ø»ùÓÚMOMµÄÏµÍ³ÔÊĞí×é¼ş½øĞĞ¸üËÉÉ¢µÄñîºÏ
+    åŸºäºRPCå’ŒORBçš„ä¸­é—´ä»¶ä¼šåˆ›å»ºç´§å¯†è€¦åˆç»„ä»¶ç³»ç»Ÿï¼Œè€ŒåŸºäºMOMçš„ç³»ç»Ÿå…è®¸ç»„ä»¶è¿›è¡Œæ›´æ¾æ•£çš„è€¦åˆ
 
-    ÔÚ»ùÓÚRPC»òORBµÄÏµÍ³ÖĞ£¬Ò»¸ö¹ı³Ìµ÷ÓÃÁíÒ»¸ö¹ı³ÌÊ±£¬±ØĞëµÈ´ıµ÷ÓÃµÄ¹ı³Ì·µ»Ø²ÅÄÜÖ´ĞĞÆäËû²Ù×÷£¬ÔÚÕâĞ©Ä£ĞÍÖĞ£¬ÖĞ¼ä¼şÔÚÒ»¶¨³Ì¶ÈÉÏ³äµ±³¬¼¶Á´½Ó³ÌĞò
+    åœ¨åŸºäºRPCæˆ–ORBçš„ç³»ç»Ÿä¸­ï¼Œä¸€ä¸ªè¿‡ç¨‹è°ƒç”¨å¦ä¸€ä¸ªè¿‡ç¨‹æ—¶ï¼Œå¿…é¡»ç­‰å¾…è°ƒç”¨çš„è¿‡ç¨‹è¿”å›æ‰èƒ½æ‰§è¡Œå…¶ä»–æ“ä½œï¼Œåœ¨è¿™äº›æ¨¡å‹ä¸­ï¼Œä¸­é—´ä»¶åœ¨ä¸€å®šç¨‹åº¦ä¸Šå……å½“è¶…çº§é“¾æ¥ç¨‹åº
 
-    »ùÓÚMOMµÄÏµÍ³ÔÊĞíÍ¨¹ıÒì²½½»»»ÏûÏ¢À´½øĞĞÍ¨ĞÅ
+    åŸºäºMOMçš„ç³»ç»Ÿå…è®¸é€šè¿‡å¼‚æ­¥äº¤æ¢æ¶ˆæ¯æ¥è¿›è¡Œé€šä¿¡
 
-    RPCÏµÍ³Í¨³£ÓÃÓÚ·Ö²¼ºÍÁ¬½Ó¿Í»§¶ËÓë·şÎñÆ÷×é¼ş£¨¿Í»§¶ËÍ¨³£ÊÇ×îÖÕÓÃ»§£©£¬ÔÚMOMÖĞ£¬¿Í»§¶ËÍ¨³£Ö»ÊÇÍ¨¹ıÏûÏ¢´«ËÍ½øĞĞ½»»¥²Ù×÷µÄÒì¹¹Èí¼ş×é¼ş
+    RPCç³»ç»Ÿé€šå¸¸ç”¨äºåˆ†å¸ƒå’Œè¿æ¥å®¢æˆ·ç«¯ä¸æœåŠ¡å™¨ç»„ä»¶ï¼ˆå®¢æˆ·ç«¯é€šå¸¸æ˜¯æœ€ç»ˆç”¨æˆ·ï¼‰ï¼Œåœ¨MOMä¸­ï¼Œå®¢æˆ·ç«¯é€šå¸¸åªæ˜¯é€šè¿‡æ¶ˆæ¯ä¼ é€è¿›è¡Œäº¤äº’æ“ä½œçš„å¼‚æ„è½¯ä»¶ç»„ä»¶
 
 
-ÃæÏòÏûÏ¢µÄÖĞ¼ä¼ş
+é¢å‘æ¶ˆæ¯çš„ä¸­é—´ä»¶
 
-   Ê¹ÓÃÏûÏ¢´«ËÍÌá¹©ÕßÀ´Ğ­µ÷ÏûÏ¢´«ËÍ²Ù×÷£¬»ù±¾ÔªËØÓĞ¿Í»§¶Ë¡¢ÏûÏ¢ºÍMOMÌáËÍÕß£¬ºóÕß°üÀ¨APIºÍ¹ÜÀí¹¤¾ß
+   ä½¿ç”¨æ¶ˆæ¯ä¼ é€æä¾›è€…æ¥åè°ƒæ¶ˆæ¯ä¼ é€æ“ä½œï¼ŒåŸºæœ¬å…ƒç´ æœ‰å®¢æˆ·ç«¯ã€æ¶ˆæ¯å’ŒMOMæé€è€…ï¼Œåè€…åŒ…æ‹¬APIå’Œç®¡ç†å·¥å…·
    
-   MOMÌá¹©ÕßÊ¹ÓÃ²»Í¬µÄÌåÏµ½á¹¹Â·ÓÉºÍ´«ËÍÏûÏ¢£ºËü¿ÉÒÔÊ¹ÓÃ¼¯ÖĞÊ½ÏûÏ¢·şÎñÆ÷£¬Ò²¿ÉÒÔ½«Â·ÓÉºÍ´«ËÍ¹¦ÄÜ·Ö²¼ÔÚÃ¿¸ö¿Í»§¶ËÉÏ£¬ÓĞµÄMOM²úÆ·½áºÏÁËÕâÁ½¸ö·½·¨
+   MOMæä¾›è€…ä½¿ç”¨ä¸åŒçš„ä½“ç³»ç»“æ„è·¯ç”±å’Œä¼ é€æ¶ˆæ¯ï¼šå®ƒå¯ä»¥ä½¿ç”¨é›†ä¸­å¼æ¶ˆæ¯æœåŠ¡å™¨ï¼Œä¹Ÿå¯ä»¥å°†è·¯ç”±å’Œä¼ é€åŠŸèƒ½åˆ†å¸ƒåœ¨æ¯ä¸ªå®¢æˆ·ç«¯ä¸Šï¼Œæœ‰çš„MOMäº§å“ç»“åˆäº†è¿™ä¸¤ä¸ªæ–¹æ³•
 
-   ÓÅµã£º
+   ä¼˜ç‚¹ï¼š
 
-     Òì²½£¬±£Ö¤ÏûÏ¢°²È«£¬·ÀÖ¹¶ªÊ§£¬´´½¨ËÉÉ¢ñîºÏµÄ×é¼şÏµÍ³£¬¿É¿¿ĞÔ¸ß
+     å¼‚æ­¥ï¼Œä¿è¯æ¶ˆæ¯å®‰å…¨ï¼Œé˜²æ­¢ä¸¢å¤±ï¼Œåˆ›å»ºæ¾æ•£è€¦åˆçš„ç»„ä»¶ç³»ç»Ÿï¼Œå¯é æ€§é«˜
 
-     Í¨¹ıÌí¼Ó¹ÜÀí½çÃæ£¬¼àÊÓºÍµ÷ÕûĞÔÄÜ
+     é€šè¿‡æ·»åŠ ç®¡ç†ç•Œé¢ï¼Œç›‘è§†å’Œè°ƒæ•´æ€§èƒ½
 
-   È±µã£º
+   ç¼ºç‚¹ï¼š
 
-     Ô´ÓÚ×ÔËÉÉ¢ñîºÏ±¾Éí£¬ÔÚÒì²½ÏµÍ³ÖĞ£¬µ÷ÓÃ·½¿Í»§¶Ë»á¼ÌĞøÎª½ÓÊÜ·½×°Èë¹¤×÷£¬Ö±µ½´¦Àí×°Èë¹¤×÷ËùĞèµÄ×ÊÔ´ºÄ¾¡ÇÒ±»µ÷ÓÃ×é¼ş·¢Éú¹ÊÕÏ¡£¶øÔÚRPCÏµÍ³ÖĞ£¬Ö»ÓĞÔÚ±»µ÷ÓÃº¯ÊıÍê³ÉÈÎÎñºó£¬²ÅÄÜ·µ»Øµ÷ÓÃº¯Êı
+     æºäºè‡ªæ¾æ•£è€¦åˆæœ¬èº«ï¼Œåœ¨å¼‚æ­¥ç³»ç»Ÿä¸­ï¼Œè°ƒç”¨æ–¹å®¢æˆ·ç«¯ä¼šç»§ç»­ä¸ºæ¥å—æ–¹è£…å…¥å·¥ä½œï¼Œç›´åˆ°å¤„ç†è£…å…¥å·¥ä½œæ‰€éœ€çš„èµ„æºè€—å°½ä¸”è¢«è°ƒç”¨ç»„ä»¶å‘ç”Ÿæ•…éšœã€‚è€Œåœ¨RPCç³»ç»Ÿä¸­ï¼Œåªæœ‰åœ¨è¢«è°ƒç”¨å‡½æ•°å®Œæˆä»»åŠ¡åï¼Œæ‰èƒ½è¿”å›è°ƒç”¨å‡½æ•°
 
 
-Ñ§Ï°ÏûÏ¢ÖĞ¼ä¼şĞèÒªË¼¿¼×¢ÒâµÄÎÊÌâ£º
+å­¦ä¹ æ¶ˆæ¯ä¸­é—´ä»¶éœ€è¦æ€è€ƒæ³¨æ„çš„é—®é¢˜ï¼š
   
-   1.ÎªÊ²Ã´Ê¹ÓÃÏûÏ¢¶ÓÁĞ £¨½âñî£¬Òì²½£¬Ï÷·å£©
+   1.ä¸ºä»€ä¹ˆä½¿ç”¨æ¶ˆæ¯é˜Ÿåˆ— ï¼ˆè§£è€¦ï¼Œå¼‚æ­¥ï¼Œå‰Šå³°ï¼‰
 
-   2.Ê¹ÓÃÏûÏ¢¶ÓÁĞÓĞÊ²Ã´È±µã £¨ÏµÍ³¿ÉÓÃĞÔ½µµÍ£¬ÏµÍ³¸´ÔÓĞÔÔö¼Ó£©
+   2.ä½¿ç”¨æ¶ˆæ¯é˜Ÿåˆ—æœ‰ä»€ä¹ˆç¼ºç‚¹ ï¼ˆç³»ç»Ÿå¯ç”¨æ€§é™ä½ï¼Œç³»ç»Ÿå¤æ‚æ€§å¢åŠ ï¼‰
 
-   3.ÏûÏ¢¶ÓÁĞÈçºÎÑ¡Ôñ £¨ÖĞĞ¡ĞÍ RabbitMQ  ´óĞÍ RocketMQ kafka, kafka¶à×÷ÎªÈÕÖ¾²É¼¯£©
+   3.æ¶ˆæ¯é˜Ÿåˆ—å¦‚ä½•é€‰æ‹© ï¼ˆä¸­å°å‹ RabbitMQ  å¤§å‹ RocketMQ kafka, kafkaå¤šä½œä¸ºæ—¥å¿—é‡‡é›†ï¼‰
 
-   4.ÈçºÎ±£Ö¤ÏûÏ¢¶ÓÁĞÊÇ¸ß¿ÉÓÃµÄ £¨²¿Êğ¼¯Èº£©
+   4.å¦‚ä½•ä¿è¯æ¶ˆæ¯é˜Ÿåˆ—æ˜¯é«˜å¯ç”¨çš„ ï¼ˆéƒ¨ç½²é›†ç¾¤ï¼‰
    
-   5.ÈçºÎ±£Ö¤ÏûÏ¢²»±»ÖØ¸´Ïû·Ñ   £¨¼ÇÂ¼Ïû·Ñ£©
+   5.å¦‚ä½•ä¿è¯æ¶ˆæ¯ä¸è¢«é‡å¤æ¶ˆè´¹   ï¼ˆè®°å½•æ¶ˆè´¹ï¼‰
 
-   6.ÈçºÎ±£Ö¤ÏûÏ¢µÄ¿É¿¿ĞÔ´«Êä   £¨Éú²úÕß¶ªÊ§£¬ÏûÏ¢¶ÓÁĞ¶ªÊ§£¬Ïû·ÑÕß¶ªÊ§£©
+   6.å¦‚ä½•ä¿è¯æ¶ˆæ¯çš„å¯é æ€§ä¼ è¾“   ï¼ˆç”Ÿäº§è€…ä¸¢å¤±ï¼Œæ¶ˆæ¯é˜Ÿåˆ—ä¸¢å¤±ï¼Œæ¶ˆè´¹è€…ä¸¢å¤±ï¼‰
 
-   7.ÈçºÎ±£Ö¤ÏûÏ¢µÄË³ĞòĞÔ  £¨±£Ö¤Èë¶ÓÓĞĞò£¬³ö¶ÓË³ĞòÓÉÏû·ÑÕß±£Ö¤£©
+   7.å¦‚ä½•ä¿è¯æ¶ˆæ¯çš„é¡ºåºæ€§  ï¼ˆä¿è¯å…¥é˜Ÿæœ‰åºï¼Œå‡ºé˜Ÿé¡ºåºç”±æ¶ˆè´¹è€…ä¿è¯ï¼‰
 
 
-¶ÔRabbitMQµÄÅäÖÃ¹ÜÀí½çÃæ£ºhttp://localhost:15672/
+å¯¹RabbitMQçš„é…ç½®ç®¡ç†ç•Œé¢ï¼šhttp://localhost:15672/
 
 RabbitMQ
-
+  
+      The core idea in the messaging model in rabbitmq is that the producer never sends any message  directly to a queue. Actually, quite often the producer dosen't even know if a message will be delivered to any queue at all.
+	  
 Java Client API Guide
 
  ConnectionFactory  
 
- Connection --------
-                    |---ºËĞÄAPI
- Channel  ----------
-
+ Connection
+		
+		AMQP  connections are typically long-lived. AMQP is an application level protocol that uses TCP for reliable delivery.
+                    
+ Channel 
+		
+		The channel can be thought of as " lightweight connections that share a single TCP connection ".
+ 
  Exchanges
+    
+	  An exchange is simple thing. On one side it receives messages from producers and the other side it pushes them to queues.
+	  
+	  There are a few exchange type available: direct , topic , headers, and fanout.
+	  
+	  fanout : it just broadcasts all the messages it receives to all the queues it knows.  The routingKey value is ignored for fanout exchanges.
+	  
+	  direct : the routing algorithm behind a direct exchange is simple -- a message goes to the queues whose binding key exactly matches the routing key of the messages. It is perfectly legal to bind multiple queues with the same binding key. In that case, the direct exchange will behave like fanout and will broadcast the message to all the matching queues.  
+	  
+	  Nameless exchange is a direct exchange.   It is used as the default exchange. Which we identify by the empty string("").  it very useful for simple applications : everty queue that is created is automatically bound to it with a routing key which is the same as the queue name.
+	  
+	  topic exchange can't have hava an arbitrary routing key , it must be a list of words delimited by dots.  the key up to the limit of 255 bytes.
+	  the logic behind the topic exchange is similar to a direct exchange. but there are two important special cases for binding keys:
+	    *(start) can substitute for exactly one word
+		#(hash) can substitute for zero or more words
+	  if the messages won't match any bindings and will be lost.
+	  when a queue is bound with "#" binding key - it will receive all the messages, regardless of the routing key - like in fanout exchange.
+	  when sepcial characters "*"and "#" aren't used in bindings, the topic exchange will behave just like a  direct one.
+	  
+	  A headers exchange is designed for routing on multiple attributes that are more easily expressed as message headers than a routing key.  they ignore the routing key attribute.
 
  Queues
 
- Á¬½ÓRabbitMQ
+ è¿æ¥RabbitMQ
  
-   1.´´½¨ConnectionFactory ÉèÖÃÏà¹Ø²ÎÊı
+   1.åˆ›å»ºConnectionFactory è®¾ç½®ç›¸å…³å‚æ•°
    
      ConnectionFactory factory = new ConnectionFactory();
  
@@ -85,20 +111,20 @@ Java Client API Guide
 
      factory.set(portNumber);
 
-     factory.setUri("amqp://userName:password@hostName:portName/virtualHost");(Ò»¸ö¶¥ÉÏÃæËùÓĞ)
+     factory.setUri("amqp://userName:password@hostName:portName/virtualHost");(ä¸€ä¸ªé¡¶ä¸Šé¢æ‰€æœ‰)
 
-     ²ÎÊıÎŞÉèÖÃÊ±£¬²ÉÓÃÄ¬ÈÏÖµ£¬
+     å‚æ•°æ— è®¾ç½®æ—¶ï¼Œé‡‡ç”¨é»˜è®¤å€¼ï¼Œ
      
-     userName = "guest"  password = "guest"  virtual host = "/"    hostname = "localhost"  port = "5672" »òÕß "5671"£¨ÔÚÊ¹ÓÃTLSÁ¬½ÓÊ±£©  
+     userName = "guest"  password = "guest"  virtual host = "/"    hostname = "localhost"  port = "5672" æˆ–è€… "5671"ï¼ˆåœ¨ä½¿ç”¨TLSè¿æ¥æ—¶ï¼‰  
 
 
-   2.´´½¨Connection
+   2.åˆ›å»ºConnection
    
      Connection conn = factory.newConnection();
 	 
 
 
-   3.´ò¿ªÍ¨µÀChannel  ÓÃÀ´·¢ËÍºÍ½ÓÊÜÏûÏ¢messages
+   3.æ‰“å¼€é€šé“Channel  ç”¨æ¥å‘é€å’Œæ¥å—æ¶ˆæ¯messages
 
      Channel channel = conn.creatChannel();
 
@@ -108,15 +134,15 @@ Java Client API Guide
      
      conn.close();
 
-     channelµÄ¹Ø±Õ¶¯×÷²¢²»ÊÇÑÏ¸ñÒªÇóµÄ£¬ÔÚÁ¬½Ó¹Ø±ÕÊ±Ëü»á×Ô¶¯¹Ø±Õ
+     channelçš„å…³é—­åŠ¨ä½œå¹¶ä¸æ˜¯ä¸¥æ ¼è¦æ±‚çš„ï¼Œåœ¨è¿æ¥å…³é—­æ—¶å®ƒä¼šè‡ªåŠ¨å…³é—­
 
-     ConnectionÊÇ³¤Ê±¼ä´æ»îµÄ£¬²»ÄÜÎªÃ¿¸ö¶¯×÷´´½¨Ò»¸öĞÂµÄÁ¬½Ó£¬ĞèÒª½øĞĞ¸´ÓÃ
+     Connectionæ˜¯é•¿æ—¶é—´å­˜æ´»çš„ï¼Œä¸èƒ½ä¸ºæ¯ä¸ªåŠ¨ä½œåˆ›å»ºä¸€ä¸ªæ–°çš„è¿æ¥ï¼Œéœ€è¦è¿›è¡Œå¤ç”¨
 
-     ChannelÒ²ÊÇ³¤Ê±¼ä´æ»îµÄ£¬µ«ÊÇ»áÒòÎª¸÷ÖÖ¿É»Ö¸´Ğ­Òé´íÎó¶øµ¼ÖÂ¹Ø±Õ£¬ËùÒÔchannelµÄÉúÃüÖÜÆÚÒª±ÈËüµÄconnection¶Ì£¬Ã¿´Î´ò¿ª¹Ø±ÕÒ»¸öĞÂµÄchannelÍ¨³£ÊÇ²»ĞèÒªµÄµ«ÊÇÒ²¿ÉÒÔ½ÓÊÜ£¬Ê×ÏÈÓ¦¸ÃÏëµ½¸´ÓÃchannel
+     Channelä¹Ÿæ˜¯é•¿æ—¶é—´å­˜æ´»çš„ï¼Œä½†æ˜¯ä¼šå› ä¸ºå„ç§å¯æ¢å¤åè®®é”™è¯¯è€Œå¯¼è‡´å…³é—­ï¼Œæ‰€ä»¥channelçš„ç”Ÿå‘½å‘¨æœŸè¦æ¯”å®ƒçš„connectionçŸ­ï¼Œæ¯æ¬¡æ‰“å¼€å…³é—­ä¸€ä¸ªæ–°çš„channelé€šå¸¸æ˜¯ä¸éœ€è¦çš„ä½†æ˜¯ä¹Ÿå¯ä»¥æ¥å—ï¼Œé¦–å…ˆåº”è¯¥æƒ³åˆ°å¤ç”¨channel
 
 	 
 
-   5.Ê¹ÓÃExchangesºÍQueues
+   5.ä½¿ç”¨Exchangeså’ŒQueues
 
      channel.exchangeDeclare(exchangeName,"direct",true);
   
@@ -124,9 +150,9 @@ Java Client API Guide
    
      channel.queueBind(queueName,exchangeName,routingKey);
 
-     ÒÔÉÏ´úÂë»á´´½¨Ò»¸ö³Ö¾Ã¡¢²»»á×Ô¶¯É¾³ıµÄdirectÀàĞÍµÄexchangeºÍÒ»¸ö²»ÊÇ³Ö¾ÃµÄ£¬ÅÅËûµÄ£¬»á×Ô¶¯É¾³ıµÄqueue£¬²¢ÇÒ·µ»ØÒ»¸ö¶ÓÁĞÃû³Æ   ÕâÊÇÒ»¸ötemporary queue
+     ä»¥ä¸Šä»£ç ä¼šåˆ›å»ºä¸€ä¸ªæŒä¹…ã€ä¸ä¼šè‡ªåŠ¨åˆ é™¤çš„directç±»å‹çš„exchangeå’Œä¸€ä¸ªä¸æ˜¯æŒä¹…çš„ï¼Œæ’ä»–çš„ï¼Œä¼šè‡ªåŠ¨åˆ é™¤çš„queueï¼Œå¹¶ä¸”è¿”å›ä¸€ä¸ªé˜Ÿåˆ—åç§°   è¿™æ˜¯ä¸€ä¸ªtemporary queue
 
-     ÒÔÉÏ´úÂëÊÇµäĞÍµÄ·½·¨ÉùÃ÷ÁËÒ»¸öqueue£¬µ«Õâ¸öqueueÖ»ÄÜ±»Ò»¸ö¿Í»§¶ËÊ¹ÓÃ£¬Ëü²»ĞèÒªÒ»¸ö¹«ÖÚµÄÃû³Æ£¬Èç¹û¶à¸ö¿Í»§¶ËÏò¹²ÏíÊ¹ÓÃÒ»¸öqueue£¬Ê¹ÓÃÒÔÏÂ´úÂë£º
+     ä»¥ä¸Šä»£ç æ˜¯å…¸å‹çš„æ–¹æ³•å£°æ˜äº†ä¸€ä¸ªqueueï¼Œä½†è¿™ä¸ªqueueåªèƒ½è¢«ä¸€ä¸ªå®¢æˆ·ç«¯ä½¿ç”¨ï¼Œå®ƒä¸éœ€è¦ä¸€ä¸ªå…¬ä¼—çš„åç§°ï¼Œå¦‚æœå¤šä¸ªå®¢æˆ·ç«¯å‘å…±äº«ä½¿ç”¨ä¸€ä¸ªqueueï¼Œä½¿ç”¨ä»¥ä¸‹ä»£ç ï¼š
 
      channel.exchangeDeclare(exchangName,"direct",true);
   
@@ -134,57 +160,78 @@ Java Client API Guide
 
      channel.queueBind(queueName,exchangName,routingKey);
   
-     ÒÔÉÏ´úÂë»á´´½¨Ò»¸ö³Ö¾ÃµÄ¡¢²»ÅÅËûµÄ¡¢²»»á×Ô¶¯É¾³ıµÄÓĞÒ»¸öÖÚËùÖÜÖªµÄÃû³ÆµÄqueue
+     ä»¥ä¸Šä»£ç ä¼šåˆ›å»ºä¸€ä¸ªæŒä¹…çš„ã€ä¸æ’ä»–çš„ã€ä¸ä¼šè‡ªåŠ¨åˆ é™¤çš„æœ‰ä¸€ä¸ªä¼—æ‰€å‘¨çŸ¥çš„åç§°çš„queue
 
      channel.queueDeclareNoWait(queueName,true,false,false,null);
 
-     ´´½¨Ò»¸ö¶ÓÁĞ£¬ÕâÊÇÒ»¸ö¡°no wait¡±°æ±¾£¬Ëü¸ü¸ßĞ§µ«ÊÇ°²È«ĞÔ²»¸ß£¬¸üÒÀÀµÓÚ»ùÓÚĞÄÌø¼ì²âµÄÊ§°Ü±£ÕÏ»úÖÆ¡£
+     åˆ›å»ºä¸€ä¸ªé˜Ÿåˆ—ï¼Œè¿™æ˜¯ä¸€ä¸ªâ€œno waitâ€ç‰ˆæœ¬ï¼Œå®ƒæ›´é«˜æ•ˆä½†æ˜¯å®‰å…¨æ€§ä¸é«˜ï¼Œæ›´ä¾èµ–äºåŸºäºå¿ƒè·³æ£€æµ‹çš„å¤±è´¥ä¿éšœæœºåˆ¶ã€‚
 
 
-     É¾³ıÒ»¸ö¶ÓÁĞ  channel.queueDelete("queue-name");
+     åˆ é™¤ä¸€ä¸ªé˜Ÿåˆ—  channel.queueDelete("queue-name");
 
-     Èç¹ûÎª¿Õ£¬É¾³ı¶ÓÁĞ  channel.queueDelete("queue-name",false,true);
+     å¦‚æœä¸ºç©ºï¼Œåˆ é™¤é˜Ÿåˆ—  channel.queueDelete("queue-name",false,true);
 
-     Èç¹û²»Ê¹ÓÃ£¨¼´Ã»ÓĞÈÎºÎÏû·ÑÕß£©£¬É¾³ı¶ÓÁĞ  channel.queueDelete("queue-name",true,false);
+     å¦‚æœä¸ä½¿ç”¨ï¼ˆå³æ²¡æœ‰ä»»ä½•æ¶ˆè´¹è€…ï¼‰ï¼Œåˆ é™¤é˜Ÿåˆ—  channel.queueDelete("queue-name",true,false);
 
-     Çå¿Õ¶ÓÁĞ  channel.queuePurge("queue-name");
+     æ¸…ç©ºé˜Ÿåˆ—  channel.queuePurge("queue-name");
 	 
-	 ExchangesµÄÀàĞÍÓĞ direct, topic, headers, fanout, ºÍ ÎŞÃûµÄ¡°¡±
+	 Exchangesçš„ç±»å‹æœ‰ direct, topic, headers, fanout, å’Œ æ— åçš„â€œâ€
+	 
+	 
+	 åˆ›å»ºqueue
+	 consumer å’Œ procedure éƒ½å¯ä»¥é€šè¿‡queue.declareåˆ›å»ºqueueã€‚å¯¹äºæŸä¸ªchannelï¼Œconsumerä¸èƒ½declareä¸€ä¸ªqueueï¼Œåªèƒ½è®¢é˜…ä¸€ä¸ªqueueã€‚
+	 queueè‡ªèº«å¯ä»¥è¢«è‡ªåŠ¨åˆ é™¤ï¼Œè¢«æ ‡è®°ä¸ºauto-deleteçš„queueåœ¨æœ€åä¸€ä¸ªconsumer unsubscribeåå°±ä¼šè‡ªåŠ¨åˆ é™¤ã€‚
+	 å¦‚æœåˆ›å»ºä¸€ä¸ªå·²ç»å­˜åœ¨çš„queueï¼Œä¸ä¼šæœ‰ä»»ä½•å½±å“ï¼Œå³ä½¿ç¬¬äºŒæ¬¡çš„å‚æ•°ä¸ç¬¬ä¸€æ¬¡çš„å‚æ•°ä¸åŒï¼Œå› ä¸ºqueueä¸€æ—¦åˆ›å»ºå±æ€§å°±ä¸ä¼šä¿®æ”¹ã€‚
 	 
 
 
-   6.Í¶µİÏûÏ¢ publish a message to an exchange
+   6.æŠ•é€’æ¶ˆæ¯ publish a message to an exchange
   
      byte[] messageBodyBytes = "Hello, world".getBytes();
 
      channel.basicPublish(exchangeName,routingKey,null,messageBodyBytes);
 
-     channel²»ÄÜ¹²Ïí£¬Ó¦Ê¹ÓÃchannel³Ø
+     channelä¸èƒ½å…±äº«ï¼Œåº”ä½¿ç”¨channelæ± 
 	 
-	 µ±rabbitmqÏòconsumer·¢ËÍÏûÏ¢Ê±£¬Ê¹ÓÃµÄÊÇÂÖÑ¯»úÖÆ  Round-robin dispatching   ½«»á½«ÏûÏ¢Æ½¾ùµØ·¢ËÍµ½Ã¿¸öconsumer
+	 å½“rabbitmqå‘consumerå‘é€æ¶ˆæ¯æ—¶ï¼Œä½¿ç”¨çš„æ˜¯è½®è¯¢æœºåˆ¶  Round-robin dispatching   å°†ä¼šå°†æ¶ˆæ¯å¹³å‡åœ°å‘é€åˆ°æ¯ä¸ªconsumer
 	 
-	 µ±ÏûÏ¢½Ï¸´ÔÓ£¬´¦ÀíÊ±¼ä½Ï³¤£¬¾Í¿ÉÄÜÔì³ÉÏû·ÑÕß  ÓĞµÄÈÎÎñ·±ÖØ¶øÓĞµÄ¼¸ºõ²»´¦ÀíÈÎºÎÈÎÎñ£¬³öÏÖÕâÖÖÇé¿öµÄÔ­ÒòÊÇ£¬RabbitMQ½ö½öÊÇ½«ÏûÏ¢dispatchµ½Ò»¸öconsumer£¬¶ø²»¹ØĞÄÕâ¸öconsumerÓĞ¶àÉÙ¸öÎ´È·ÈÏµÄÏûÏ¢£¬ÎªÁË±ÜÃâÕâÖÖÇé¿öµÄ·¢ÉúÊ¹ÓÃbasicQos·½·¨ÉèÖÃprefetchCount=1£¬Í¨¹ıÊ¹ÓÃ¸Ã·½·¨¸æËßRabbitMQÒ»´ÎÖ»¸øworkerÒ»¸öÏûÏ¢£¬»»¾ä»°Ëµ¾ÍÊÇ£¬²»dispatchÒ»¸öĞÂµÄmessageµ½Ò»¸öÖ®Ç°ÏûÏ¢Î´È·ÈÏµÄworker¡£  ÕâÊ±£¬¿ÉÄÜ³öÏÖÈç¹ûËùÓĞµÄconsumer¶¼ºÜÃ¦£¬¶ÓÁĞ¾Í»á±»Ìî³äÂú
+	 å½“æ¶ˆæ¯è¾ƒå¤æ‚ï¼Œå¤„ç†æ—¶é—´è¾ƒé•¿ï¼Œå°±å¯èƒ½é€ æˆæ¶ˆè´¹è€…  æœ‰çš„ä»»åŠ¡ç¹é‡è€Œæœ‰çš„å‡ ä¹ä¸å¤„ç†ä»»ä½•ä»»åŠ¡ï¼Œå‡ºç°è¿™ç§æƒ…å†µçš„åŸå› æ˜¯ï¼ŒRabbitMQä»…ä»…æ˜¯å°†æ¶ˆæ¯dispatchåˆ°ä¸€ä¸ªconsumerï¼Œè€Œä¸å…³å¿ƒè¿™ä¸ªconsumeræœ‰å¤šå°‘ä¸ªæœªç¡®è®¤çš„æ¶ˆæ¯ï¼Œä¸ºäº†é¿å…è¿™ç§æƒ…å†µçš„å‘ç”Ÿä½¿ç”¨basicQosæ–¹æ³•è®¾ç½®prefetchCount=1ï¼Œé€šè¿‡ä½¿ç”¨è¯¥æ–¹æ³•å‘Šè¯‰RabbitMQä¸€æ¬¡åªç»™workerä¸€ä¸ªæ¶ˆæ¯ï¼Œæ¢å¥è¯è¯´å°±æ˜¯ï¼Œä¸dispatchä¸€ä¸ªæ–°çš„messageåˆ°ä¸€ä¸ªä¹‹å‰æ¶ˆæ¯æœªç¡®è®¤çš„workerã€‚  è¿™æ—¶ï¼Œå¯èƒ½å‡ºç°å¦‚æœæ‰€æœ‰çš„consumeréƒ½å¾ˆå¿™ï¼Œé˜Ÿåˆ—å°±ä¼šè¢«å¡«å……æ»¡.
 	 
-	 ÏûÏ¢µÄÈ·ÈÏ»úÖÆ
+	å…³äºprefectè®¾ç½®çš„ç›¸å…³ä¿¡æ¯ï¼š
+	
+	 Channel Prefetch Setting  The value defines  the max number of unacknowledged deliveries that are permitted on a channel.
 	 
-	 ÎªÁË·ÀÖ¹ÏûÏ¢ÔÚconsumer´¦ÀíÏûÏ¢¶ªÊ§£¬¿ÉÒÔÊ¹ÓÃÈ·ÈÏ»úÖÆ  ½«autoAck = true;ÉèÖÃÎªfalse£¬ÎªtrueÊ±£¬µ±mqÏòconsumer·¢ËÍÍêÏûÏ¢ºó¾Í»á×Ô¶¯´ÓmqÖĞÉ¾³ı¸ÃÏûÏ¢£¬µ±consumer¹Òµôºó £¬¾Í»áÔì³ÉÏûÏ¢µÄ¶ªÊ§¡£µ±ÉèÖÃÎªfalseÊ±£¬ĞèÒªÊÖ¶¯·¢ËÍÈ·ÈÏ channel.baseAck(envelop.getDeliveryTag(),false);  ÕâÑù¿ÉÒÔÔÚÏûÏ¢´¦ÀíÍê³Éºó½øĞĞÈ·ÈÏ£¬·ÀÖ¹ÁËÏûÏ¢µÄ¶ªÊ§¡£ ÔÚÉèÖÃÎªfalseºó£¬Íü¼ÇÈ·ÈÏ¾Í»áÔì³ÉÏûÏ¢´¦ÀíÍê³ÉºóÔÚmq¶Ñ»ı£¬Ôì³ÉÄÚ´æÀË·Ñ¡£
+	 Finding a suitable prefetch value is a matter of trial and error and will vary from workload to workload.Values is the 100 through 300 range usually offer optimal throughput and do not run significant risk of overwhelming consumers.
 	 
-	 ÏûÏ¢´¦ÁË»áÔÚconsumer´¦¶ªÊ§£¬»¹¿ÉÄÜÔÚmqÖĞ¶ªÊ§¡£µ±mqÍË³ö»òÕßÆäËûÒòËØ¹Òµôºó£¬½«»á¶ªÊ§ËùÓĞµÄ¶ÓÁĞqueueºÍ ÏûÏ¢message£¬Îª·ÀÖ¹ÕâÖÖÇé¿öµÄ·¢Éú£¬ĞèÒª½«queueºÍmessageÉèÖÃÎªdurable£¬¿ÉÒÔÔÚ¶ÓÁĞÉùÃ÷Ê±ÉèÖÃÎª¿É³Ö¾Ã»¯µÄ 
+	 Prefetch value of 1 is the most conservative. It will singificantly reduce throughput, in particular in enviroments where consumer connection latency is high. For many applications, a higher value would be appropriate and optimal.
+	 
+	 
+	 
+	 æ¶ˆæ¯çš„ç¡®è®¤æœºåˆ¶
+	 
+	 ä¸ºäº†é˜²æ­¢æ¶ˆæ¯åœ¨consumerå¤„ç†æ¶ˆæ¯ä¸¢å¤±ï¼Œå¯ä»¥ä½¿ç”¨ç¡®è®¤æœºåˆ¶  å°†autoAck = true;è®¾ç½®ä¸ºfalseï¼Œä¸ºtrueæ—¶ï¼Œå½“mqå‘consumerå‘é€å®Œæ¶ˆæ¯åå°±ä¼šè‡ªåŠ¨ä»mqä¸­åˆ é™¤è¯¥æ¶ˆæ¯ï¼Œå½“consumeræŒ‚æ‰å ï¼Œå°±ä¼šé€ æˆæ¶ˆæ¯çš„ä¸¢å¤±ã€‚å½“è®¾ç½®ä¸ºfalseæ—¶ï¼Œéœ€è¦æ‰‹åŠ¨å‘é€ç¡®è®¤ channel.baseAck(envelop.getDeliveryTag(),false);  è¿™æ ·å¯ä»¥åœ¨æ¶ˆæ¯å¤„ç†å®Œæˆåè¿›è¡Œç¡®è®¤ï¼Œé˜²æ­¢äº†æ¶ˆæ¯çš„ä¸¢å¤±ã€‚ åœ¨è®¾ç½®ä¸ºfalseåï¼Œå¿˜è®°ç¡®è®¤å°±ä¼šé€ æˆæ¶ˆæ¯å¤„ç†å®Œæˆååœ¨mqå †ç§¯ï¼Œé€ æˆå†…å­˜æµªè´¹ã€‚
+	 
+	 æ¶ˆæ¯å¤„äº†ä¼šåœ¨consumerå¤„ä¸¢å¤±ï¼Œè¿˜å¯èƒ½åœ¨mqä¸­ä¸¢å¤±ã€‚å½“mqé€€å‡ºæˆ–è€…å…¶ä»–å› ç´ æŒ‚æ‰åï¼Œå°†ä¼šä¸¢å¤±æ‰€æœ‰çš„é˜Ÿåˆ—queueå’Œ æ¶ˆæ¯messageï¼Œä¸ºé˜²æ­¢è¿™ç§æƒ…å†µçš„å‘ç”Ÿï¼Œéœ€è¦å°†queueå’Œmessageè®¾ç½®ä¸ºdurableï¼Œå¯ä»¥åœ¨é˜Ÿåˆ—å£°æ˜æ—¶è®¾ç½®ä¸ºå¯æŒä¹…åŒ–çš„ 
 	 boolean durable = true;
 	 channel.queueDeclare(queue-name,durable,false,false,null);
 	 
-	 ×¢Òâ  µ±¶ÓÁĞÒÑ¾­ÉùÃ÷´´½¨Ê±£¬²»ÔÊĞíÔÙ´ÎĞŞ¸Ä¶ÓÁĞµÄÊôĞÔ¡£
+	 æ³¨æ„  å½“é˜Ÿåˆ—å·²ç»å£°æ˜åˆ›å»ºæ—¶ï¼Œä¸å…è®¸å†æ¬¡ä¿®æ”¹é˜Ÿåˆ—çš„å±æ€§ã€‚
 	 
-     ½«messageÉèÖÃÎª¿É³Ö¾Ã»¯µÄ  Í¨¹ıMessageProperties ÊôĞÔ½øĞĞÉèÖÃ
+     å°†messageè®¾ç½®ä¸ºå¯æŒä¹…åŒ–çš„  é€šè¿‡MessageProperties å±æ€§è¿›è¡Œè®¾ç½®
 	 
 	 channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
+	 
+	 æœ‰æ¶ˆè´¹è€…ç¡®è®¤æœºåˆ¶ä¹Ÿæœ‰å‘é€è€…ç¡®è®¤æœºåˆ¶
+	 
+	 When will Published Messages Be confirmed by the broker?
+	 For routable messages, the basic.ack is sent when a message has been accepted by all the queues.
 
    
-   7.Í¨¹ı¶©ÔÄ»ñµÃÏûÏ¢
+   7.é€šè¿‡è®¢é˜…è·å¾—æ¶ˆæ¯
   
-     Í¨¹ı´Ë·½·¨»ñÈ¡ÏûÏ¢£¬ÏûÏ¢µ½´ïÊ±½«»á±»×Ô¶¯½»¸¶£¬²»ĞèÒªÖ÷¶¯ÇëÇó
+     é€šè¿‡æ­¤æ–¹æ³•è·å–æ¶ˆæ¯ï¼Œæ¶ˆæ¯åˆ°è¾¾æ—¶å°†ä¼šè¢«è‡ªåŠ¨äº¤ä»˜ï¼Œä¸éœ€è¦ä¸»åŠ¨è¯·æ±‚
 
-     ×î¼òµ¥µÄ·½·¨ÊµÏÖDefaultConsumerÉèÖÃ¶©ÔÄ
+     æœ€ç®€å•çš„æ–¹æ³•å®ç°DefaultConsumerè®¾ç½®è®¢é˜…
 
      boolean autoAck = "false";
      
@@ -212,7 +259,7 @@ Java Client API Guide
                            });
 
 
-   8.À­È¡ÏûÏ¢ pull api
+   8.æ‹‰å–æ¶ˆæ¯ pull api
 
      boolean autoAck = false;
    
@@ -233,9 +280,9 @@ Java Client API Guide
      }
 
    
-   9.´¦Àí²»¿É·¢ËÍµÄÏûÏ¢
+   9.å¤„ç†ä¸å¯å‘é€çš„æ¶ˆæ¯
 
-     µ±ÏûÏ¢·¢ËÍÊ¹ÓÃmandatory±ê¼ÇÊ±£¬µ«ÊÇÃ»ÓĞ±»·¢ËÍ£¬Ëü½«»á±»·µ»Øµ½·¢ËÍ¿Í»§¶Ë£¬¿Í»§¶Ë¿ÉÒÔÍ¨¹ıÊµÏÖReturnListener½Ó¿ÚºÍµ÷ÓÃChannel.addReturnListener´¦Àí£¬Èç¹ûÃ»ÓĞÏûÏ¢Ôò»á±»¶ªÆú
+     å½“æ¶ˆæ¯å‘é€ä½¿ç”¨mandatoryæ ‡è®°æ—¶ï¼Œä½†æ˜¯æ²¡æœ‰è¢«å‘é€ï¼Œå®ƒå°†ä¼šè¢«è¿”å›åˆ°å‘é€å®¢æˆ·ç«¯ï¼Œå®¢æˆ·ç«¯å¯ä»¥é€šè¿‡å®ç°ReturnListeneræ¥å£å’Œè°ƒç”¨Channel.addReturnListenerå¤„ç†ï¼Œå¦‚æœæ²¡æœ‰æ¶ˆæ¯åˆ™ä¼šè¢«ä¸¢å¼ƒ
 
      channel.addReturnListener(new ReturnListener(){
   
@@ -250,9 +297,9 @@ Java Client API Guide
       });
 
   
-   10.Ïû·ÑÏß³Ì³Ø Consumer thread pool
+   10.æ¶ˆè´¹çº¿ç¨‹æ±  Consumer thread pool
   
-      Ä¬ÈÏÇé¿öÏÂ£¬Ïû·ÑÕßÏß³Ì½«»á±»×Ô¶¯·ÖÅäÔÚÒ»¸öExecutorServiceÏß³Ì³ØÖĞ
+      é»˜è®¤æƒ…å†µä¸‹ï¼Œæ¶ˆè´¹è€…çº¿ç¨‹å°†ä¼šè¢«è‡ªåŠ¨åˆ†é…åœ¨ä¸€ä¸ªExecutorServiceçº¿ç¨‹æ± ä¸­
 
       ExecutorService es = Executors.newFixedThreadPool(20);
    
@@ -260,54 +307,58 @@ Java Client API Guide
 
      
 
-   RabbitMQ±£Ö¤ÏûÏ¢µÄ¿É¿¿ĞÔ´«Êä
+   RabbitMQä¿è¯æ¶ˆæ¯çš„å¯é æ€§ä¼ è¾“
    
-    µ±rabbitmqÏòconsumer·¢ËÍÏûÏ¢Ê±£¬Ê¹ÓÃµÄÊÇÂÖÑ¯»úÖÆ  Round-robin dispatching   ½«»á½«ÏûÏ¢Æ½¾ùµØ·¢ËÍµ½Ã¿¸öconsumer
+    å½“rabbitmqå‘consumerå‘é€æ¶ˆæ¯æ—¶ï¼Œä½¿ç”¨çš„æ˜¯è½®è¯¢æœºåˆ¶  Round-robin dispatching   å°†ä¼šå°†æ¶ˆæ¯å¹³å‡åœ°å‘é€åˆ°æ¯ä¸ªconsumer
    
-     AMQP 0-9-1 Ğ­ÒéÖĞ£¬ºÜÖØÒªµÄÒ»µãÊÇÏûÏ¢ÔÚÏû·ÑÕßÖ®¼ä±»¸ºÔØÆ½ºâ£¬¶ø²»ÊÇÔÚ¶ÓÁĞ
+     AMQP 0-9-1 åè®®ä¸­ï¼Œå¾ˆé‡è¦çš„ä¸€ç‚¹æ˜¯æ¶ˆæ¯åœ¨æ¶ˆè´¹è€…ä¹‹é—´è¢«è´Ÿè½½å¹³è¡¡ï¼Œè€Œä¸æ˜¯åœ¨é˜Ÿåˆ—
 	 in AMQP 0-9-1, message are load balance between consumers and not between queues.
 	 
-	 ÏûÏ¢µÄÈ·ÈÏ»úÖÆ
+	 å½“ä¸€ä¸ªqueueæ²¡æœ‰ä»»ä½•çš„consumer subscribeï¼Œå½“æœ‰æ¶ˆæ¯æ•°æ®åˆ°è¾¾æ—¶ï¼Œè¿™ä¸ªæ•°æ®ä¼šè¢«cacheï¼Œä¸ä¼šè¢«ä¸¢å¼ƒã€‚å½“æœ‰Consumeræ—¶ï¼Œè¿™ä¸ªæ•°æ®ä¼šè¢«ç«‹å³å‘é€åˆ°consumerï¼Œå½“æ•°æ®è¢«æ­£ç¡®å¤„ç†å¹¶ç¡®è®¤æ—¶ï¼Œä¼šå°†æ¶ˆæ¯ä»queueä¸­åˆ é™¤ã€‚
 	 
-	 ÎªÁË·ÀÖ¹ÏûÏ¢ÔÚconsumer´¦ÀíÏûÏ¢¶ªÊ§£¬¿ÉÒÔÊ¹ÓÃÈ·ÈÏ»úÖÆ  ½«autoAck = true;ÉèÖÃÎªfalse£¬ÎªtrueÊ±£¬µ±mqÏòconsumer·¢ËÍÍêÏûÏ¢ºó¾Í»á×Ô¶¯´ÓmqÖĞÉ¾³ı¸ÃÏûÏ¢£¬µ±consumer¹Òµôºó £¬¾Í»áÔì³ÉÏûÏ¢µÄ¶ªÊ§¡£µ±ÉèÖÃÎªfalseÊ±£¬ĞèÒªÊÖ¶¯·¢ËÍÈ·ÈÏ channel.baseAck(envelop.getDeliveryTag(),false);  ÕâÑù¿ÉÒÔÔÚÏûÏ¢´¦ÀíÍê³Éºó½øĞĞÈ·ÈÏ£¬·ÀÖ¹ÁËÏûÏ¢µÄ¶ªÊ§¡£ ÔÚÉèÖÃÎªfalseºó£¬Íü¼ÇÈ·ÈÏ¾Í»áÔì³ÉÏûÏ¢´¦ÀíÍê³ÉºóÔÚmq¶Ñ»ı£¬Ôì³ÉÄÚ´æÀË·Ñ¡£
+	 æ¶ˆæ¯çš„ç¡®è®¤æœºåˆ¶
 	 
-	 ÏûÏ¢´¦ÁË»áÔÚconsumer´¦¶ªÊ§£¬»¹¿ÉÄÜÔÚmqÖĞ¶ªÊ§¡£µ±mqÍË³ö»òÕßÆäËûÒòËØ¹Òµôºó£¬½«»á¶ªÊ§ËùÓĞµÄ¶ÓÁĞqueueºÍ ÏûÏ¢message£¬Îª·ÀÖ¹ÕâÖÖÇé¿öµÄ·¢Éú£¬ĞèÒª½«queueºÍmessageÉèÖÃÎªdurable£¬¿ÉÒÔÔÚ¶ÓÁĞÉùÃ÷Ê±ÉèÖÃÎª¿É³Ö¾Ã»¯µÄ 
+	 ä¸ºäº†é˜²æ­¢æ¶ˆæ¯åœ¨consumerå¤„ç†æ¶ˆæ¯ä¸¢å¤±ï¼Œå¯ä»¥ä½¿ç”¨ç¡®è®¤æœºåˆ¶  å°†autoAck = true;è®¾ç½®ä¸ºfalseï¼Œä¸ºtrueæ—¶ï¼Œå½“mqå‘consumerå‘é€å®Œæ¶ˆæ¯åå°±ä¼šè‡ªåŠ¨ä»mqä¸­åˆ é™¤è¯¥æ¶ˆæ¯ï¼Œå½“consumeræŒ‚æ‰å ï¼Œå°±ä¼šé€ æˆæ¶ˆæ¯çš„ä¸¢å¤±ã€‚å½“è®¾ç½®ä¸ºfalseæ—¶ï¼Œéœ€è¦æ‰‹åŠ¨å‘é€ç¡®è®¤ channel.baseAck(envelop.getDeliveryTag(),false);  è¿™æ ·å¯ä»¥åœ¨æ¶ˆæ¯å¤„ç†å®Œæˆåè¿›è¡Œç¡®è®¤ï¼Œé˜²æ­¢äº†æ¶ˆæ¯çš„ä¸¢å¤±ã€‚ åœ¨è®¾ç½®ä¸ºfalseåï¼Œå¿˜è®°ç¡®è®¤å°±ä¼šé€ æˆæ¶ˆæ¯å¤„ç†å®Œæˆååœ¨mqå †ç§¯ï¼Œé€ æˆå†…å­˜æµªè´¹ã€‚
+	 
+	 æ‰‹åŠ¨è¿”å›ç¡®è®¤æ¶ˆæ¯æ˜¯é»˜è®¤æ‰“å¼€çš„ï¼Œå½“è‡ªåŠ¨ç¡®è®¤æœºåˆ¶æ‰“å¼€åï¼Œå½“æ¶ˆæ¯å‘é€åä¼šç«‹å³è®¤ä¸ºæˆåŠŸå‘é€ï¼Œè¿™ç§æ¨¡å¼ç‰ºç‰²äº†å‘é€çš„å®‰å…¨æ€§å’Œæ¶ˆè´¹è€…å¤„ç†çš„å®‰å…¨æ€§æ¥è·å–é«˜ååé‡ï¼Œä½†æ˜¯åœ¨çœŸæ­£åœ°æˆåŠŸå‘é€å‰è‹¥æ¶ˆè´¹è€…çš„tcpè¿æ¥æˆ–channelä¿¡é“å…³é—­ï¼Œé‚£æ¶ˆæ¯å°±ä¼šä¸¢å¤±ã€‚è¿˜æœ‰è‡ªåŠ¨ç¡®è®¤æœºåˆ¶å®¹æ˜“é€ æˆæ¶ˆæ¯åœ¨æ¶ˆè´¹è€…ä¸­çš„ç´¯ç§¯ï¼Œ
+	 
+	 æ¶ˆæ¯å¤„äº†ä¼šåœ¨consumerå¤„ä¸¢å¤±ï¼Œè¿˜å¯èƒ½åœ¨mqä¸­ä¸¢å¤±ã€‚å½“mqé€€å‡ºæˆ–è€…å…¶ä»–å› ç´ æŒ‚æ‰åï¼Œå°†ä¼šä¸¢å¤±æ‰€æœ‰çš„é˜Ÿåˆ—queueå’Œ æ¶ˆæ¯messageï¼Œä¸ºé˜²æ­¢è¿™ç§æƒ…å†µçš„å‘ç”Ÿï¼Œéœ€è¦å°†queueå’Œmessageè®¾ç½®ä¸ºdurableï¼Œå¯ä»¥åœ¨é˜Ÿåˆ—å£°æ˜æ—¶è®¾ç½®ä¸ºå¯æŒä¹…åŒ–çš„ 
 	 boolean durable = true;
 	 channel.queueDeclare(queue-name,durable,false,false,null);
 	 
-	 ×¢Òâ  µ±¶ÓÁĞÒÑ¾­ÉùÃ÷´´½¨Ê±£¬²»ÔÊĞíÔÙ´ÎĞŞ¸Ä¶ÓÁĞµÄÊôĞÔ¡£
+	 æ³¨æ„  å½“é˜Ÿåˆ—å·²ç»å£°æ˜åˆ›å»ºæ—¶ï¼Œä¸å…è®¸å†æ¬¡ä¿®æ”¹é˜Ÿåˆ—çš„å±æ€§ã€‚
 	 
-     ½«messageÉèÖÃÎª¿É³Ö¾Ã»¯µÄ  Í¨¹ıMessageProperties ÊôĞÔ½øĞĞÉèÖÃ
+     å°†messageè®¾ç½®ä¸ºå¯æŒä¹…åŒ–çš„  é€šè¿‡MessageProperties å±æ€§è¿›è¡Œè®¾ç½®
 	 
 	 channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
   
-      (1)Éú²úÕß¶ªÊ§Êı¾İ
+      (1)ç”Ÿäº§è€…ä¸¢å¤±æ•°æ®
   
-       RabbitMQÌá¹©Á½ÖÖ·½Ê½transactionºÍconfirmÄ£Ê½À´±£Ö¤Éú²úÕß²»¶ªÊ§Êı¾İ
+       RabbitMQæä¾›ä¸¤ç§æ–¹å¼transactionå’Œconfirmæ¨¡å¼æ¥ä¿è¯ç”Ÿäº§è€…ä¸ä¸¢å¤±æ•°æ®
        
-       transaction»úÖÆ£º·¢ËÍÏûÏ¢Ç°£¬¿ªÆôÊÂÎñ£¨channel.txSelect())£¬È»ºó·¢ËÍÏûÏ¢£¬Èç¹û¹ı³ÌÖĞ³öÏÖÒì³££¬ÊÂÎñ¾Í»á»Ø¹ö£¨channel.txRollback()£©£¬Èç¹û·¢ËÍ³É¹¦ÔòÌá½»ÊÂÎñ£¨channel.txCommit()£©.
+       transactionæœºåˆ¶ï¼šå‘é€æ¶ˆæ¯å‰ï¼Œå¼€å¯äº‹åŠ¡ï¼ˆchannel.txSelect())ï¼Œç„¶åå‘é€æ¶ˆæ¯ï¼Œå¦‚æœè¿‡ç¨‹ä¸­å‡ºç°å¼‚å¸¸ï¼Œäº‹åŠ¡å°±ä¼šå›æ»šï¼ˆchannel.txRollback()ï¼‰ï¼Œå¦‚æœå‘é€æˆåŠŸåˆ™æäº¤äº‹åŠ¡ï¼ˆchannel.txCommit()ï¼‰.
    
-       ´Ë·½Ê½µÄÈ±µã¾ÍÊÇÔì³ÉÍÌÍÂÁ¿ÏÂ½µ
+       æ­¤æ–¹å¼çš„ç¼ºç‚¹å°±æ˜¯é€ æˆååé‡ä¸‹é™
 
-       confirmÄ£Ê½£ºchannel½øÈëconfirmÄ£Ê½ºó£¬ÔÚ¸ÃĞÅµÀÉÏ·¢²¼µÄÏûÏ¢¶¼½«»á±»Ö¸ÅÉÒ»¸öÎ¨Ò»µÄID£¨´Ó1¿ªÊ¼£©£¬Ò»µ©ÏûÏ¢±»Í¶µİµ½ËùÓĞÆ¥ÅäµÄ¶ÓÁĞÖ®ºó£¬RabbitMQ¾Í»á·¢ËÍÒ»¸öAck¸øÉú²úÕß£¨°üº¬ÏûÏ¢µÄÎ¨Ò»ID£©£¬Õâ¾ÍÊ¹µÃÉú²úÕßÖªµÀÏûÏ¢ÒÑ¾­ÕıÈ·µ½´ïÄ¿µÄ¶ÓÁĞÁË£¬Èç¹ûRabbitMQÃ»ÄÜ´¦Àí¸ÃÏûÏ¢£¬Ôò»á·¢ËÍÒ»¸öNackÏûÏ¢¸ø¿Í»§¶Ë£¬¿Í»§¶Ë¿ÉÒÔ½øĞĞÖØÊÔ²Ù×÷
+       confirmæ¨¡å¼ï¼šchannelè¿›å…¥confirmæ¨¡å¼åï¼Œåœ¨è¯¥ä¿¡é“ä¸Šå‘å¸ƒçš„æ¶ˆæ¯éƒ½å°†ä¼šè¢«æŒ‡æ´¾ä¸€ä¸ªå”¯ä¸€çš„IDï¼ˆä»1å¼€å§‹ï¼‰ï¼Œä¸€æ—¦æ¶ˆæ¯è¢«æŠ•é€’åˆ°æ‰€æœ‰åŒ¹é…çš„é˜Ÿåˆ—ä¹‹åï¼ŒRabbitMQå°±ä¼šå‘é€ä¸€ä¸ªAckç»™ç”Ÿäº§è€…ï¼ˆåŒ…å«æ¶ˆæ¯çš„å”¯ä¸€IDï¼‰ï¼Œè¿™å°±ä½¿å¾—ç”Ÿäº§è€…çŸ¥é“æ¶ˆæ¯å·²ç»æ­£ç¡®åˆ°è¾¾ç›®çš„é˜Ÿåˆ—äº†ï¼Œå¦‚æœRabbitMQæ²¡èƒ½å¤„ç†è¯¥æ¶ˆæ¯ï¼Œåˆ™ä¼šå‘é€ä¸€ä¸ªNackæ¶ˆæ¯ç»™å®¢æˆ·ç«¯ï¼Œå®¢æˆ·ç«¯å¯ä»¥è¿›è¡Œé‡è¯•æ“ä½œ
     
 
-      (2)ÏûÏ¢¶ÓÁĞ¶ªÊ§Êı¾İ
+      (2)æ¶ˆæ¯é˜Ÿåˆ—ä¸¢å¤±æ•°æ®
 
-       ²ÉÓÃ¿ªÆô³Ö¾Ã»¯´ÅÅÌµÄÅäÖÃ£¬ºÍconfirm»úÖÆÅäºÏÊ¹ÓÃ£¬ÔÚÏûÏ¢³Ö¾Ã»¯´ÅÅÌºó£¬ÔÙ¸øÉú²úÕß·¢ËÍÒ»¸öACKĞÅºÅ¡£ÕâÑù£¬Èç¹ûÏûÏ¢³Ö¾Ã»¯´ÅÅÌÖ®Ç°£¬rabbitMQÕóÍö£¬ÄÇÃ´Éú²úÕßÊÕ²»µ½AckĞÅºÅ£¬¾Í»á×Ô¶¯ÖØ·¢
+       é‡‡ç”¨å¼€å¯æŒä¹…åŒ–ç£ç›˜çš„é…ç½®ï¼Œå’Œconfirmæœºåˆ¶é…åˆä½¿ç”¨ï¼Œåœ¨æ¶ˆæ¯æŒä¹…åŒ–ç£ç›˜åï¼Œå†ç»™ç”Ÿäº§è€…å‘é€ä¸€ä¸ªACKä¿¡å·ã€‚è¿™æ ·ï¼Œå¦‚æœæ¶ˆæ¯æŒä¹…åŒ–ç£ç›˜ä¹‹å‰ï¼ŒrabbitMQé˜µäº¡ï¼Œé‚£ä¹ˆç”Ÿäº§è€…æ”¶ä¸åˆ°Ackä¿¡å·ï¼Œå°±ä¼šè‡ªåŠ¨é‡å‘
 
-      (3)Ïû·ÑÕß¶ªÊı¾İ
+      (3)æ¶ˆè´¹è€…ä¸¢æ•°æ®
         
-       ²ÉÓÃÊÖ¶¯È·ÈÏÏûÏ¢Ä£Ê½
+       é‡‡ç”¨æ‰‹åŠ¨ç¡®è®¤æ¶ˆæ¯æ¨¡å¼
 
 
-   11.·ÀÖ¹Ïû·ÑÕß¶ªÊ§Êı¾İ
+   11.é˜²æ­¢æ¶ˆè´¹è€…ä¸¢å¤±æ•°æ®
 
-      Ïû·ÑÕßÊ¹ÓÃDefaultConsumer ÊÇ½Ó¿ÚConsumerµÄÊµÏÖ
+      æ¶ˆè´¹è€…ä½¿ç”¨DefaultConsumer æ˜¯æ¥å£Consumerçš„å®ç°
 
-      ÉèÖÃÊÖ¶¯»Ø¸´ÏûÏ¢È·ÈÏ»úÖÆ  
+      è®¾ç½®æ‰‹åŠ¨å›å¤æ¶ˆæ¯ç¡®è®¤æœºåˆ¶  
 
-      channel.basicQos(1); // ÉèÖÃÒ»´ÎÖ»½ÓÊÕÒ»¸öÏûÏ¢
+      channel.basicQos(1); // è®¾ç½®ä¸€æ¬¡åªæ¥æ”¶ä¸€ä¸ªæ¶ˆæ¯
 
       final Consumer consumer = new DefaultConsumer(channel){
 
@@ -335,64 +386,64 @@ Java Client API Guide
       channel.basicConsume(TASK_QUEUE_NAME, autoAck, consumer);
 
 
-   12.ÏûÏ¢³Ö¾Ã»¯
+   12.æ¶ˆæ¯æŒä¹…åŒ–
 
-      ÉùÃ÷³Ö¾Ã»¯¶ÓÁĞ£¬·ÀÖ¹RabbitMQ¶ªÊ§¶ÓÁĞ
+      å£°æ˜æŒä¹…åŒ–é˜Ÿåˆ—ï¼Œé˜²æ­¢RabbitMQä¸¢å¤±é˜Ÿåˆ—
    
       boolean durable = true;
   
       channel.queueDeclare("hello", durabl, false, false, null);
 
-      RabbitMQ²»ÔÊĞíÖØ¸´¶¨ÒåÒ»¸öÖØÃûÒÑ¾­´æÔÚµÄ¶ÓÁĞ£¬·ñÔò½«»á·µ»ØÒ»¸öerror
+      RabbitMQä¸å…è®¸é‡å¤å®šä¹‰ä¸€ä¸ªé‡åå·²ç»å­˜åœ¨çš„é˜Ÿåˆ—ï¼Œå¦åˆ™å°†ä¼šè¿”å›ä¸€ä¸ªerror
 
  
-      È»ºó±ê¼ÇÏûÏ¢Îª³Ö¾Ã»¯µÄ£¬Í¨¹ıÉèÖÃMessagePropertiesµÄÖµÎªPERSISTENT_TEXT_PLAIN ,Õâ¸öÀàÊµÏÖÁËBasicProperties½Ó¿Ú
+      ç„¶åæ ‡è®°æ¶ˆæ¯ä¸ºæŒä¹…åŒ–çš„ï¼Œé€šè¿‡è®¾ç½®MessagePropertiesçš„å€¼ä¸ºPERSISTENT_TEXT_PLAIN ,è¿™ä¸ªç±»å®ç°äº†BasicPropertiesæ¥å£
 
       channel.basicPublish("","task_queue",MessageProperties.PERSISTENT_TEXT_PLAIN,message.getBytes());
 
-      Í¨³£Çé¿öÏÂ£¬RabbitMQ½«°ÑÏûÏ¢Ñ­»·Æ½¾ù·Ö·¢¸øÏû·ÑÕß£¬Õâ¾ÍÔì³ÉÁËÓĞµÄÏû·ÑÕßÈÎÎñ¹ıÖØ£¬ÓĞµÄÏû·ÑÕßÎŞÊÂ¿É×ö£¬ÎªÁË±ÜÃâÕâÖÖÇé¿ö£¬Ê¹ÓÃbasicQos·½·¨ÉèÖÃprefetchCount=1£¬ÕâÑùµÄÉèÖÃ¸æËßRabbitMQ²»ÄÜÔÚÒ»¸öÏû·ÑÕßÎ´Íê³ÉÈÎÎñÈ·ÈÏÖ®Ç°ÔÙ´Î·Ö·¢ÏûÏ¢¸ø¸ÃÏû·ÑÕß£¬Ó¦¸Ã·Ö·¢µ½ÁíÒ»¸ö²»Ã¦µÄÏû·ÑÕß
+      é€šå¸¸æƒ…å†µä¸‹ï¼ŒRabbitMQå°†æŠŠæ¶ˆæ¯å¾ªç¯å¹³å‡åˆ†å‘ç»™æ¶ˆè´¹è€…ï¼Œè¿™å°±é€ æˆäº†æœ‰çš„æ¶ˆè´¹è€…ä»»åŠ¡è¿‡é‡ï¼Œæœ‰çš„æ¶ˆè´¹è€…æ— äº‹å¯åšï¼Œä¸ºäº†é¿å…è¿™ç§æƒ…å†µï¼Œä½¿ç”¨basicQosæ–¹æ³•è®¾ç½®prefetchCount=1ï¼Œè¿™æ ·çš„è®¾ç½®å‘Šè¯‰RabbitMQä¸èƒ½åœ¨ä¸€ä¸ªæ¶ˆè´¹è€…æœªå®Œæˆä»»åŠ¡ç¡®è®¤ä¹‹å‰å†æ¬¡åˆ†å‘æ¶ˆæ¯ç»™è¯¥æ¶ˆè´¹è€…ï¼Œåº”è¯¥åˆ†å‘åˆ°å¦ä¸€ä¸ªä¸å¿™çš„æ¶ˆè´¹è€…
      
       int prefetchCount = 1;
       
       channel.basicQos(prefetchCount);
 
       
-   13.·¢²¼¶©ÔÄ  
+   13.å‘å¸ƒè®¢é˜…  
 
-      RabbitMQµÄºËĞÄË¼ÏëÊÇÉú²úÕß²»Ö±½Ó·¢ËÍÏûÏ¢µ½¶ÓÁĞ£¬Éú²úÕßÖ»·¢ËÍÏûÏ¢µ½exchange,exchange½ÓÊÜÉú²úÕßµÄÏûÏ¢£¬²¢Í¶µİËüÃÇµ½¶ÓÁĞÖĞ£¬Ò»¸öexchange¾ßÌåÁ¬½ÓÊ²Ã´queue£¬ÓÉËüµÄexchange typeÖ¸¶¨
+      RabbitMQçš„æ ¸å¿ƒæ€æƒ³æ˜¯ç”Ÿäº§è€…ä¸ç›´æ¥å‘é€æ¶ˆæ¯åˆ°é˜Ÿåˆ—ï¼Œç”Ÿäº§è€…åªå‘é€æ¶ˆæ¯åˆ°exchange,exchangeæ¥å—ç”Ÿäº§è€…çš„æ¶ˆæ¯ï¼Œå¹¶æŠ•é€’å®ƒä»¬åˆ°é˜Ÿåˆ—ä¸­ï¼Œä¸€ä¸ªexchangeå…·ä½“è¿æ¥ä»€ä¹ˆqueueï¼Œç”±å®ƒçš„exchange typeæŒ‡å®š
 
       exchange types:
 
          direct 
 	     topic   
 	     headers   
-	     fanout   Í¶µİÏûÏ¢µ½ËùÓĞqueue
-         ÎŞÃûµÄexchange Ê¹ÓÃ""½øĞĞÈ·¶¨Éí·İ    default exchange  ÕâÊÇÒ»¸ödirectÀàĞÍµÄexchange  ±»brokerÒÔÎŞÃûµÄĞÎÊ½ÌáÇ°ÉùÃ÷  Ã¿¸ö¶ÓÁĞ±»´´½¨Ê±¶¼»á×Ô¶¯°ó¶¨Ëü ²¢ÇÒrouting keyÄ¬ÈÏÓë¶ÓÁĞÍ¬Ãû
+	     fanout   æŠ•é€’æ¶ˆæ¯åˆ°æ‰€æœ‰queue
+         æ— åçš„exchange ä½¿ç”¨""è¿›è¡Œç¡®å®šèº«ä»½    default exchange  è¿™æ˜¯ä¸€ä¸ªdirectç±»å‹çš„exchange  è¢«brokerä»¥æ— åçš„å½¢å¼æå‰å£°æ˜  æ¯ä¸ªé˜Ÿåˆ—è¢«åˆ›å»ºæ—¶éƒ½ä¼šè‡ªåŠ¨ç»‘å®šå®ƒ å¹¶ä¸”routing keyé»˜è®¤ä¸é˜Ÿåˆ—åŒå
 		 
 		 
      
       channel.basicPublish("", "hello", null, message.getBytes());
-      µÚÒ»¸ö²ÎÊı¾ÍÊÇexchange,¿Õ×Ö·û´®±íÊ¾Ä¬ÈÏ»òÕßÄäÃûµÄ½»»»£ºÏûÏ¢½«»áÂ·ÓÉµ½routingKeyÖ¸¶¨µÄqueue
+      ç¬¬ä¸€ä¸ªå‚æ•°å°±æ˜¯exchange,ç©ºå­—ç¬¦ä¸²è¡¨ç¤ºé»˜è®¤æˆ–è€…åŒ¿åçš„äº¤æ¢ï¼šæ¶ˆæ¯å°†ä¼šè·¯ç”±åˆ°routingKeyæŒ‡å®šçš„queue
 
-      Ö¸¶¨exchange
+      æŒ‡å®šexchange
 
       channel.basicPublish("logs","",null,message.getBytes());
 
 
-      ÁÙÊ±¶ÓÁĞ Temporary queues
+      ä¸´æ—¶é˜Ÿåˆ— Temporary queues
    
-      Ò»¸ö·Ç³Ö¾ÃµÄ£¬ÅÅËûµÄ£¬×Ô¶¯É¾³ıµÄ¶ÓÁĞ£¬ÓÉ·şÎñÆ÷·µ»ØµÄÒ»¸öËæ»úÃû³ÆµÄ¶ÓÁĞ
+      ä¸€ä¸ªéæŒä¹…çš„ï¼Œæ’ä»–çš„ï¼Œè‡ªåŠ¨åˆ é™¤çš„é˜Ÿåˆ—ï¼Œç”±æœåŠ¡å™¨è¿”å›çš„ä¸€ä¸ªéšæœºåç§°çš„é˜Ÿåˆ—
 
       String queueName = channel.queueDeclare().getQueue();
 
-      °ó¶¨ Bindings
+      ç»‘å®š Bindings
 
-      ¸æËßexchangeÍ¶µİÏûÏ¢µ½queue£¬ÕâĞèÒª½«exchangeºÍqueue°ó¶¨ÆğÀ´
+      å‘Šè¯‰exchangeæŠ•é€’æ¶ˆæ¯åˆ°queueï¼Œè¿™éœ€è¦å°†exchangeå’Œqueueç»‘å®šèµ·æ¥
 
       channel.queueBind(queueName, "logs", "");
 
       
-      Ïòexchange·¢ËÍÏûÏ¢  ·¢ËÍ¶Ë
+      å‘exchangeå‘é€æ¶ˆæ¯  å‘é€ç«¯
 
         ConnectionFactory factory = new ConnectionFactory();
         
@@ -413,7 +464,7 @@ Java Client API Guide
         connection.close();
 
     
-        ½ÓÊÕ¶Ë
+        æ¥æ”¶ç«¯
 
         ConnectionFactory factory = new ConnectionFactory();
         
@@ -444,13 +495,13 @@ Java Client API Guide
         channel.basicConsume(queueName, true, consumer);
 
 
-   14.Â·ÓÉ Routing
+   14.è·¯ç”± Routing
 
-      ¶©ÔÄÏûÏ¢µÄ×Ó¼¯  exchangeÖ»Í¶µİqueueÏëÒªµÄĞÅÏ¢£¬queueÖ»»ñÈ¡²¿·ÖÏûÏ¢
+      è®¢é˜…æ¶ˆæ¯çš„å­é›†  exchangeåªæŠ•é€’queueæƒ³è¦çš„ä¿¡æ¯ï¼Œqueueåªè·å–éƒ¨åˆ†æ¶ˆæ¯
 
-      Ê¹ÓÃroutingkey, direct exchange
+      ä½¿ç”¨routingkey, direct exchange
 
-      ÏûÏ¢½«±»Â·ÓÉµ½ÓÉroutingkeyÖ¸¶¨µÄqueueÖĞ
+      æ¶ˆæ¯å°†è¢«è·¯ç”±åˆ°ç”±routingkeyæŒ‡å®šçš„queueä¸­
 
       channel.exchangeDeclare(EXCHANGE_NAME,"direct");
   
@@ -466,29 +517,29 @@ Java Client API Guide
  
       }
 
-   15.Ö÷Ìâ topics
+   15.ä¸»é¢˜ topics
 
-      ÏûÏ¢±»·¢ËÍµ½topic exchange²»ÄÜÊ¹ÓÃÈÎÒâµÄrouting key Ëü±ØĞëÊÇÒ»ÏµÁĞµÄµ¥´Ê£¬ÓÃ . ·Ö¸î£¬µ¥´Ê¿ÉÒÔÊÇÈÎÒâµÄ£¬µ«ÊÇÍ¨³£Çé¿öÏÂ±»Ö¸¶¨ÎªÓëÏûÏ¢ÓĞ¹Ø£¬ËüµÄ³¤¶È±»ÏŞÖÆÔÚ255bytes
+      æ¶ˆæ¯è¢«å‘é€åˆ°topic exchangeä¸èƒ½ä½¿ç”¨ä»»æ„çš„routing key å®ƒå¿…é¡»æ˜¯ä¸€ç³»åˆ—çš„å•è¯ï¼Œç”¨ . åˆ†å‰²ï¼Œå•è¯å¯ä»¥æ˜¯ä»»æ„çš„ï¼Œä½†æ˜¯é€šå¸¸æƒ…å†µä¸‹è¢«æŒ‡å®šä¸ºä¸æ¶ˆæ¯æœ‰å…³ï¼Œå®ƒçš„é•¿åº¦è¢«é™åˆ¶åœ¨255bytes
   
-       binding key ±ØĞëÒªÓĞÏàÍ¬µÄĞÎÊ½
+       binding key å¿…é¡»è¦æœ‰ç›¸åŒçš„å½¢å¼
  
-       * ¿ÉÒÔÌæ´úÒ»¸öµ¥´Ê   
+       * å¯ä»¥æ›¿ä»£ä¸€ä¸ªå•è¯   
 
-       # ¿ÉÒÔÌæ´úÁã¸ö»ò¶à¸öµ¥´Ê
+       # å¯ä»¥æ›¿ä»£é›¶ä¸ªæˆ–å¤šä¸ªå•è¯
      
 
-     Topic exchange ÊÇÊ®·ÖÇ¿´óµÄ£¬¿ÉÒÔÏñÆäËûÀàĞÍexchanges
+     Topic exchange æ˜¯ååˆ†å¼ºå¤§çš„ï¼Œå¯ä»¥åƒå…¶ä»–ç±»å‹exchanges
  
-     µ±Ò»¸öqueueÍ¨¹ı#°ó¶¨£¬Ëü½«½ÓÊÜËùÓĞµÄÏûÏ¢£¬ºöÂÔrouting key Ïñ fanout exchange
+     å½“ä¸€ä¸ªqueueé€šè¿‡#ç»‘å®šï¼Œå®ƒå°†æ¥å—æ‰€æœ‰çš„æ¶ˆæ¯ï¼Œå¿½ç•¥routing key åƒ fanout exchange
 
-     µ±²»Ê¹ÓÃ*ºÍ#ÓÃÀ´°ó¶¨Ê±£¬Ïñdirect exchange¹¤×÷
+     å½“ä¸ä½¿ç”¨*å’Œ#ç”¨æ¥ç»‘å®šæ—¶ï¼Œåƒdirect exchangeå·¥ä½œ
         
 
-  16.Ô¶³Ì¹ı³Ìµ÷ÓÃ RPC
+  16.è¿œç¨‹è¿‡ç¨‹è°ƒç”¨ RPC
 
-     Callback queue »Øµ÷¶ÓÁĞ
+     Callback queue å›è°ƒé˜Ÿåˆ—
 
-     ÔÚRabbitMQ×öRPCÊÇÈİÒ×µÄ£ºÒ»¸ö¿Í»§¶Ë·¢ËÍÒ»¸öÇëÇóÏûÏ¢£¬Ò»¸ö·şÎñÆ÷Ó¦´ğÒ»¸öÏìÓ¦ÏûÏ¢£¬ÎªÁË½ÓÊÕµ½Ò»¸öÏìÓ¦ÎÒÃÇĞèÒªÔÚÇëÇóÖĞ·¢ËÍÒ»¸ö»Øµ÷¶ÓÁĞµÄµØÖ·
+     åœ¨RabbitMQåšRPCæ˜¯å®¹æ˜“çš„ï¼šä¸€ä¸ªå®¢æˆ·ç«¯å‘é€ä¸€ä¸ªè¯·æ±‚æ¶ˆæ¯ï¼Œä¸€ä¸ªæœåŠ¡å™¨åº”ç­”ä¸€ä¸ªå“åº”æ¶ˆæ¯ï¼Œä¸ºäº†æ¥æ”¶åˆ°ä¸€ä¸ªå“åº”æˆ‘ä»¬éœ€è¦åœ¨è¯·æ±‚ä¸­å‘é€ä¸€ä¸ªå›è°ƒé˜Ÿåˆ—çš„åœ°å€
 
      callbackQueueName = channel.queueDeclare().getQueue();
 
@@ -496,34 +547,34 @@ Java Client API Guide
      channel.basicPublish("","rpc_queue",props,message.getBytes());
 
      
-     ÏûÏ¢ÊôĞÔ  Message properties
+     æ¶ˆæ¯å±æ€§  Message properties
   
-     AMQP¹²¶¨ÒåÁË14¸öÊôĞÔ£¬´ó²¿·Ö¶¼ºÜÉÙÊ¹ÓÃ£¬³ıÁËÒÔÏÂËÄ¸ö£º
+     AMQPå…±å®šä¹‰äº†14ä¸ªå±æ€§ï¼Œå¤§éƒ¨åˆ†éƒ½å¾ˆå°‘ä½¿ç”¨ï¼Œé™¤äº†ä»¥ä¸‹å››ä¸ªï¼š
 
-        deliveryMode : ´ËÊôĞÔ´ú±íÁËÏûÏ¢µÄ¿É³Ö¾ÃĞÔ  µ±ÖµÎª2Ê±Îª¿É³Ö¾Ã»¯£¬1Îª²»¿ÉÒÔ
+        deliveryMode : æ­¤å±æ€§ä»£è¡¨äº†æ¶ˆæ¯çš„å¯æŒä¹…æ€§  å½“å€¼ä¸º2æ—¶ä¸ºå¯æŒä¹…åŒ–ï¼Œ1ä¸ºä¸å¯ä»¥
 
-        contentType : ÓÃÀ´ÃèÊö±àÂëµÄmimeÀàĞÍ  Í¨³£json ±àÂëÎª application/json
+        contentType : ç”¨æ¥æè¿°ç¼–ç çš„mimeç±»å‹  é€šå¸¸json ç¼–ç ä¸º application/json
    
-        replyTo : Í¨³£±»ÓÃÀ´ÃüÃû»Øµ÷¶ÓÁĞ
+        replyTo : é€šå¸¸è¢«ç”¨æ¥å‘½åå›è°ƒé˜Ÿåˆ—
 
-        correlationId : ½«RPCÏìÓ¦ºÍÇëÇó¹ØÁªÆğÀ´
+        correlationId : å°†RPCå“åº”å’Œè¯·æ±‚å…³è”èµ·æ¥ï¼ˆç¡®å®šæ¶ˆæ¯ï¼‰
 
-        µ±·µ»ØÒ»¸öÎ´ÖªµÄcorrelationIdÊ±£¬ÎÒÃÇ¿ÉÒÔ°²È«µØ¶ªÆúÕâ¸öÏûÏ¢
+        å½“è¿”å›ä¸€ä¸ªæœªçŸ¥çš„correlationIdæ—¶ï¼Œæˆ‘ä»¬å¯ä»¥å®‰å…¨åœ°ä¸¢å¼ƒè¿™ä¸ªæ¶ˆæ¯
 
-        ÎªÊ²Ã´ÒªºöÊÓÕâ¸öÏûÏ¢ÔÚ»Øµ÷¶ÓÁĞ£¬¶ø²»ÊÇÓÃÒ»¸ö´íÎóÊ§°Ü£¬ÕâÊÇÒòÎªRPCÔÚ·¢ËÍÁË»Ø´ğºóÔÚ·¢ËÍÇëÇóµÄÈ·ÈÏĞÅÏ¢Ç°å´»úÊÇ²»Ì«¿ÉÄÜ·¢ÉúµÄ£¬¼´Ê¹·¢ÉúÁË£¬ÔÚÖØÆôºóÒ²»áÖØĞÂ·¢ËÍ¸ÃÇëÇó¡£ÔÚÀíÏëµÄ×´Ì¬ÏÂRPCÓ¦¸ÃÊÇÃİµÈµÄ
+        ä¸ºä»€ä¹ˆè¦å¿½è§†è¿™ä¸ªæ¶ˆæ¯åœ¨å›è°ƒé˜Ÿåˆ—ï¼Œè€Œä¸æ˜¯ç”¨ä¸€ä¸ªé”™è¯¯å¤±è´¥ï¼Œè¿™æ˜¯å› ä¸ºRPCåœ¨å‘é€äº†å›ç­”ååœ¨å‘é€è¯·æ±‚çš„ç¡®è®¤ä¿¡æ¯å‰å®•æœºæ˜¯ä¸å¤ªå¯èƒ½å‘ç”Ÿçš„ï¼Œå³ä½¿å‘ç”Ÿäº†ï¼Œåœ¨é‡å¯åä¹Ÿä¼šé‡æ–°å‘é€è¯¥è¯·æ±‚ã€‚åœ¨ç†æƒ³çš„çŠ¶æ€ä¸‹RPCåº”è¯¥æ˜¯å¹‚ç­‰çš„
 
 
-     RPCµÄ¹¤×÷Á÷³Ì£º
+     RPCçš„å·¥ä½œæµç¨‹ï¼š
    
-       1. ¿Í»§¶ËÆô¶¯Ê±£¬´´½¨Ò»¸öÄäÃûµÄ¶ÀÕ¼»Øµ÷¶ÓÁĞ
+       1. å®¢æˆ·ç«¯å¯åŠ¨æ—¶ï¼Œåˆ›å»ºä¸€ä¸ªåŒ¿åçš„ç‹¬å å›è°ƒé˜Ÿåˆ—
 
-       2. ½øĞĞRPCÇëÇó£¬¿Í»§¶Ë·¢ËÍÒ»¸öÏûÏ¢Ğ¯´øÁ½¸ö²ÎÊı£¬replyTo ÓÃÀ´ÉèÖÃ»Øµ÷¶ÓÁĞ£¬correlationId ÎªÃ¿¸öÇëÇóÉèÖÃÒ»¸öÎ¨Ò»µÄÖµ
+       2. è¿›è¡ŒRPCè¯·æ±‚ï¼Œå®¢æˆ·ç«¯å‘é€ä¸€ä¸ªæ¶ˆæ¯æºå¸¦ä¸¤ä¸ªå‚æ•°ï¼ŒreplyTo ç”¨æ¥è®¾ç½®å›è°ƒé˜Ÿåˆ—ï¼ŒcorrelationId ä¸ºæ¯ä¸ªè¯·æ±‚è®¾ç½®ä¸€ä¸ªå”¯ä¸€çš„å€¼
 
-       3. ÇëÇóÉèÖÃÒ»¸örpc_queue¶ÓÁĞ
+       3. è¯·æ±‚è®¾ç½®ä¸€ä¸ªrpc_queueé˜Ÿåˆ—
   
-       4. RPC·şÎñÆ÷ÔÚ¶ÓÁĞÉÏµÈ´ıÇëÇóĞÅÏ¢£¬µ±ÇëÇóĞÅÏ¢³öÏÖÊ±£¬Ëü´¦Àíºó½«½á¹ûÊ¹ÓÃreplyToÖ¸¶¨µÄ¶ÓÁĞ·¢ËÍ¸ø¿Í»§¶Ë£¬
+       4. RPCæœåŠ¡å™¨åœ¨é˜Ÿåˆ—ä¸Šç­‰å¾…è¯·æ±‚ä¿¡æ¯ï¼Œå½“è¯·æ±‚ä¿¡æ¯å‡ºç°æ—¶ï¼Œå®ƒå¤„ç†åå°†ç»“æœä½¿ç”¨replyToæŒ‡å®šçš„é˜Ÿåˆ—å‘é€ç»™å®¢æˆ·ç«¯ï¼Œ
    
-       5. ¿Í»§¶ËµÈ´ı»Øµ÷¶ÓÁĞµÄÊı¾İ£¬µ±ÏûÏ¢³öÏÖÊ±£¬¼ì²écorrelationIdÊôĞÔµÄÖµÊÇ·ñÓëÇëÇóÏà¶ÔÓ¦£¬ÊÇÔò·µ»ØÏìÓ¦¸øÓ¦ÓÃ
+       5. å®¢æˆ·ç«¯ç­‰å¾…å›è°ƒé˜Ÿåˆ—çš„æ•°æ®ï¼Œå½“æ¶ˆæ¯å‡ºç°æ—¶ï¼Œæ£€æŸ¥correlationIdå±æ€§çš„å€¼æ˜¯å¦ä¸è¯·æ±‚ç›¸å¯¹åº”ï¼Œæ˜¯åˆ™è¿”å›å“åº”ç»™åº”ç”¨
 
 
      

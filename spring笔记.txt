@@ -78,15 +78,35 @@ Spring的ioc操作
 
     4）scope属性
        --singleton： 默认值 单例
-			
 			spring的单例概念和设计模式的单例概念是不一样的，设计模式的单例是使用硬编码的方式一个类在一个类加载器(ClassLoader)中只能创建一个实例，而spring的单例是在一个spring容器中只会创建一个bean的实例。
 			Spring`s concept of a  singleton bean differs from the Singleton pattern as defined in the Gang of Four(GoF）pattern book. The GoF Singleton hard-codes the scope of an object such that one and only one instance of a particular class is created per ClassLoader. The scope of the Spring singleton is best described as per container and per bean. This means that if you define one bean for aparticular class  in a single Spring container , then the Spring container creates one and only one instance of the class defined by that bean definition. The singleton scope is the default scope in Spring.
-	   
-	   
+	   	   
        --prototype： 多例
+	   
+	       prototype scope of bean deployment result in the creation of a new bean instance every time a request for that specific bean is made.
+		   As a rule ,use the prototype scope for all stateful beans and the singleton scope for stateless beans.
+		   
+		   在单例bean中依赖多例对象时，一个新的多例对象会被创建并依赖注入到单例对象中，且每一个多例对象对于一个单例对象都是唯一的。
+		   Thus if you dependency-inject a prototype-scoped bean into a singleton bean ,a new prototype bean is instantiated and then dependency-injected into the singleton bean. The prototype bean is the sole instance that is ever supplied to the singleton-scoped bean.
+		   
+		   在运行时单例对象依赖多例对象不能使用依赖注入，以为依赖注入只会在spring容器初始化单例对象的时候调用一次，如果希望在运行时使用一个新的多例对象，可以使用方法注入。
+		   suppose you want the singleton-bean to acquire a new instatnce of the prototype-scoped bean repeatedly at runtime. you cannot dependency-inject a protype-scoped bean into your singleton bean ,because the  injection occurs only once, when the Spring container is instantiating the singleton bean and resolving and injecting its dependencies. if you need a new instance of a prototype bean at runtime more than once, see Method injection.
        --request：创建对象 把对象放到request域里面
        --session           把对象放到session域里面
-       --globalSession 创建对象 把对象放到globalSession中  应用场景  如 百度单次登录即可使用全部功能 不用重复登录
+	   
+       --globalSession(Application Scope) 创建对象 把对象放到globalSession中  应用场景  如 百度单次登录即可使用全部功能 不用重复登录
+	    
+		   The Application Scope bean will be created once for the entire web application. The bean is scoped at the  ServletContext level, stored as a regular ServeltConext attribute.
+		   This is somewhat similar to a Spring singleton but differs  in two important ways: It is a singleton per ServletContext, not per Spring 'Application Context',and it is actually exposed and therefore visible as a ServletContext attribute.
+		   
+		 当在一个拥有较长声明周期（singleton）的bean中依赖一个较短的生命周期（request，session）的bean  ，这时，需要较短声明周期bean的声明中使用<aop:scoped-proxy/>,
+		 这将会创建一个代理对象。
+		 Thus the container creates an object that exposs the exact same public interface as the real class which can fetch the real object from the scoping mechanism.
+		 这个代理对象是通过CGLIB创建的，CGLIB代理对象只会拦截公共方法，不要调用非公共方法在代理对象上。
+		 CGLIB proxies only intercept public method calls！ Do not call non-public methods on such a proxy, they will not be delegated to the actual scoped target object.
+		 也可以使用jdk的基于接口的代理对象创建方式，这需要在<aop:scoped-proxy/>中设置proxy-target-class属性为false。 同时这也要求这个bean必须实现至少一个接口。
+		 
+	   
       
 
   属性注入
