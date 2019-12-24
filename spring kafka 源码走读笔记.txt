@@ -1,0 +1,79 @@
+spring-kafka:
+
+1.bean初始化后，调用KafkaListenerAnnotationBeanPostPorcessor类的postProcessAfterInitialization方法，在该方法中，找出类级别和方法级别的@KafkaListener和@KafkaListeners注释，针对每个方法生成Map<Method, Set<KafkaListener>>。根据此map结构，为每个方法循环调用processKafkaListener方法。
+	
+2.在processKafkaListener方法中根据Method 生成MethodKafkaListenerEndpoint, 并为endpoint设置原生method，beanFactory，errorHandler。 最后调用processListener方法。
+
+3.在processListener方法中，为endpoint设置原生bean, messageHandlerMethodFactory, 并根据kafaListener设置id，groupId, topicPartitions, topics, topicPattern, group属性值 。
+
+     在根据kafaListener获取id时， 如果有自定义设置，则使用，若没有设置，则使用默认前缀+自增序号 作为id。
+	 
+	 在获取groupId时，如果没有指定设置，则默认使用以上获取的id作为groupId。 
+	 
+	 在设置kafaListenerContainFactory时，根据kafkaListener的属性值得到beanName，如果没有设置，则直接跳过；当设置该值时，KafkaListenerAnnotationBeanPostProcessor类中beanFactory属性值必须为null。springboot的自动装配，已经生成该bean
+	 
+   最后调用registrar的registerEndpoint方法。
+ 
+4.在registerEndpoint方法中，会校验endpoint的id是否为null，该值必须设置。 之后创建KafkaListenerEndpointingRegistrar的内部类KafkaListenerEndpointDescriptor对象。并将其存入endpointDescriptors集合中。
+
+5.在spring的bean的创建完成后，回调SmartInitializingSingleton的afterSingletonInstantiated()方法。这里会回调KafkaListenerAnnotationBeanPostProcessor的afterSingletonsInstantiated()方法。
+
+6.在afterSingletonsInstantiated方法中，为registrar设置了beanFactory, endpointRegistry, conatinerFactoryBeanName, 并为messageHandlerMethodFactory设置了handlerMethodFactory。最后调用了registrar的afterPropertiesSet()方法。
+
+7.在afterPropertiesSet方法中，调用了registerAllEndpoints方法，在该方法中，根据endpointDescriptors集合，循环调用endpointRegistry的registerListenerContainer方法注册container。
+
+8.在registerListenerContainer方法中，根据endpoint获取id，并以此分组listenerContainer。首先，根据endpoint和factory创建MessgeListenerContainer，调用factory的createListenerContainer()方法。
+
+7.在KafkaListenerContainerFactory的createListenerContainer方法中，又调用了createContainerInstance(endpoint)方法。在该方法中，根据endpoint得到topic创建了ConcurrentMessageListenerContainer。同时为调用enpoint的setupListenerContainer方法, 为enpoint设置container。
+
+8.在setupListenerContainer方法中调用setMessageListener方法，在该方法中，调用了createMessageListener方法。创建MessageListener的实例时，会根据isBatchListener创建不同类型的messageListener。再根据messageListener创建listenerAdapter。并为messageListener设置listenerAdapter。创建完messageListener后，会再根据是否存在retryTemplate和recordFilterStrategy来创建不同类型的MessageListenerAdapter。最后为container设置messageListener。
+
+9.再回到createListenerContainer方法中，为endpoint设置container后，会调用initializeContainer方法再初始化container。初始化结束后根据endpoint为container设置groupId。至此 创建listenerContainer结束。
+
+10.回到registerListenerContainer方法中，创建完MessageListenerContainer后，将存入KafkaListenerEndpointRegistry的类属性listenerContainer中，以id作为key，container为value。并根据endpoint是否设置group来生成单例的list。
+
+11.回到registerAllEndpoints方法中，循环注册listenerContainer结束后，将startImmediately为true。
+
+12. 在spring中，所有的 bean初始化结束后，会回调实现SmartLifecycle接口所有类的start()方法，当isAutoStartup()返回true时，start()方法将被执行。
+
+13.KafkaListenerEndpointRegistry类实现了SmartLifecycle接口，所以当所有bean初始化结束后，回调该类的isAutoStartup返回true，所以该类的start()方法被执行。
+
+14.在start()方法中，遍历了listenerContainers，启动了所有的container。调用container的start()方法。
+
+15.在container的start()方法中，同步调用了doStart()方法。这里调用了ConcurrentMessageListenerContainer类的doStart方法。
+
+16.在doStar()方法中，首先会根据containerProperteis得到topicPartitions判断是否设置topic分区，如果设置要判断concurrency值不能大于其数组的长度，若大于，concurrency值(默认值为1)设置为数组长度。再设置running标记为true，根据concurrency的值，循环创建KafkaMessageListenerContanier。
+
+17.创建KafkaMessageListenerContainer对象时，主要设置了该对象属性consumerFactory和topicPartition。在循环体中还继续设置了beanName, clientIdSuffix, afterRollbackProcessor等值。最后调用container的start()方法，启动容器。
+
+18.在kafkaMessageListenerContainer的start()方法中，同步调用了doStart()方法。在该方法中，首先判断非自动提交时，根据设置的确认类型判断参数设置是否正确。再获取之前设置的messageListener,创建消息者线程池consumerExecutor, 该线程池类为SimpleAsyncTaskExecutor，为自封装类。之后根据listener创建listenerConsumer，这里新创建了一个KafkaMessageListenerContanier对象，并创建其内部类对象ListenerConsumer。
+
+19.在创建ListenerConsumer对象时，在该类的构造方法中，主要是创建了消费者对象consumer，订阅分区，创建再平衡监听器rebalanceListener, 最后创建了一个定时任务线程池，根据checkConsumer()方法创建监测消费者的定时任务。
+
+20.创建完listenerConsumer对象后，回到doStart()方法，之后设置了running标记为true, 并将listenerConsumer提交的线程池。至此，KafkaMessageListenerContainer容器启动完成。
+
+21.容器启动后，任务线程池中的listenerConsumer任务开始执行，从kafka服务端拉取消息进行消费。在run()方法中，在从服务器拉取消息前，先判断是否为自动提交，若不是，则调用processCommits()方法进行提交。再调用processSeeks()方法，为消费者确定每个分区的消费位移。循环获取时，根据配置pollTimeout设置阻塞时间，默认值为1000 表示1s。返回消息后，判断消息ConsumerRecords若不为空，消息数量大于0，则调用invokerListener()方法处理消息。若为空则根据是否设置idleEventInterval进行进一步处理。
+
+22.在invokeListener方法中，根据是否isBatchListener调用不同的方法，一般调用invokeRecordListener()方法。
+
+23.在invokeListener方法中，判断是否以事务的方式处理消息，若不是则调用doInvokeWithRecords方法处理消息。
+
+24.在doInvokeWithRecords方法中，遍历records循环调用doInvokeRecordListener方法处理单个消息。
+
+25.在doInvokeRecordListener方法中，调用了listener的onMessage方法处理消息，并调用ackCurrent方法确认提交该消息。
+
+26.在ackCurrent方法中，根据消息确认模式设置是否为Record进行处理，若是，则根据消息创建Map<TopicPartition, OffsetAndMetadata>对象，若生产者为null并且根据是否设置了同步提交(sysncCommits值默认为true)，是则进行同步提交，否则进行异步提交。如果生产者不为null，或者确认模式不为Record, 判断若设置了手动提交，则由消费者代码进行提交处理，没有设置并且非自动提交，则将消息添加到待确认的队列中。
+
+至此，关于spring中kafka的配置消费流程走读结束，其中可以看到针对主题的一个分区，只有一个消费者，无法到达一个分区的并发消费。
+
+
+
+
+
+
+
+
+
+
+
+
