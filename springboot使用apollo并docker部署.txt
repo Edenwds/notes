@@ -1,0 +1,30 @@
+springboot 使用Apollo 并docker部署：
+
+	1.  设置AppId，有四种方式：
+			System Property
+			操作系统的System Environment
+			springboot的application.properties文件 （该配置方式不支持多个war包部署在同一个tomcat的使用场景）
+			app.properties文件   在classpath:/META-INF/app.properties 创建文件
+			
+	2.  设置meta server的地址， 官方提供了多种方式，又因为每个环境的地址是不同的，尽量不要启动时单独指定。
+		
+			可以使用apollo-env.properties文件，配置各个环境的地址，再通过启动时设置当前的environment。
+			
+			也可以使用自定义的Apollo Meta Server 进行地址定位，封装jar包，其中配置了各个环境的地址，再通过在启动时，指定环境来定位地址。
+			
+	3. 自定义缓存路径
+
+			通过springboot的配置文件
+			
+	4. 配置Environment
+			
+			通过java system property  在启动脚本中通过 -Denv=YOUR-ENVIRONMENT 指定
+			
+			
+	5. 配置集群
+		
+			通过java  system property  在启动脚本中 -Dapollo.cluster=SomeCluster
+			
+			通过SpringBoot配置文件
+			
+			通过java system property  在启动脚本中 -Didc=XXX 

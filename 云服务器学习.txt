@@ -1,0 +1,229 @@
+centos 7.2 安装docker步骤
+1.  yum install docker
+  
+     使用 yum list installed | grep docker 查看是否安装成功
+	 
+2. 更改镜像仓库地址
+     
+    vi  /etc/docker/daemon.json    添加 {“registry-mirrors” : ["https://docker.mirrors.ustc.edu.cn"]}	 
+
+3. 启动docker
+   
+     systemctl  start docker      
+	  
+	 重启命令  systemctl  restart docker
+	 
+	 systemctl status  docker   查看docker运行状态
+	 
+
+docker 安装mysql 步骤
+
+1. docker pull  mysql : 版本
+
+2. docker images  查看是否拉取成功
+
+3. docker  run --name mysql5.7  -e MYSQL_ROOT_PASSWORD=root  -p 3306:3306 --net mysql -d mysql : 5.7    启动mysql
+
+    --name  为容器命名
+    -e   配置信息 此处设置mysq的root登录命令为root
+    -p   端口映射  主机3306映射到容器3306 
+    -d   后台运行
+
+4. docker ps -a  查看运性镜像
+
+5. 进入mysql容器   docker exec -it  mysql5.7(设置的name值)  bash	
+
+6. 若开启防火墙 需要 开启3306端口 才能连接
+   
+    使用 systemctl status firewalld  查看防火墙是否开启
+	firewalld-cmd --zone=public  --add-port=3306/tcp --permanent  开放3306端口
+	firewalld-cmd  --reload  重启防火墙 
+	firewalld-cmd  --list-ports  查看开放的防火墙
+	
+7. 可视化工具连接失败
+     
+     云服务默认没有开放  需要新加安全组  设置安全规则  	 
+	 
+docker 安装redis步骤
+
+1. docker pull redis:版本
+
+2. 创建redis配置文件 
+
+    注释掉 bind 127.0.0.1
+    protected-mode  设置为no
+    daemonize no
+    appendonly yes 开启持久化
+	data  ./  这个目录要跟 挂载时指定容器内的目录一致
+
+3. 运行镜像
+   
+     docker run -p 6379:6379  --name redis4.0 -v /opt/docker/redis/conf/redis.conf:/etc/redis/redis.conf  -v /opt/docker/redis/data:/data  -d redis:4.0  redis-server /etc/redis/redis.conf
+	 
+	 -v 挂在目录
+	 redis-server /etc/redis/redis.conf  在容器中以该配置启动redis
+	 
+4. 查看日志
+    
+    docker logs containerId
+
+
+docker 安装mongo sharding  cluster步骤
+
+1. docker pull mongo:4.0
+
+2. 配置configserver  配置三个实例  为一个复制集
+    
+	docker  run --name configsr0  -v /opt/docker/mongo/configsr/cs0/data:/data/configdb  -d mongo:4.0  mongod --configsvr --replSet "res_configsr" --bind_ip_all
+	
+	docker run --name configsr1 -v  /opt/docker/mongo/configsr/cs1/data:/data/configdb -d mongo:4.0 mongod --configsvr --replSet "res_configsr" --bind_ip_all
+	
+	docker run --name configsr2 -v /opt/docker/mongo/configsr/cs2/data:/data/configdb -d mongo:4.0 mongod --configsvr --replSet "res_configsr"  --bind_ip_all
+	
+	在以上命令中，创建config servers  当命令中的 -v参数设置在 -d  之后会发送  verbose  值错误导致启动失败， 是由于mongo中也有该参数设置   命令混淆    verbose值用来指定monog的日志级别  值只能是包含字符v
+
+3. 通过docker inspect  name | grep IPAddress  获取config Server  的ip    --configsvr  的默认端口为27019
+
+	docker  inspect configsr0 | grep IPAddress     172.17.0.4:27019
+	docker  inspect configsr1 | grep IPAddress     172.17.0.5:27019
+	docker  inspect configsr2 | grep IPAddress     172.17.0.6:27019
+	
+4. 初始化配置服务复制集 	
+
+    rs.initiate({"_id":"res_configsr", configsvr: true, "members":[{"_id":0,"host":"172.17.0.4:27019"},{"_id":1,"host":"172.17.0.5:27019"},{"_id":2,"host":"172.17.0.6:27019"}]})
+	
+	初始化时  _id  必须与启动时  --replSet 值一致  负责初始化失败     configsvr : true 表明该复制集作为分片集群的config server   默认值为false
+	
+5. 配置shards复制集    每个复制集两个实例      
+	
+	shard0 复制集
+	docker run --name ssvr0s0 -v /opt/docker/mongo/shard0/s0/data:/data/db -d mongo:4.0 mongod --shardsvr --replSet "rs_ssvr0" --bind_ip_all
+	docker run --name ssvr0s1 -v /opt/docker/mongo/shard0/s1/data:/data/db -d mongo:4.0 mongod --shardsvr --replSet "rs_ssvr0" --bind_ip_all
+	
+	shard1 复制集
+	docker run --name ssvr1s0 -v /opt/docker/mongo/shard1/s0/data:/data/db -d mongo:4.0 mongod --shardsvr --replSet "rs_ssvr1" --bind_ip_all
+    docker run --name ssvr1s1 -v /opt/docker/mongo/shard1/s1/data:/data/db -d mongo:4.0 mongod --shardsvr --replSet "rs_ssvr1" --bind_ip_all	
+    
+6. 仍通过docker inspect 查询ip地址    --shardsvr 的默认端口为27018
+
+    docker inspect  ssvr0s0  |  grep IPAddress    172.17.0.7:27018
+	docker inspect  ssvr0s1  |  grep IPAddress    172.17.0.8:27018
+	docker inspect  ssvr1s0  |  grep IPAddress    172.17.0.9:27018
+	docker inspect  ssvr1s1  |  grep IPAddress    172.17.0.10:27018
+
+7. 初始化 shard复制集
+
+    docker exec -it ssvr0s0  bash
+	rs.initiate({"_id": "rs_ssvr0", "members":[{"_id":0, "host": "172.17.0.7:27018"},{"_id":1, "host": "172.17.0.8:27018"}]})
+	
+	docker exec -it ssvr1s0  bash
+	rs.initiate({"_id": "rs_ssvr1", "members":[{"_id":0, "host": "172.17.0.9:27018"},{"_id":1, "host": "172.17.0.10:27018"}]})
+	
+8. 配置mongos 
+   
+    docker run --name mongos0  -p 27017:27017   -d mongo:4.0  mongos --configdb  res_configsr/172.17.0.4:27019,172.17.0.5:27019,172.17.0.6:27019  --bind_ip_all
+	 
+	启动失败，错误日志： Error parsing command line: too many positional options have been specified on the command line  
+	
+	原因：需要将--configdb  后的参数值中的 空格 删除  
+	
+7. 查询ip地址 
+  
+    docker inspect mongos0 | grep IPAddress   172.17.0.11:27017
+	
+8. 添加分片到集群
+   
+    docker exec -it mongos0
+
+    sh.addShard("rs_ssvr0/172.17.0.7:27018,172.17.0.8:27018")
+	sh.addShard("rs_ssvr1/172.17.0.9:27018,172.17.0.10:27018")
+	
+9. 设置需要分片的数据库
+
+    sh.enableSharding("shard_test")
+	
+10. 设置分片的集合
+    
+    sh.shardCollection("shard_test.user", {"uid":"hashed"})	
+	
+11.  新插入数据后 查看每个复制集中的数据
+
+    登录  ssvr0s0   docker exec -it  ssvr0s0  bash
+	
+	切换数据库    use shard_test
+	
+	查询数量    db.user.find().count()
+	
+docker 安装rabbitmq 集群
+
+1. docker pull rabbitmq:3.7-management   
+ 
+     拉取镜像 ，-management 默认带监控页面
+
+2. 创建三个容器
+
+    创建容器 mq0
+    docker run -host rabbitmq0  --name mq0  -v /opt/docker/rabbitmq/mq0:/var/lib/rabbitmq  -v /opt/docker/rabbitmq/mq1/logs:/var/log/rabbitmq -e RABBITMQ_LOGS='/var/log/rabbitmq/rabbit.log'  -p 15672:15672 -p 5672:5672  -e RABBITMQ_ERLANG_COOKIE='rabbitmqcookie' -d rabbitmq:3.7-management
+	
+	创建容器 mq1
+	docker run -h rabbitmq1 --name mq1 -v /opt/docker/rabbitmq/mq1:/var/lib/rabbitmq -v /opt/docker/rabbitmq/mq1/logs:/var/log/rabbitmq -e "RABBITMQ_LOGS=/var/log/rabbitmq/rabbit.log" -p 15673:15672 -p 5673:5672 -e RABBITMQ_ERLANG_COOKIE='rabbitmqcookie' --link mq0:rabbitmq0 -d rabbitmq:3.7-management
+
+	创建容器 mq2
+	docker run -h rabbitmq2 --name mq2 -v /opt/docker/rabbitmq/mq2:/var/lib/rabbitmq -v /opt/docker/rabbitmq/mq2/logs:/var/log/rabbitmq -e "RABBITMQ_LOGS=/var/log/rabbitmq/rabbit.log" -p 15674:15672 -p 5674:5672 -e RABBITMQ_ERLANG_COOKIE='rabbitmqcookie' --link mq0:rabbitmq0 --link mq1:rabbitmq1  -d rabbitmq:3.7-management
+	
+3. 容器加入集群
+ 
+    容器mq0 
+	docker exec -it mq0 
+	rabbitmqctl stop_app
+	rabbitmqctl reset
+	rabbitmqctl start_app
+	exit
+	
+	容器mq1
+	docker exec -it mq1
+	rabbitmqctl stop_app
+	rabbitmqctl reset
+	rabbitmqctl join_cluster --ram rabbit@rabbitmq0       --ram 表示启动作为内存节点    rabbit@后面是 启动容器时指定的hostname
+	rabbitmqctl start_app
+	exit
+	
+	容器mq2
+	docker exec -it mq2
+	rabbitmqctl stop_app
+	rabbitmqctl reset
+	rabbitmqctl join_cluster --ram rabbit@rabbitmq0
+	rabbitmqctl start_app
+	exit
+	
+	至此 普通集群已经建立  在普通集群中，消息只会在队列所在的节点上，不会在其他节点复制同步。当客户端连接到没有队列的节点时，该节点会从数据所在节点查询，所以该模式的集群只能实现压力负载，并不能保证高可用。要实现集群的高可用，需建立镜像集群，在镜像集群中，所有的数据都会进行同步。
+	
+4. 设置同步策略
+ 
+    在mq0容器中
+	rabbitmqctl set_policy ha-all "^" '{"ha-mode":"all"}'     设置所有的节点都进行同步
+	
+	
+docker 安装Kafka
+
+1. 拉取 zookeeper和kafka镜像
+
+    docker pull wrustmeister/zookeeper
+    docker pull wrustmeister/kafka
+
+2. 启动zookeeper
+
+    docker run --name zookeeper  -p 2181:2181  -d  wrustmeister/zookeeper	
+
+3. 启动kafka
+       
+	   第一个节点 kafak2.0.1-0
+	docker run --name kafka2.0.1-0 -p 9092:9092   -e KAFKA_ZOOKEEPER_CONNECT=139.9.64.39:2181  -e KAFKA_BROKER_ID=0 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://139.9.64.39:9092  -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -e KAFKA_HEAP_OPTS='-Xmx250M -Xms50M'  -d  wurstmeister/kafka:2.12-2.0.1
+	
+	   第二个节点 kafka2.0.1-1
+	docker run --name kafka2.0.1-1 -p 9093:9093   -e KAFKA_ZOOKEEPER_CONNECT=139.9.64.39:2181  -e KAFKA_BROKER_ID=1 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://139.9.64.39:9093  -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9093 -e KAFKA_HEAP_OPTS='-Xmx250M -Xms50M'  -d  wurstmeister/kafka:2.12-2.0.1  
+	
+	
+	
+   	
+	
